@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg: #F0F4E8;
+  --ink: #2C392F;
+  --accent: #C8795A;
+  --muted: #85968B;
+  --card-bg: rgba(255, 255, 255, 0.6);
+  --sidebar: rgba(255, 255, 255, 0.4);
+  --sidebar-text: #2C392F;
+  --app-font-size: 16px;
+  --app-line-height: 1.7;
+  --vibe-intensity: 1;
+}
+
+.theme-light {
+  --bg: #F0F4E8;
+  --ink: #2C392F;
+  --accent: #C8795A;
+  --muted: #85968B;
+  --card-bg: rgba(255, 255, 255, 0.6);
+  --sidebar: rgba(255, 255, 255, 0.4);
+  --sidebar-text: #2C392F;
+}
+
+.theme-dark {
+  --bg: #1A1F1C;
+  --ink: #F0F4E8;
+  --accent: #D98A6C;
+  --muted: #748B7D;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --sidebar: rgba(20, 25, 22, 0.6);
+  --sidebar-text: #F0F4E8;
+}
+
+.theme-sepia {
+  --bg: #F4ECD8;
+  --ink: #4B3621;
+  --accent: #B05D3A;
+  --muted: #8E7A6B;
+  --card-bg: rgba(255, 255, 255, 0.4);
+  --sidebar: rgba(244, 236, 216, 0.5);
+  --sidebar-text: #4B3621;
+}
+
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-dharma-bg: var(--bg);
+  --color-dharma-ink: var(--ink);
+  --color-dharma-accent: var(--accent);
+  --color-dharma-muted: var(--muted);
+  --color-dharma-card: var(--card-bg);
+  --color-dharma-sidebar: var(--sidebar);
+  --color-dharma-sidebar-text: var(--sidebar-text);
+}
+
+@layer base {
+  html {
+    font-size: var(--app-font-size);
+  }
+  body {
+    @apply bg-dharma-bg text-dharma-ink font-sans antialiased min-h-screen selection:bg-dharma-accent selection:text-dharma-bg;
+    background-color: var(--bg);
+    background-image: url('https://images.unsplash.com/photo-1549488344-c75c87a55541?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+}
+
+.my-text {
+  font-family: 'Padauk', 'Noto Sans Myanmar', var(--font-sans);
+  line-height: var(--app-line-height, 1.7);
+  word-break: break-word;
+  @apply whitespace-normal;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  padding-right: 2px;
+}
+
+.serif {
+  font-family: var(--font-serif), "Playfair Display", serif;
+}
+
+/* Layout Panes */
+.hero-pane {
+  @apply relative bg-dharma-sidebar text-dharma-sidebar-text p-8 md:p-14 flex flex-col justify-between h-full overflow-hidden backdrop-blur-2xl;
+}
+
+.hero-bg-image {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  background-image: url('https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  filter: contrast(0.9) brightness(1.1) saturate(0.8) blur(10px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.content-pane {
+  @apply p-8 md:p-16 flex flex-col h-full bg-dharma-sidebar transition-colors duration-500 backdrop-blur-3xl;
+}
+
+/* Typography Patterns */
+.main-quote {
+  @apply font-serif text-7xl md:text-8xl leading-[0.9] font-medium;
+}
+
+.step-label {
+  @apply font-serif italic text-2xl text-dharma-accent mb-2;
+}
+
+.nav-link-bold {
+  @apply text-xs md:text-sm font-bold transition-all px-4 py-2 rounded-full;
+  letter-spacing: inherit;
+}
+
+/* Progress bar as described in design */
+.dharma-progress {
+  @apply fixed bottom-0 left-0 md:left-[400px] right-0 h-1 bg-black/5 z-40;
+}
+
+.dharma-progress-fill {
+  @apply h-full bg-dharma-accent transition-all duration-700 ease-out;
+}
