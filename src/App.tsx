@@ -1,31 +1,33 @@
-import { useState, useEffect, useRef, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Flower2 as LotusIcon, 
-  Wind, 
+  Leaf, 
   Eye, 
-  Zap, 
-  Brain, 
-  MessageSquare, 
-  ChevronRight, 
-  ChevronLeft,
-  Circle,
-  X,
-  Send,
-  Loader2,
-  Info,
-  ArrowRight,
-  Play,
-  RotateCcw,
-  Settings,
+  ScrollText, 
+  Bell, 
+  HeartHandshake, 
+  User, 
+  MoreHorizontal, 
+  Feather, 
+  RefreshCw, 
+  Flower2, 
+  MessageSquareQuote, 
+  Share2, 
+  Settings, 
+  TreePine,
+  Search,
+  ChevronDown,
+  ChevronUp,
+  ChevronRight,
   Palette,
-  Type,
-  BookOpen
+  BookOpen,
+  Book,
+  Hash,
+  Lightbulb,
+  Flower2 as LotusIcon
 } from 'lucide-react';
 import { cn } from './lib/utils';
-import { DHARMA_STEPS, MIND_AGGREGATES, ABHIDHAMMA_BOOKS, ABHIDHAMMA_GLOSSARY, type MindStep, MEDITATION_BENEFITS } from './constants';
-
-// --- Utils ---
+import { DHARMA_STEPS, FOLLOWING_POSTS, MIND_AGGREGATES, ABHIDHAMMA_BOOKS, ABHIDHAMMA_GLOSSARY, type MindStep, MEDITATION_BENEFITS } from './constants';
 
 const haptic = (intensity: number = 1) => {
   if (typeof window !== 'undefined' && 'vibrate' in navigator) {
@@ -34,1327 +36,1260 @@ const haptic = (intensity: number = 1) => {
   }
 };
 
-function playChime() {
-  const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-  const oscillator = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
-
-  oscillator.type = 'sine';
-  oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
-  oscillator.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); // A5
-
-  gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-  gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.1);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3);
-
-  oscillator.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-
-  oscillator.start();
-  oscillator.stop(audioCtx.currentTime + 3);
-}
-
-// --- Types ---
-
-interface OnboardingStep {
-  title: string;
-  desc: string;
-}
-
-const ONBOARDING_FLOW: Record<'en' | 'my', OnboardingStep[]> = {
-  en: [
-    {
-      title: "Welcome to Mindful Dharma",
-      desc: "This platform is designed to help you tame the wild forest of your mind using ancient Buddhist techniques."
-    },
-    {
-      title: "The Path of Training",
-      desc: "We follow a step-by-step path starting from simple breath awareness to deep wisdom."
-    },
-    {
-      title: "Daily Wisdom",
-      desc: "Understand the 'Aggregates'—the different parts that make up what you call 'self'."
-    },
-    {
-      title: "Ask the Sangha",
-      desc: "Whenever you feel stuck, our Sangha companion is here to offer ancient wisdom."
-    },
-    {
-      title: "Your First Lesson",
-      desc: "Let's begin with Step 01: Mindfulness of Breath. Are you ready?"
-    }
-  ],
-  my: [
-    {
-      title: "မင်္ဂလာပါ",
-      desc: "ဤဆော့ဖ်ဝဲသည် သင်၏စိတ်ကို ရှေးဟောင်းဗုဒ္ဓနည်းစနစ်များဖြင့် ယဉ်ပါးစေရန် ကူညီပေးပါမည်။"
-    },
-    {
-      title: "ကျင့်စဉ်လမ်း",
-      desc: "ထွက်လေဝင်လေ သိမှုမှသည် နက်နဲသော ပညာအထိ အဆင့်ဆင့် လိုက်နာနိုင်ပါသည်။"
-    },
-    {
-      title: "နေ့စဉ်ပညာ",
-      desc: "ကိုယ့်ကိုယ်ကိုယ်ဟု ထင်မှတ်နေသော ခန္ဓာငါးပါးအကြောင်းကို လေ့လာပါ။"
-    },
-    {
-      title: "သံဃာကို မေးမြန်းပါ",
-      desc: "အခက်အခဲရှိပါက ကျွန်ုပ်တို့၏ သံဃာတော် (AI) ကို မေးမြန်းနိုင်ပါသည်။"
-    },
-    {
-      title: "ပထမဆုံးသင်ခန်းစာ",
-      desc: "အဆင့် ၁ - အာနာပါနကို စတင်ရအောင်။ အဆင်သင့်ပဲလား။"
-    }
-  ]
-};
-
-// --- Components ---
-
-const Typewriter = ({ text, delay = 0, className = "" }: { text: string, delay?: number, className?: string, key?: any }) => {
-  const isBurmese = /[\u1000-\u109F]/.test(text);
-
-  if (isBurmese) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 5, filter: "blur(4px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ duration: 0.8, delay: delay, ease: [0.23, 1, 0.32, 1] }}
-        className={cn("inline-block", className)}
-      >
-        {text}
-      </motion.div>
-    );
-  }
-
-  const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
-  const segments = Array.from(segmenter.segment(text)).map(x => x.segment);
-
+function TweetAuthAvatar({ icon: Icon = LotusIcon }: { icon?: any }) {
   return (
-    <motion.div className={cn("flex flex-wrap", className)}>
-      {segments.map((char, i) => (
-        <motion.span
-          key={`${char}-${i}`}
-          initial={{ opacity: 0, scale: 0.8, filter: "blur(4px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{
-            duration: 0.3,
-            delay: delay + i * 0.03,
-            ease: [0.23, 1, 0.32, 1]
-          }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
-    </motion.div>
-  );
-};
-
-function ExitToast({ lang, visible }: { lang: 'en' | 'my', visible: boolean }) {
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: 50, x: '-50%' }}
-          animate={{ opacity: 1, y: 0, x: '-50%' }}
-          exit={{ opacity: 0, y: 50, x: '-50%' }}
-          className="fixed bottom-12 left-1/2 z-[200] bg-dharma-ink text-dharma-bg px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-2xl pointer-events-none whitespace-nowrap"
-        >
-          {lang === 'en' ? 'Press back again to exit' : 'ထွက်ရန် နောက်တစ်ကြိမ်နှိပ်ပါ'}
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className="w-10 h-10 rounded-full bg-x-hover-heavy backdrop-blur-sm flex items-center justify-center shrink-0 border border-x-border/30 shadow-inner overflow-hidden">
+      <Icon size={20} className="text-x-accent glow-icon" />
+    </div>
   );
 }
 
-// --- Components ---
-
-function OnboardingTutorial({ onComplete, lang }: { onComplete: () => void, lang: 'en' | 'my', key?: string }) {
-  const [step, setStep] = useState(0);
-  const flow = ONBOARDING_FLOW[lang];
-
-  const next = () => {
-    if (step < flow.length - 1) {
-      setStep(step + 1);
-    } else {
-      onComplete();
-    }
-  };
-
+function TweetActionRow() {
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      className="fixed inset-0 z-[100] bg-dharma-ink/60 backdrop-blur-sm flex items-center justify-center p-6"
+    <div className="flex justify-between items-center mt-3 text-x-muted max-w-[425px]">
+      <button onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 hover:text-[#1D9BF0] group">
+        <div className="p-2 rounded-full group-hover:bg-[#1D9BF0]/10 transition-colors"><MessageSquareQuote size={18} className="glow-icon" /></div>
+      </button>
+      <button onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 hover:text-[#00BA7C] group">
+        <div className="p-2 rounded-full group-hover:bg-[#00BA7C]/10 transition-colors"><RefreshCw size={18} className="glow-icon" /></div>
+      </button>
+      <button onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 hover:text-[#F91880] group">
+        <div className="p-2 rounded-full group-hover:bg-[#F91880]/10 transition-colors"><Flower2 size={18} className="glow-icon" /></div>
+      </button>
+      <button onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 hover:text-[#1D9BF0] group">
+        <div className="p-2 rounded-full group-hover:bg-[#1D9BF0]/10 transition-colors"><Share2 size={18} className="glow-icon" /></div>
+      </button>
+    </div>
+  );
+}
+
+function Tweet({ name, handle, time, title, content, isExpanded, onToggle, icon }: any) {
+  return (
+    <article 
+      onClick={onToggle} 
+      className="px-4 py-3 border-b border-x-border/30 hover:bg-x-hover transition-colors cursor-pointer flex gap-3 group"
     >
-      <motion.div 
-        key={step}
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="bg-dharma-bg max-w-md w-full p-10 rounded-[40px] shadow-2xl border border-dharma-accent/20"
-      >
-        <div className="mb-8">
-          <div className="text-[10px] text-dharma-accent font-bold uppercase tracking-widest mb-4">
-            {lang === 'en' ? 'Tutorial' : 'လမ်းညွှန်'} {step + 1}/{flow.length}
+      <TweetAuthAvatar icon={icon} />
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1 text-[15px]">
+            <span className="font-bold hover:underline text-x-ink truncate category-label">{name}</span>
+            <span className="text-x-muted truncate meta-text">@{handle}</span>
+            <span className="text-x-muted">·</span>
+            <span className="text-x-muted hover:underline duration">{time}</span>
           </div>
-          <h3 className="serif text-3xl font-medium mb-4 leading-tight">{flow[step].title}</h3>
-          <p className="text-dharma-muted text-sm leading-relaxed">{flow[step].desc}</p>
-        </div>
-        
-        <button 
-          onClick={next}
-          className="w-full py-4 bg-dharma-accent text-dharma-ink rounded-full font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 hover:bg-dharma-accent/80 transition-all shadow-lg"
-        >
-          {step === flow.length - 1 ? (lang === 'en' ? "Start Training" : "စတင်ပါ") : (lang === 'en' ? "Continue" : "ရှေ့ဆက်ပါ")}
-          <ArrowRight size={16} />
-        </button>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function MeditationTimer({ lang, vLevel }: { lang: 'en' | 'my', vLevel: number }) {
-  const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-  const [preset, setPreset] = useState(5); // minutes
-
-  const t = {
-    en: {
-      title: "Meditation Timer",
-      start: "Start",
-      pause: "Pause",
-      reset: "Reset",
-      min: "min"
-    },
-    my: {
-      title: "တရားထိုင်ချိန် တိုင်မာ",
-      start: "စတင်ပါ",
-      pause: "ခေတ္တရပ်ပါ",
-      reset: "အစပြန်စပါ",
-      min: "မိနစ်"
-    }
-  }[lang];
-
-  useEffect(() => {
-    let interval: any = null;
-    if (isActive && seconds > 0) {
-      interval = setInterval(() => {
-        setSeconds((s) => s - 1);
-      }, 1000);
-    } else if (seconds === 0 && isActive) {
-      setIsActive(false);
-      playChime();
-      if ('vibrate' in navigator) {
-        const d = 50 * vLevel;
-        navigator.vibrate([d, 50, d]);
-      }
-    }
-    return () => clearInterval(interval);
-  }, [isActive, seconds, vLevel]);
-
-  const toggle = () => {
-    haptic(vLevel);
-    if (seconds === 0) setSeconds(preset * 60);
-    setIsActive(!isActive);
-    if (!isActive) playChime(); // Gentle sound at start
-  };
-
-  const reset = () => {
-    haptic(vLevel);
-    setIsActive(false);
-    setSeconds(0);
-  };
-
-  const formatTime = (s: number) => {
-    const mins = Math.floor(s / 60);
-    const secs = s % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  return (
-    <div className={cn(
-      "bg-dharma-card border border-dharma-accent/10 p-8 rounded-[40px] shadow-sm mb-12 backdrop-blur-md transition-colors",
-      "text-dharma-ink"
-    )}>
-      <div className="flex items-center justify-between mb-8">
-        <h3 className="serif text-xl font-medium">{t.title}</h3>
-        <LotusIcon size={18} className="text-dharma-accent opacity-40" />
-      </div>
-
-      <div className="flex flex-col items-center">
-        <div className="serif text-6xl font-light mb-8 tabular-nums">
-          {seconds > 0 ? formatTime(seconds) : `${preset}:00`}
-        </div>
-
-        <div className="flex gap-4 mb-8">
-          {[1, 5, 10, 20].map((m) => (
-            <button
-              key={m}
-              onClick={() => { setPreset(m); setSeconds(m * 60); setIsActive(false); }}
-              className={cn(
-                "px-4 py-2 rounded-full border text-[10px] font-bold uppercase tracking-widest transition-all",
-                preset === m ? "bg-dharma-ink text-dharma-bg border-transparent" : "border-black/10 text-dharma-muted"
-              )}
-            >
-              {m} {t.min}
-            </button>
-          ))}
-        </div>
-
-        <div className="flex gap-4">
-          <button
-            onClick={toggle}
-            className="px-8 py-3 bg-dharma-accent text-dharma-ink rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center gap-2"
+          <motion.div 
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            className="text-x-muted group-hover:text-x-accent transition-colors"
           >
-            {isActive ? (
-              <><X size={14} /> {t.pause}</>
-            ) : (
-              <><Play size={14} /> {t.start}</>
-            )}
-          </button>
-          <button
-            onClick={reset}
-            className="p-3 bg-black/5 rounded-full text-dharma-muted hover:bg-black/10 transition-colors"
-          >
-            <RotateCcw size={18} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Header({ 
-  activeTab, setActiveTab, lang, setLang, theme, setTheme, fontSize, setFontSize, 
-  vLevel, setVLevel, focus, setFocus, showSettings, setShowSettings
-}: { 
-  activeTab: string, 
-  setActiveTab: (t: string) => void,
-  lang: 'en' | 'my',
-  setLang: (l: 'en' | 'my') => void,
-  theme: 'light' | 'dark' | 'sepia',
-  setTheme: (t: 'light' | 'dark' | 'sepia') => void,
-  fontSize: number,
-  setFontSize: (s: number) => void,
-  vLevel: number,
-  setVLevel: (l: number) => void,
-  focus: string,
-  setFocus: (f: string) => void,
-  showSettings: boolean,
-  setShowSettings: (s: boolean) => void
-}) {
-  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-
-  const triggerFeedback = (key: string) => {
-    setLastUpdated(key);
-    haptic(vLevel);
-    setTimeout(() => setLastUpdated(null), 1500);
-  };
-
-  const tabs = [
-    { id: 'home', label: lang === 'en' ? 'Pathways' : 'လမ်းစဉ်များ', icon: Wind },
-    { id: 'mind', label: lang === 'en' ? 'Philosophy' : 'ဒဿန', icon: Brain },
-    { id: 'abhi', label: lang === 'en' ? 'Abhidhamma' : 'အဘိဓမ္မာ', icon: LotusIcon }
-  ];
-
-  const focusOptions = ['All', 'Mindfulness', 'Awareness', 'Insight', 'Calm', 'Restraint', 'Effort'];
-
-  return (
-    <div className="mb-16 md:mb-24 relative z-50">
-      <div className="flex items-center justify-between mb-8">
-        <Typewriter 
-          key={lang}
-          text={lang === 'en' ? "Mindful Dharma" : "သတိဓမ္မ"} 
-          className={cn("serif font-medium text-dharma-ink", lang === 'my' ? "text-xl md:text-2xl" : "text-2xl md:text-3xl tracking-tight")}
-          delay={0.5}
-        />
-        
-        <div className="relative">
-          <button 
-            onClick={(e) => { 
-               e.stopPropagation();
-               setShowSettings(!showSettings); 
-               haptic(vLevel);
-            }}
-            className={cn(
-               "p-2.5 rounded-2xl transition-all relative z-[60] bg-white/5 backdrop-blur shadow-sm",
-               showSettings ? "bg-dharma-ink text-dharma-bg shadow-xl scale-110" : "text-dharma-ink border border-dharma-accent/10 hover:border-dharma-accent/40 hover:bg-white/20"
-            )}
-          >
-            <Settings size={20} />
-          </button>
-
-          <AnimatePresence>
-            {lastUpdated && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="absolute -top-12 left-1/2 -track-x-1/2 bg-dharma-accent text-dharma-bg px-3 py-1 rounded-full text-[8px] font-bold uppercase tracking-widest pointer-events-none whitespace-nowrap shadow-lg flex items-center gap-1.5"
-                style={{ left: '50%', transform: 'translateX(-50%)' }}
-              >
-                <div className="w-1.5 h-1.5 rounded-full bg-dharma-bg animate-pulse" />
-                Updated
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showSettings && (
-            <>
-              {/* Click outside backdrop */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setShowSettings(false)}
-                className="fixed inset-0 z-40 cursor-default"
-              />
-              
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 10, x: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 10, x: 20 }}
-                className="absolute right-0 top-full mt-6 bg-dharma-bg border border-dharma-accent/30 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2)] rounded-[40px] p-8 w-80 flex flex-col gap-8 overflow-y-auto max-h-[85vh] scrollbar-hide z-50 backdrop-blur-xl"
-              >
-                <div className="flex items-center justify-between border-b border-dharma-accent/10 pb-4">
-                  <h3 className="serif text-xl text-dharma-ink">Preferences</h3>
-                  <button onClick={() => setShowSettings(false)} className="text-dharma-muted hover:text-dharma-ink p-1">
-                    <X size={18} />
-                  </button>
-                </div>
-
-                {/* Section: Spirit */}
-                <div className="flex flex-col gap-6">
-                  <div className="flex items-center gap-2 opacity-40">
-                    <Brain size={12} className="text-dharma-accent" />
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-dharma-ink">Spirit & Study</span>
-                  </div>
-
-                  {/* Language Selection */}
-                  <div>
-                    <div className="text-[10px] font-medium text-dharma-muted mb-3 flex justify-between items-center">
-                      <span>{lang === 'en' ? 'Interface Language' : 'ဘာသာစကား'}</span>
-                    </div>
-                    <div className="flex p-1 bg-black/5 rounded-2xl gap-1">
-                      {(['en', 'my'] as const).map(l => (
-                        <button
-                          key={l}
-                          onClick={() => { setLang(l); triggerFeedback('lang'); }}
-                          className={cn(
-                            "flex-1 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all",
-                            lang === l ? "bg-dharma-bg text-dharma-ink shadow-sm" : "text-dharma-muted hover:text-dharma-ink"
-                          )}
-                        >
-                          {l === 'en' ? 'English' : 'မြန်မာ'}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Focus Selection */}
-                  <div>
-                    <div className="text-[10px] font-medium text-dharma-muted mb-3">Your Primary Focus</div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {focusOptions.map(f => (
-                        <button
-                          key={f}
-                          onClick={() => { setFocus(f); triggerFeedback('focus'); }}
-                          className={cn(
-                            "px-3 py-2 rounded-xl border text-[9px] font-bold uppercase tracking-widest transition-all text-left truncate",
-                            focus === f ? "border-dharma-accent bg-dharma-accent/10 text-dharma-accent" : "border-dharma-accent/5 text-dharma-muted hover:border-dharma-accent/20"
-                          )}
-                        >
-                          {f}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section: Appearance */}
-                <div className="flex flex-col gap-6">
-                  <div className="flex items-center gap-2 opacity-40">
-                    <Palette size={12} className="text-dharma-accent" />
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-dharma-ink">Atmosphere</span>
-                  </div>
-
-                  {/* Theme */}
-                  <div>
-                    <div className="text-[10px] font-medium text-dharma-muted mb-3">Visual Theme</div>
-                    <div className="grid grid-cols-3 gap-2">
-                      {(['light', 'dark', 'sepia'] as const).map(t => (
-                        <button
-                          key={t}
-                          onClick={() => { setTheme(t); triggerFeedback('theme'); }}
-                          className={cn(
-                            "flex flex-col items-center gap-2 p-3 rounded-2xl border transition-all",
-                            theme === t ? "border-dharma-accent bg-dharma-bg shadow-sm" : "border-dharma-accent/5 text-dharma-muted grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
-                          )}
-                        >
-                          <div className={cn(
-                            "w-full aspect-square rounded-full border border-black/5",
-                            t === 'light' ? 'bg-[#F9F6F1]' : t === 'dark' ? 'bg-[#0A0A0A]' : 'bg-[#F4ECD8]'
-                          )} />
-                          <span className="text-[8px] font-bold uppercase tracking-widest">{t}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Font Size */}
-                  <div>
-                    <div className="text-[10px] font-medium text-dharma-muted mb-3 flex justify-between items-center">
-                      <span>Typography Size</span>
-                      <span className="text-[10px] font-mono text-dharma-ink">{fontSize}px</span>
-                    </div>
-                    <div className="flex items-center gap-4 bg-black/5 p-4 rounded-2xl">
-                      <Type size={14} className="text-dharma-muted shrink-0" />
-                      <input 
-                        type="range" 
-                        min="14" max="22" step="2"
-                        value={fontSize}
-                        onChange={(e) => { setFontSize(Number(e.target.value)); triggerFeedback('size'); }}
-                        className="flex-1 accent-dharma-accent"
-                      />
-                      <Type size={20} className="text-dharma-ink shrink-0" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section: System */}
-                <div className="flex flex-col gap-6">
-                  <div className="flex items-center gap-2 opacity-40">
-                    <Zap size={12} className="text-dharma-accent" />
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-dharma-ink">Sensory Response</span>
-                  </div>
-
-                  {/* Vibration Level */}
-                  <div>
-                    <div className="text-[10px] font-medium text-dharma-muted mb-3 flex justify-between items-center">
-                      <span>Haptic Vibration</span>
-                      <span className="text-[10px] font-mono text-dharma-ink">Level {vLevel}</span>
-                    </div>
-                    <div className="flex items-center gap-4 bg-black/5 p-4 rounded-2xl">
-                      <Zap size={14} className="text-dharma-muted shrink-0" />
-                      <input 
-                        type="range" 
-                        min="1" max="5" step="1"
-                        value={vLevel}
-                        onChange={(e) => { setVLevel(Number(e.target.value)); triggerFeedback('vibrate'); }}
-                        className="flex-1 accent-dharma-accent"
-                      />
-                      <div className="flex gap-0.5">
-                        {[1, 2, 3].map(i => (
-                          <div key={i} className={cn("w-1 h-3 rounded-full", vLevel >= i+1 ? "bg-dharma-accent" : "bg-dharma-accent/20")} />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-6 border-t border-dharma-accent/10 flex justify-center">
-                  <button 
-                    onClick={() => setShowSettings(false)}
-                    className="text-[9px] font-bold uppercase tracking-[0.3em] text-dharma-muted hover:text-dharma-ink transition-all"
-                  >
-                    Close Settings
-                  </button>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </div>
-    </div>
-
-    <nav className="flex items-center justify-between">
-        <div className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar pb-2">
-          {tabs.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => { setActiveTab(tab.id); triggerFeedback(tab.id); }}
-                className={cn(
-                  "nav-link-bold whitespace-nowrap px-4 py-2 rounded-full",
-                  lang === 'en' ? "uppercase" : "",
-                  isActive ? "bg-dharma-accent text-white shadow-md" : "text-dharma-muted hover:bg-black/5 hover:text-dharma-ink"
-                )}
-              >
-                <span className="my-text">{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </nav>
-    </div>
-  );
-}
-
-function WelcomeHero({ onStart, lang, setLang, vLevel }: { onStart: () => void, lang: 'en' | 'my', setLang: (l: 'en' | 'my') => void, vLevel: number, key?: string }) {
-  return (
-    <div className="h-screen flex flex-col items-center justify-center p-6 text-center relative overflow-hidden transition-colors duration-500 backdrop-blur-sm bg-black/20">
-      
-      <div className="absolute top-8 right-8 z-10">
-        <button 
-          onClick={() => { setLang(lang === 'en' ? 'my' : 'en'); haptic(vLevel); }}
-          className="text-[10px] font-bold uppercase tracking-widest text-[#F0F4E8] border border-white/30 px-3 py-1.5 rounded-full bg-black/20 backdrop-blur hover:bg-white/10 transition-all shadow-md"
-        >
-          {lang === 'en' ? 'MY' : 'EN'}
-        </button>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-12 z-10 relative"
-      >
-        <div className="absolute inset-0 bg-white/5 blur-3xl rounded-full scale-150 pointer-events-none" />
-        <LotusIcon size={56} className="text-[#E8D7C5] mx-auto mb-10 drop-shadow-lg" />
-        <h1 
-          className={cn("serif text-7xl md:text-9xl font-medium mb-6 text-[#F0F4E8] drop-shadow-xl", lang === 'my' ? "" : "tracking-tighter leading-none")}
-          style={{ lineHeight: lang === 'my' ? '1.5' : undefined }}
-        >
-          {lang === 'en' ? <>The Still <br className="hidden md:block" /> <span className="italic">Mind</span></> : <>ငြိမ်သက်သော <br /> <span className="italic">စိတ်</span></>}
-        </h1>
-        <p className="text-[#C1CEC5] text-lg max-w-xl mx-auto leading-relaxed serif italic my-text drop-shadow-md">
-          {lang === 'en' 
-            ? "\"Before we can control the mind, we must witness its nature. Like a turbulent river, we do not stop the flow; we simply step onto the bank.\""
-            : "\"စိတ်ကို မထိန်းချုပ်မီ ၎င်း၏ သဘာဝကို စောင့်ကြည့်ရမည်။ လှိုင်းထန်သော မြစ်တစ်ခုကဲ့သို့ပင် စီးဆင်းမှုကို ကျွန်ုပ်တို့ မရပ်တန့်ပါ။ ကမ်းနဖူးသို့ လှမ်းတက်ရုံသာ ဖြစ်သည်။\""}
-        </p>
-      </motion.div>
-      
-      <motion.button
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        onClick={() => { onStart(); haptic(vLevel); }}
-        className="group px-10 py-5 bg-[#F0F4E8]/90 text-[#1A1F1C] rounded-full flex items-center gap-4 hover:bg-white hover:scale-105 transition-all shadow-2xl z-10 backdrop-blur-md"
-      >
-        <span className="uppercase text-xs font-bold my-text" style={{ letterSpacing: lang === 'en' ? '0.2em' : 'normal' }}>
-            {lang === 'en' ? 'Seek the Path' : 'လမ်းစဉ်အား ရှာဖွေပါ'}
-        </span>
-        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-      </motion.button>
-    </div>
-  );
-}
-
-function StepGallery({ lang, focus, vLevel }: { lang: 'en' | 'my', focus: string, vLevel: number }) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const filteredSteps = focus === 'All' 
-    ? DHARMA_STEPS 
-    : DHARMA_STEPS.filter(s => s.categories.includes(focus));
-    
-  // Ensure currentStep is within bounds of filtered list
-  const safeStep = currentStep >= filteredSteps.length ? 0 : currentStep;
-  const step = filteredSteps[safeStep];
-
-  if (!step) return <div className="p-20 text-center opacity-40">No pathways match this focus.</div>;
-
-  return (
-    <div className="flex flex-col h-full overflow-y-auto scrollbar-hide">
-      <div className="mb-12 md:mb-16">
-        <div className="step-label">Step 0{safeStep + 1}</div>
-        <h2 className="serif text-5xl md:text-7xl font-medium leading-[1.1] mb-8 my-text text-dharma-ink">
-          {(lang === 'en' ? step.title : step.titleMy).split(' ').map((word, i) => (
-            <span key={i} className="block">{word}</span>
-          ))}
-        </h2>
-        <p className="text-dharma-muted text-lg max-w-md leading-relaxed my-text">
-          {lang === 'en' ? step.description : step.descriptionMy}
-        </p>
-      </div>
-
-      <MeditationTimer lang={lang} vLevel={vLevel} />
-
-      <motion.div 
-        key={step.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col gap-10 mb-16"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div>
-            <h4 className="text-[10px] font-bold uppercase tracking-widest text-dharma-accent mb-4">
-              {lang === 'en' ? 'Philosophical Essential' : 'ဒဿနအနှစ်ချုပ်'}
-            </h4>
-            <div className="p-8 bg-dharma-accent/5 rounded-[40px] border border-dharma-accent/5">
-              <p className="text-dharma-ink text-sm leading-[1.8] my-text whitespace-pre-wrap">
-                {lang === 'en' ? step.content : step.contentMy}
-              </p>
-            </div>
-          </div>
-          <div>
-            <h4 className="text-[10px] font-bold uppercase tracking-widest text-dharma-accent mb-4">
-              {lang === 'en' ? 'Practice Guide' : 'ကျင့်စဉ်လမ်းညွှန်'}
-            </h4>
-            <div className="p-8 bg-black/5 rounded-[40px]">
-              <div className="flex items-center gap-3 mb-4">
-                <Wind size={16} className="text-dharma-accent" />
-                <span className="serif italic text-lg text-dharma-ink">{step.pali}</span>
-              </div>
-              <p className="text-dharma-muted text-sm leading-[1.8] my-text">
-                {lang === 'en' ? step.practice : step.practiceMy}
-              </p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-
-      <div className="mb-8">
-        <h4 className="text-[10px] font-bold uppercase tracking-widest text-dharma-accent mb-6 text-center">
-          {lang === 'en' ? 'The Continuous Path' : 'အစဉ်တစိုက် ကျင့်စဉ်လမ်း'}
-        </h4>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-          {filteredSteps.map((s, idx) => (
-            <button
-              key={s.id}
-              onClick={() => { setCurrentStep(idx); haptic(vLevel); }}
-              className={cn(
-                "group flex flex-col items-center gap-3 transition-all",
-                idx === safeStep ? "opacity-100" : "opacity-30 hover:opacity-100"
-              )}
-            >
-              <div className={cn(
-                "w-10 h-10 rounded-full flex items-center justify-center border text-[10px] font-bold transition-all",
-                idx === safeStep 
-                  ? "bg-dharma-ink text-dharma-bg border-transparent scale-110 shadow-lg" 
-                  : "border-dharma-accent/20 text-dharma-ink"
-              )}>
-                0{idx + 1}
-              </div>
-              <span className="text-[8px] font-bold uppercase tracking-widest text-center truncate w-full hidden sm:block">
-                {lang === 'en' ? s.title : s.titleMy}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="dharma-progress mt-8">
-        <div 
-          className="dharma-progress-fill" 
-          style={{ width: `${((safeStep + 1) / filteredSteps.length) * 100}%` }} 
-        />
-      </div>
-    </div>
-  );
-}
-
-function MindWisdom({ lang, vLevel }: { lang: 'en' | 'my', vLevel: number }) {
-  const [activeSection, setActiveSection] = useState<'benefits' | 'aggregates'>('benefits');
-
-  return (
-    <div className="flex flex-col h-full">
-      <div className="mb-8">
-        <div className="step-label">{lang === 'en' ? 'Knowledge' : 'အသိဉာဏ်'}</div>
-        <h2 className="serif text-5xl md:text-7xl font-medium leading-[1.1] mb-8">
-          {activeSection === 'benefits' ? (
-            lang === 'en' ? <>The <br /> <span className="italic">Benefits</span></> : <>အကျိုး <br /> <span className="italic">ကျေးဇူးများ</span></>
-          ) : (
-            lang === 'en' ? <>The Five <br /> <span className="italic">Aggregates</span></> : <>ခန္ဓာ <br /> <span className="italic">ငါးပါး</span></>
-          )}
-        </h2>
-        
-        <div className="flex items-center gap-4 mb-4">
-          <button 
-            onClick={() => { setActiveSection('benefits'); haptic(vLevel); }}
-            className={cn(
-              "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all",
-              activeSection === 'benefits' ? "bg-dharma-ink text-dharma-bg shadow-lg" : "bg-dharma-accent/10 text-dharma-muted hover:bg-black/5"
-            )}
-          >
-            {lang === 'en' ? 'Benefits' : 'အကျိုးကျေးဇူးများ'}
-          </button>
-          <button 
-            onClick={() => { setActiveSection('aggregates'); haptic(vLevel); }}
-            className={cn(
-              "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all",
-              activeSection === 'aggregates' ? "bg-dharma-ink text-dharma-bg shadow-lg" : "bg-dharma-accent/10 text-dharma-muted hover:bg-black/5"
-            )}
-          >
-            {lang === 'en' ? 'Aggregates' : 'ခန္ဓာငါးပါး'}
-          </button>
-        </div>
-
-        <p className="text-dharma-muted text-lg max-w-md leading-relaxed h-14">
-          {activeSection === 'benefits' 
-            ? (lang === 'en' ? 'The fruits of a stabilized and purified mind.' : 'တည်ငြိမ်ပြီး သန့်စင်သော စိတ်၏ အသီးအပွင့်များ။') 
-            : (lang === 'en' ? 'To master the mind, one must first deconstruct the illusion of a solid self.' : 'စိတ်ကို ထိန်းချုပ်ရန်မှာ အတ္တဟူသော အထင်မှားမှုကို အရင်ဆုံး ဖယ်ရှားရမည်။')}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-12 overflow-y-auto pr-4 scrollbar-hide pb-12 mt-4">
-        {activeSection === 'aggregates' && MIND_AGGREGATES.map((m, idx) => (
-          <motion.div
-            key={m.name}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: idx * 0.1 }}
-            className="flex flex-col gap-4 pb-12 border-b border-dharma-accent/10 last:border-0"
-          >
-            <div className="flex items-center gap-4">
-              <span className="serif text-dharma-accent text-3xl italic opacity-40">0{idx + 1}</span>
-              <h3 className="font-bold text-xs uppercase tracking-widest my-text">{(lang === 'en' ? m.title : m.titleMy)} · {m.name}</h3>
-            </div>
-            <div className="pl-12">
-              <p className="text-dharma-ink font-medium text-sm leading-relaxed max-w-sm my-text mb-4">{lang === 'en' ? m.desc : m.descMy}</p>
-              <div className="p-6 bg-dharma-accent/5 rounded-3xl border border-dharma-accent/5">
-                <p className="text-dharma-muted text-xs leading-relaxed my-text whitespace-pre-wrap italic">
-                  {lang === 'en' ? (m as any).details : (m as any).detailsMy}
-                </p>
-              </div>
-            </div>
+            <ChevronDown size={18} className="glow-icon" />
           </motion.div>
-        ))}
-
-        {activeSection === 'benefits' && MEDITATION_BENEFITS.map((b, idx) => (
-          <motion.div
-            key={b.title}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
-            className="group flex flex-col p-8 rounded-3xl border border-dharma-accent/20 bg-dharma-sidebar/5 hover:bg-dharma-accent/5 transition-all shadow-sm"
-          >
-            <div className="flex items-start gap-6">
-              <div className="mt-1 flex items-center justify-center w-10 h-10 rounded-full bg-dharma-accent/20 text-dharma-accent">
-                <LotusIcon size={18} />
-              </div>
-              <div>
-                <h3 className="serif text-2xl font-medium text-dharma-ink mb-3 my-text group-hover:text-dharma-accent transition-colors">
-                  {lang === 'en' ? b.title : b.titleMy}
-                </h3>
-                <p className="text-dharma-muted text-sm leading-relaxed my-text">
-                  {lang === 'en' ? b.desc : b.descMy}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Abhidhamma({ lang, vLevel }: { lang: 'en' | 'my', vLevel: number }) {
-  const [viewMode, setViewMode] = useState<'books' | 'glossary'>('books');
-  const [activeBook, setActiveBook] = useState(0);
-  const [activeChapter, setActiveChapter] = useState(0);
-
-  // Reset chapter when book changes
-  useEffect(() => {
-    setActiveChapter(0);
-  }, [activeBook]);
-
-  const prevBook = () => {
-    setActiveBook(prev => (prev > 0 ? prev - 1 : ABHIDHAMMA_BOOKS.length - 1));
-    haptic(vLevel);
-  };
-
-  const nextBook = () => {
-    setActiveBook(prev => (prev < ABHIDHAMMA_BOOKS.length - 1 ? prev + 1 : 0));
-    haptic(vLevel);
-  };
-
-  const prevChapter = () => {
-    if (chapters.length === 0) return;
-    setActiveChapter(prev => (prev > 0 ? prev - 1 : chapters.length - 1));
-    haptic(vLevel);
-  };
-
-  const nextChapter = () => {
-    if (chapters.length === 0) return;
-    setActiveChapter(prev => (prev < chapters.length - 1 ? prev + 1 : 0));
-    haptic(vLevel);
-  };
-
-  const currentBook = ABHIDHAMMA_BOOKS[activeBook];
-  const chapters = (currentBook as any).chapters || [];
-
-  return (
-    <div className="flex flex-col h-full overflow-hidden">
-      <div className="mb-8">
-        <div className="step-label">Doctrine</div>
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <h2 className="serif text-5xl md:text-7xl font-medium leading-[1.1] mb-4 my-text text-dharma-ink">
-              {lang === 'en' ? 'Buddha' : 'မြတ်စွာဘုရား၏'} <br /> <span className="italic">{lang === 'en' ? 'Abhidhamma' : 'အဘိဓမ္မာ'}</span>
-            </h2>
-            <div className="flex items-center gap-4 mb-4">
-              <button 
-                onClick={() => { setViewMode('books'); haptic(vLevel); }}
-                className={cn(
-                  "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all",
-                  viewMode === 'books' ? "bg-dharma-ink text-dharma-bg shadow-lg" : "bg-dharma-accent/10 text-dharma-muted hover:bg-black/5"
-                )}
-              >
-                Books
-              </button>
-              <button 
-                onClick={() => { setViewMode('glossary'); haptic(vLevel); }}
-                className={cn(
-                  "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all",
-                  viewMode === 'glossary' ? "bg-dharma-ink text-dharma-bg shadow-lg" : "bg-dharma-accent/10 text-dharma-muted hover:bg-black/5"
-                )}
-              >
-                Glossary
-              </button>
-            </div>
-            {viewMode === 'books' && (
-              <p className="text-dharma-muted text-sm max-w-md leading-relaxed my-text">
-                {lang === 'en' 
-                  ? 'The ultimate teachings of the Buddha, analyzing the nature of all life and consciousness. Browse the seven books of wisdom.'
-                  : 'ဘုရားရှင်၏ နောက်ဆုံးကျမ်း၊ ရုပ်နာမ်ဓမ္မတို့၏ သဘာဝကို အသေးစိတ် ခွဲခြမ်းပြဆိုရာ ကျမ်းဖြစ်သတည်း။'}
-              </p>
-            )}
-            {viewMode === 'glossary' && (
-              <p className="text-dharma-muted text-sm max-w-md leading-relaxed my-text">
-                {lang === 'en' 
-                  ? 'Quickly reference key concepts and ultimate realities found within the Abhidhamma Pitaka.'
-                  : 'အဘိဓမ္မာကျမ်းလာ အခြေခံပရမတ္ထတရားများနှင့် ဝေါဟာရများကို အလွယ်တကူ ရှာဖွေနိုင်ပါသည်။'}
-              </p>
-            )}
-          </div>
+        </div>
+        
+        <div className="text-[15px] mt-1 my-text leading-[1.6]">
+          {title && <strong className="block mb-1 text-x-ink text-[16px] leading-[1.4] card-title">{title}</strong>}
           
-          {/* Progress Indicator for Books */}
-          {viewMode === 'books' && (
-            <div className="flex gap-2 mb-2">
-              {ABHIDHAMMA_BOOKS.map((_, i) => (
-                <div 
-                  key={i}
-                  className={cn(
-                    "h-1 rounded-full transition-all duration-500",
-                    activeBook === i ? "w-8 bg-dharma-accent" : "w-2 bg-dharma-accent/20"
-                  )}
-                />
-              ))}
+          <motion.div
+            initial={false}
+            animate={{ 
+              height: isExpanded ? 'auto' : 0,
+              opacity: isExpanded ? 1 : 0,
+              marginTop: isExpanded ? 4 : 0
+            }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="overflow-hidden"
+          >
+            <span className="text-x-ink whitespace-pre-wrap block transition-colors lesson-body">{content}</span>
+            <div className="mt-3">
+              <TweetActionRow />
             </div>
-          )}
+          </motion.div>
+        </div>
+        
+        {!isExpanded && (
+          <div className="text-x-muted text-xs mt-1 font-medium meta-text">
+            Click to expand...
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
+
+function HomeFeed({ lang, tab }: { lang: 'en' | 'my', tab: 'foryou' | 'following' }) {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const posts = tab === 'foryou' ? DHARMA_STEPS : FOLLOWING_POSTS;
+
+  return (
+    <div className="pb-20 sm:pb-0">
+      {tab === 'foryou' ? (
+        DHARMA_STEPS.map((step, i) => (
+          <Tweet
+            key={step.id}
+            name={lang === 'en' ? "Dharma Pathways" : "လမ်းစဉ်များ"}
+            handle="dharma"
+            time={lang === 'en' ? `${i + 1}h` : `${i + 1} နာရီ`}
+            title={lang === 'en' ? step.title : step.titleMy}
+            content={lang === 'en' ? `${step.description}\n\n${step.practice}\n\n${step.content}\n\n#${step.pali} #${step.categories.join(' #')}` : `${step.descriptionMy}\n\n${step.practiceMy}\n\n${step.contentMy}\n\n#${step.pali} #${step.categories.join(' #')}`}
+            isExpanded={expandedId === step.id}
+            onToggle={() => setExpandedId(expandedId === step.id ? null : step.id)}
+            icon={Leaf}
+          />
+        ))
+      ) : (
+        FOLLOWING_POSTS.map((post, i) => (
+          <Tweet
+            key={post.id}
+            name={post.author}
+            handle={post.handle}
+            time={lang === 'en' ? post.time : post.time.replace('h', ' နာရီ').replace('d', ' ရက်')}
+            title={lang === 'en' ? post.title : post.titleMy}
+            content={lang === 'en' ? `${post.content}\n\n#${post.pali}` : `${post.contentMy}\n\n#${post.pali}`}
+            isExpanded={expandedId === post.id}
+            onToggle={() => setExpandedId(expandedId === post.id ? null : post.id)}
+            icon={TreePine}
+          />
+        ))
+      )}
+    </div>
+  );
+}
+
+function ExploreFeed({ lang }: { lang: 'en' | 'my' }) {
+  const [activeTab, setActiveTab] = useState<'benefits' | 'aggregates'>('benefits');
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  return (
+    <div className="pb-20 sm:pb-0">
+      <div className="sticky top-0 z-30 px-3 pt-3 pb-2 bg-gradient-to-b from-x-background via-x-background/80 to-transparent">
+        <div className="flex w-full glass-float rounded-2xl overflow-hidden p-1 gap-1">
+          <button 
+            onClick={() => { setActiveTab('benefits'); setExpandedId(null); haptic(0.5); }}
+            className="flex-1 transition-all font-bold text-[12px] relative h-9 rounded-xl"
+          >
+            <div className="flex items-center justify-center h-full w-full relative z-10">
+              <span className={cn("transition-colors", activeTab === 'benefits' ? "text-x-btn-text" : "text-x-muted font-normal opacity-80")}>
+                {lang === 'en' ? 'Benefits' : 'အကျိုးကျေးဇူးများ'}
+              </span>
+            </div>
+            {activeTab === 'benefits' && (
+              <motion.div 
+                layoutId="explore-tab-pill"
+                className="absolute inset-0 bg-x-accent tab-pill-active rounded-xl overflow-hidden"
+                transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+              >
+                 <div className="absolute inset-0 shimmer-sweep w-full h-full" />
+              </motion.div>
+            )}
+          </button>
+          <button 
+            onClick={() => { setActiveTab('aggregates'); setExpandedId(null); haptic(0.5); }}
+            className="flex-1 transition-all font-bold text-[12px] relative h-9 rounded-xl"
+          >
+            <div className="flex items-center justify-center h-full w-full relative z-10">
+              <span className={cn("transition-colors", activeTab === 'aggregates' ? "text-x-btn-text" : "text-x-muted font-normal opacity-80")}>
+                {lang === 'en' ? 'Aggregates' : 'ခန္ဓာငါးပါး'}
+              </span>
+            </div>
+            {activeTab === 'aggregates' && (
+              <motion.div 
+                layoutId="explore-tab-pill"
+                className="absolute inset-0 bg-x-accent tab-pill-active rounded-xl overflow-hidden"
+                transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+              >
+                 <div className="absolute inset-0 shimmer-sweep w-full h-full" />
+              </motion.div>
+            )}
+          </button>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col md:flex-row gap-8 overflow-hidden">
-        {viewMode === 'books' ? (
-          <>
-            {/* Book List Sidebar */}
-            <div className="w-full md:w-64 flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto no-scrollbar pb-4 md:pb-0 shrink-0">
-              {ABHIDHAMMA_BOOKS.map((book, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setActiveBook(i); haptic(vLevel); }}
-                  className={cn(
-                    "group relative text-left p-4 rounded-3xl transition-all h-fit overflow-hidden flex-shrink-0",
-                    "w-[140px] md:w-full md:whitespace-normal",
-                    activeBook === i 
-                      ? "bg-dharma-ink text-dharma-bg scale-[1.02] shadow-lg" 
-                      : "bg-dharma-card border border-dharma-accent/10 text-dharma-ink hover:bg-dharma-accent/10"
-                  )}
-                >
-                  <div className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Book 0{i + 1}</div>
-                  <div className="font-bold text-xs my-text truncate">{lang === 'en' ? book.title : book.titleMy}</div>
-                  
-                  {/* Individual Book Progress Bar (Subtle) */}
-                  {activeBook === i && (
-                    <motion.div 
-                      layoutId="book-progress" 
-                      className="absolute bottom-0 left-0 h-1 bg-dharma-accent w-full"
-                      initial={false}
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {/* Content View */}
-            <div className="flex-1 flex flex-col gap-6 overflow-hidden">
-              <div className="flex-1 bg-dharma-card border border-dharma-accent/10 rounded-[40px] p-8 md:p-12 overflow-y-auto scrollbar-hide backdrop-blur-md">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`${activeBook}-${activeChapter}`}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.4 }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    onDragEnd={(_, info) => {
-                      if (info.offset.x < -100) nextChapter();
-                      else if (info.offset.x > 100) prevChapter();
-                    }}
-                    className="cursor-grab active:cursor-grabbing"
-                  >
-                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-8 mb-12">
-                      <div className="flex-1">
-                        <div className="serif italic text-3xl text-dharma-accent mb-6 leading-tight my-text underline underline-offset-8">
-                          {lang === 'en' ? currentBook.summary : currentBook.summaryMy}
-                        </div>
-
-                        <motion.div 
-                          initial={{ opacity: 0, scale: 0.95 }} 
-                          animate={{ opacity: 1, scale: 1 }} 
-                          className="mb-8 p-6 bg-dharma-accent/5 border-l-2 border-dharma-accent rounded-r-3xl"
-                        >
-                          <p className="text-dharma-ink font-medium text-sm leading-relaxed my-text italic opacity-80">
-                            {lang === 'en' ? (currentBook as any).detailedSummary : (currentBook as any).detailedSummaryMy}
-                          </p>
-                        </motion.div>
-
-                        <p className="text-dharma-muted text-xs italic mb-8 my-text opacity-60">
-                          {lang === 'en' ? currentBook.brief : currentBook.briefMy}
-                        </p>
-                      </div>
-
-                      {/* Chapter List */}
-                      <div className="w-full md:w-56 shrink-0">
-                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-dharma-accent mb-4">
-                          {lang === 'en' ? 'Chapters' : 'အခန်းများ'}
-                        </h4>
-                        <div className="space-y-2">
-                          {chapters.map((chap: any, idx: number) => (
-                            <button
-                              key={idx}
-                              onClick={() => { setActiveChapter(idx); haptic(vLevel); }}
-                              className={cn(
-                                "w-full text-left p-3 rounded-2xl text-[10px] font-bold transition-all border",
-                                activeChapter === idx
-                                  ? "bg-dharma-accent text-dharma-ink border-transparent shadow-md"
-                                  : "bg-transparent border-dharma-accent/10 text-dharma-muted hover:border-dharma-accent/30"
-                              )}
-                            >
-                              <div className="uppercase tracking-widest mb-1 opacity-50">CH 0{idx + 1}</div>
-                              <div className="my-text truncate">{lang === 'en' ? chap.title : chap.titleMy}</div>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Chapter Progress Dots (Visual Feedback) */}
-                    {chapters.length > 1 && (
-                      <div className="flex flex-wrap justify-center gap-1.5 mb-8 opacity-60">
-                        {chapters.map((_, idx) => (
-                          <div 
-                            key={idx}
-                            className={cn(
-                              "h-1 rounded-full transition-all duration-300",
-                              activeChapter === idx ? "w-4 bg-dharma-accent" : "w-1 bg-dharma-accent/20"
-                            )}
-                          />
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="w-12 h-1 bg-dharma-accent mb-8" />
-                    
-                    <div className="space-y-12">
-                      {/* Selected Chapter Content */}
-                      <motion.div
-                        key={`${activeBook}-${activeChapter}`}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="p-8 bg-dharma-ink/5 rounded-[40px] border border-dharma-accent/5"
-                      >
-                        <div className="flex items-center gap-3 mb-4">
-                          <Circle size={8} className="fill-dharma-accent text-dharma-accent" />
-                          <h3 className="serif text-xl text-dharma-ink italic">
-                            {lang === 'en' ? chapters[activeChapter]?.title : chapters[activeChapter]?.titleMy}
-                          </h3>
-                        </div>
-                        <p className="text-dharma-muted text-sm leading-relaxed my-text mb-4">
-                          {lang === 'en' ? chapters[activeChapter]?.desc : chapters[activeChapter]?.descMy}
-                        </p>
-                        <div className="h-0.5 w-10 bg-dharma-accent/20 mb-4" />
-                        <p className="text-dharma-ink text-base md:text-lg leading-[1.8] my-text whitespace-pre-wrap">
-                          {lang === 'en' ? currentBook.content : currentBook.contentMy}
-                        </p>
-                      </motion.div>
-
-                      {/* Wisdom Pillars Section */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {(currentBook as any).keyPrinciples?.map((pillar: string, idx: number) => (
-                          <div key={idx} className="p-4 bg-dharma-card border border-dharma-accent/10 rounded-3xl flex flex-col items-center text-center group hover:bg-dharma-accent/5 transition-colors">
-                            <div className="w-8 h-8 rounded-full bg-dharma-accent/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                              <LotusIcon size={14} className="text-dharma-accent" />
-                            </div>
-                            <h5 className="text-[10px] font-bold uppercase tracking-widest text-dharma-ink mb-1">
-                              {lang === 'en' ? 'Pillar' : 'မူလအချက်'} 0{idx + 1}
-                            </h5>
-                            <p className="text-[11px] font-medium text-dharma-muted my-text leading-tight">
-                              {lang === 'en' ? pillar : (currentBook as any).keyPrinciplesMy[idx]}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      {/* Detailed Analysis Section */}
-                      <div className="pt-8 border-t border-dharma-accent/10">
-                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-dharma-accent mb-4">
-                          {lang === 'en' ? 'Philosophical Basis' : 'ဒဿနဆိုင်ရာ အခြေခံ'}
-                        </h4>
-                        <p className="text-dharma-muted text-sm leading-relaxed my-text italic">
-                          {lang === 'en' 
-                            ? 'Through this text, the Buddha reveals the invisible threads of conditionality that bind all mental and physical events.'
-                            : 'ဤကျမ်းအားဖြင့် မြတ်စွာဘုရားသည် နာမ်ရုပ်တရားတို့၏ အပြန်အလှန် ဆက်စပ်နေသော အကြောင်းတရားများကို ဖော်ထုတ်ပြသခဲ့သည်။'}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Navigation Buttons for Books */}
-              <div className="flex items-center justify-between gap-4 px-4 pb-4">
-                <button
-                  onClick={prevBook}
-                  className="flex items-center gap-3 px-6 py-4 bg-dharma-card border border-dharma-accent/10 rounded-full text-dharma-ink hover:bg-dharma-accent/5 transition-all group"
-                >
-                  <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] my-text">
-                    {lang === 'en' ? 'Previous' : 'အရင်ကျမ်း'}
-                  </span>
-                </button>
-
-                <button
-                  onClick={nextBook}
-                  className="flex items-center gap-3 px-6 py-4 bg-dharma-ink text-dharma-bg rounded-full hover:bg-dharma-accent hover:text-dharma-ink transition-all shadow-lg group"
-                >
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] my-text">
-                    {lang === 'en' ? 'Next' : 'နောက်ကျမ်း'}
-                  </span>
-                  <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </div>
-          </>
+      <div>
+        {activeTab === 'benefits' ? (
+          MEDITATION_BENEFITS.map((benefit, i) => (
+            <Tweet
+              key={i}
+              name={lang === 'en' ? "Philosophy" : "ဒဿန"}
+              handle="deep_mind"
+              time={lang === 'en' ? `${(i + 1) * 2}m` : `${(i + 1) * 2} မိနစ်`}
+              title={lang === 'en' ? benefit.title : benefit.titleMy}
+              content={lang === 'en' ? benefit.desc : benefit.descMy}
+              isExpanded={expandedId === `benefit-${i}`}
+              onToggle={() => setExpandedId(expandedId === `benefit-${i}` ? null : `benefit-${i}`)}
+              icon={Eye}
+            />
+          ))
         ) : (
-          /* Glossary View */
-          <div className="flex-1 flex flex-col gap-6 overflow-hidden">
-            <div className="flex-1 bg-dharma-card border border-dharma-accent/10 rounded-[40px] p-8 md:p-12 overflow-y-auto scrollbar-hide backdrop-blur-md">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {ABHIDHAMMA_GLOSSARY.map((item, idx) => (
-                  <motion.div 
-                    key={item.term}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.05 }}
-                    className="p-6 bg-dharma-bg/50 border border-dharma-accent/5 rounded-[32px] hover:border-dharma-accent transition-all group relative"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <BookOpen size={16} className="text-dharma-accent" />
-                        <h3 className="serif text-lg font-medium text-dharma-ink">{item.term}</h3>
-                      </div>
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-dharma-accent opacity-40">{item.pali}</span>
-                    </div>
-                    <p className="text-dharma-muted text-xs leading-relaxed mb-6 my-text">
-                      {lang === 'en' ? item.meaning : item.meaningMy}
-                    </p>
-                    <button 
-                      onClick={() => {
-                        setActiveBook(item.bookLink);
-                        setViewMode('books');
-                        haptic(vLevel);
-                      }}
-                      className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-dharma-accent hover:opacity-100 opacity-60 transition-all"
-                    >
-                      <span>{lang === 'en' ? 'Learn from Book' : 'ကျမ်းလာအဆို'} 0{item.bookLink + 1}</span>
-                      <ArrowRight size={12} />
-                    </button>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
+          MIND_AGGREGATES.map((agg, i) => (
+            <Tweet
+              key={i}
+              name={lang === 'en' ? "Truth" : "အမှန်တရား"}
+              handle="khandha"
+              time={lang === 'en' ? `${(i + 1) * 5}m` : `${(i + 1) * 5} မိနစ်`}
+              title={lang === 'en' ? agg.title : agg.titleMy}
+              content={lang === 'en' ? `${agg.desc}\n\n${agg.details}\n\n#${agg.name}` : `${agg.descMy}\n\n${agg.detailsMy}\n\n#${agg.name}`}
+              isExpanded={expandedId === `agg-${i}`}
+              onToggle={() => setExpandedId(expandedId === `agg-${i}` ? null : `agg-${i}`)}
+              icon={Eye}
+            />
+          ))
         )}
       </div>
     </div>
   );
 }
 
-// --- Main App ---
+function AbhidhammaBookItem({ book, i, lang, isExpanded, onToggle }: any) {
+  const [showChapters, setShowChapters] = useState(false);
+  const [showPrinciples, setShowPrinciples] = useState(false);
+
+  return (
+    <article 
+      className="px-4 py-5 border-b border-x-border/30 hover:bg-x-hover/50 transition-colors cursor-pointer group select-none"
+      onClick={onToggle}
+    >
+      <div className="flex gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-x-accent/10 flex items-center justify-center shrink-0 border border-x-accent/20 transition-transform group-hover:scale-105">
+          <BookOpen size={24} className="text-x-accent" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold text-x-accent uppercase tracking-[0.2em] leading-none mb-1.5 opacity-80">
+                {lang === 'en' ? `CANONICAL BOOK ${i + 1}` : `ကျမ်းအမှတ် ${i + 1}`}
+              </span>
+              <h3 className="text-lg font-bold text-x-ink leading-tight tracking-tight">
+                {lang === 'en' ? book.title : book.titleMy}
+              </h3>
+            </div>
+            <motion.div 
+              animate={{ rotate: isExpanded ? 180 : 0 }} 
+              className="text-x-muted shrink-0 mt-1"
+            >
+              <ChevronDown size={20} />
+            </motion.div>
+          </div>
+          <p className="text-[13px] text-x-muted mt-1.5 leading-relaxed line-clamp-2 italic opacity-85">
+            "{lang === 'en' ? book.summary : book.summaryMy}"
+          </p>
+        </div>
+      </div>
+
+      <motion.div
+        initial={false}
+        animate={{ 
+          height: isExpanded ? 'auto' : 0, 
+          opacity: isExpanded ? 1 : 0, 
+          marginTop: isExpanded ? 20 : 0 
+        }}
+        className="overflow-hidden"
+      >
+        <div className="space-y-6 pt-4 border-t border-x-border/10">
+          <div className="space-y-2.5">
+            <h4 className="text-[10px] font-bold text-x-muted uppercase tracking-[0.2em] flex items-center gap-2">
+              <div className="w-1 h-3 bg-x-accent rounded-full" />
+              {lang === 'en' ? 'Core Essence' : 'အနှစ်ချုပ် အဓိပ္ပာယ်'}
+            </h4>
+            <p className="text-[14px] text-x-ink leading-relaxed lesson-body">
+              {lang === 'en' ? book.detailedSummary : book.detailedSummaryMy}
+            </p>
+          </div>
+
+          {/* Key Principles Collapsible */}
+          <div className="rounded-2xl border border-x-border/20 overflow-hidden bg-x-hover/30">
+            <button 
+              onClick={(e) => { e.stopPropagation(); setShowPrinciples(!showPrinciples); haptic(0.3); }}
+              className="w-full flex items-center justify-between p-4 hover:bg-x-hover transition-colors"
+            >
+              <div className="flex items-center gap-2.5">
+                <Lightbulb size={16} className="text-x-accent" />
+                <span className="text-[11px] font-bold text-x-ink uppercase tracking-widest">{lang === 'en' ? 'Key Principles' : 'အဓိကမူများ'}</span>
+              </div>
+              <ChevronRight size={16} className={cn("text-x-muted transition-transform", showPrinciples && "rotate-90")} />
+            </button>
+            <motion.div
+              initial={false}
+              animate={{ height: showPrinciples ? 'auto' : 0, opacity: showPrinciples ? 1 : 0 }}
+              className="overflow-hidden"
+            >
+              <div className="px-4 pb-4 flex flex-wrap gap-2">
+                {(lang === 'en' ? book.keyPrinciples : book.keyPrinciplesMy).map((k: string, idx: number) => (
+                  <span key={idx} className="px-3 py-1.5 bg-x-background text-x-ink text-[11px] font-medium rounded-xl border border-x-border/30 shadow-sm">
+                    {k}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Chapters Collapsible */}
+          <div className="rounded-2xl border border-x-border/20 overflow-hidden bg-x-hover/30">
+            <button 
+              onClick={(e) => { e.stopPropagation(); setShowChapters(!showChapters); haptic(0.3); }}
+              className="w-full flex items-center justify-between p-4 hover:bg-x-hover transition-colors"
+            >
+              <div className="flex items-center gap-2.5">
+                <Hash size={16} className="text-x-accent" />
+                <span className="text-[11px] font-bold text-x-ink uppercase tracking-widest">{lang === 'en' ? 'Structure & Chapters' : 'အခန်းများ'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold text-x-muted bg-x-background px-2 py-0.5 rounded-full border border-x-border/20">{book.chapters.length}</span>
+                <ChevronRight size={16} className={cn("text-x-muted transition-transform", showChapters && "rotate-90")} />
+              </div>
+            </button>
+            <motion.div
+              initial={false}
+              animate={{ height: showChapters ? 'auto' : 0, opacity: showChapters ? 1 : 0 }}
+              className="overflow-hidden"
+            >
+              <div className="px-4 pb-4 grid gap-2">
+                {book.chapters.map((ch: any, idx: number) => (
+                  <div key={idx} className="flex items-start gap-4 p-3 rounded-xl bg-x-background/50 border border-x-border/10">
+                    <span className="text-[10px] font-mono font-bold text-x-accent opacity-50 mt-0.5">{(idx + 1).toString().padStart(2, '0')}</span>
+                    <div>
+                      <p className="text-[13px] font-bold text-x-ink leading-tight">{lang === 'en' ? ch.title : ch.titleMy}</p>
+                      <p className="text-[11px] text-x-muted mt-1 leading-normal opacity-80">{lang === 'en' ? ch.desc : ch.descMy}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+          
+          <div className="space-y-3 bg-x-accent/5 rounded-2xl p-5 border border-x-accent/10">
+            <h4 className="text-[10px] font-bold text-x-accent uppercase tracking-[0.2em]">{lang === 'en' ? 'Detailed Systematic Study' : 'အသေးစိတ် လေ့လာချက်'}</h4>
+            <div className="text-[14px] text-x-ink leading-[1.7] lesson-body whitespace-pre-wrap opacity-95">
+              {lang === 'en' ? book.content : book.contentMy}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </article>
+  );
+}
+
+function AbhidhammaGlossaryItem({ term, i, lang, isExpanded, onToggle }: any) {
+  return (
+    <article 
+      className="px-4 py-5 border-b border-x-border/30 hover:bg-x-hover/50 transition-colors cursor-pointer group"
+      onClick={onToggle}
+    >
+      <div className="flex gap-4">
+        <div className="w-12 h-12 rounded-full bg-x-hover-heavy flex items-center justify-center shrink-0 border border-x-border/50 shadow-inner group-hover:border-x-accent/30 transition-all">
+          <Flower2 size={20} className="text-x-accent" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <h3 className="text-lg font-bold text-x-ink leading-tight">
+                {lang === 'en' ? term.term : term.termMy}
+              </h3>
+              <p className="text-[11px] font-bold text-x-accent uppercase tracking-widest mt-0.5 opacity-80">
+                {term.pali}
+              </p>
+            </div>
+            <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} className="text-x-muted shrink-0 mt-1">
+              <ChevronDown size={20} />
+            </motion.div>
+          </div>
+          <p className="text-[14px] text-x-muted mt-2 leading-relaxed line-clamp-1">
+            {lang === 'en' ? term.meaning : term.meaningMy}
+          </p>
+        </div>
+      </div>
+
+      <motion.div
+        initial={false}
+        animate={{ height: isExpanded ? 'auto' : 0, opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? 16 : 0 }}
+        className="overflow-hidden"
+      >
+        <div className="pt-4 border-t border-x-border/10">
+          <div className="bg-x-background/50 rounded-2xl p-5 border border-x-border/20 shadow-sm">
+            <h4 className="text-[10px] font-bold text-x-muted uppercase tracking-[0.2em] mb-3">{lang === 'en' ? 'Philosophical Meaning' : 'ဓမ္မအဓိပ္ပာယ်'}</h4>
+            <p className="text-[15px] text-x-ink leading-relaxed lesson-body font-medium">
+              {lang === 'en' ? term.meaning : term.meaningMy}
+            </p>
+            
+            <div className="mt-6 flex items-center justify-between pt-4 border-t border-x-border/10">
+               <div className="flex flex-col">
+                  <span className="text-[9px] font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Reference' : 'ကိုးကားကျမ်း'}</span>
+                  <span className="text-xs font-bold text-x-ink">{ABHIDHAMMA_BOOKS[term.bookLink][lang === 'en' ? 'title' : 'titleMy']}</span>
+               </div>
+               <div className="w-8 h-8 rounded-lg bg-x-accent/10 flex items-center justify-center text-x-accent">
+                  <Book size={16} />
+               </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </article>
+  );
+}
+
+function AbhidhammaFeed({ lang }: { lang: 'en' | 'my' }) {
+  const [activeTab, setActiveTab] = useState<'books' | 'glossary'>('books');
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  return (
+    <div className="pb-20 sm:pb-0">
+      <div className="sticky top-0 z-30 px-3 pt-3 pb-2 bg-gradient-to-b from-x-background via-x-background/80 to-transparent">
+        <div className="flex w-full glass-float rounded-2xl overflow-hidden p-1 gap-1">
+          <button 
+            onClick={() => { setActiveTab('books'); setExpandedId(null); haptic(0.5); }}
+            className="flex-1 transition-all font-bold text-[12px] relative h-9 rounded-xl"
+          >
+            <div className="flex items-center justify-center h-full w-full relative z-10">
+              <span className={cn("transition-colors", activeTab === 'books' ? "text-x-btn-text" : "text-x-muted font-normal opacity-80")}>
+                {lang === 'en' ? 'Books' : 'ကျမ်းများ'}
+              </span>
+            </div>
+            {activeTab === 'books' && (
+              <motion.div 
+                layoutId="abhi-tab-pill"
+                className="absolute inset-0 bg-x-accent tab-pill-active rounded-xl overflow-hidden"
+                transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+              >
+                 <div className="absolute inset-0 shimmer-sweep w-full h-full" />
+              </motion.div>
+            )}
+          </button>
+          <button 
+            onClick={() => { setActiveTab('glossary'); setExpandedId(null); haptic(0.5); }}
+            className="flex-1 transition-all font-bold text-[12px] relative h-9 rounded-xl"
+          >
+            <div className="flex items-center justify-center h-full w-full relative z-10">
+              <span className={cn("transition-colors", activeTab === 'glossary' ? "text-x-btn-text" : "text-x-muted font-normal opacity-80")}>
+                {lang === 'en' ? 'Glossary' : 'အဘိဓာန်'}
+              </span>
+            </div>
+            {activeTab === 'glossary' && (
+              <motion.div 
+                layoutId="abhi-tab-pill"
+                className="absolute inset-0 bg-x-accent tab-pill-active rounded-xl overflow-hidden"
+                transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+              >
+                 <div className="absolute inset-0 shimmer-sweep w-full h-full" />
+              </motion.div>
+            )}
+          </button>
+        </div>
+      </div>
+
+      <div>
+        {activeTab === 'books' ? (
+          ABHIDHAMMA_BOOKS.map((book: any, i) => (
+            <AbhidhammaBookItem
+              key={i}
+              book={book}
+              i={i}
+              lang={lang}
+              isExpanded={expandedId === `book-${i}`}
+              onToggle={() => setExpandedId(expandedId === `book-${i}` ? null : `book-${i}`)}
+            />
+          ))
+        ) : (
+          ABHIDHAMMA_GLOSSARY.map((term: any, i) => (
+            <AbhidhammaGlossaryItem
+              key={i}
+              term={term}
+              i={i}
+              lang={lang}
+              isExpanded={expandedId === `term-${i}`}
+              onToggle={() => setExpandedId(expandedId === `term-${i}` ? null : `term-${i}`)}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('welcome');
-  const [showTutorial, setShowTutorial] = useState(false);
+  const [activeTab, setActiveTab] = useState<'home' | 'explore' | 'abhi'>('home');
+  const [homeTab, setHomeTab] = useState<'foryou' | 'following'>('foryou');
   const [lang, setLang] = useState<'en' | 'my'>('en');
-  const [theme, setTheme] = useState<'light' | 'dark' | 'sepia'>('light');
-  const [fontSize, setFontSize] = useState(16);
-  const [vLevel, setVLevel] = useState(2);
-  const [focus, setFocus] = useState('All');
+  const [theme, setTheme] = useState<'forest' | 'dusk' | 'ember' | 'slate' | 'lotus' | 'void' | 'custom'>(() => {
+    const saved = localStorage.getItem('app_theme');
+    return (saved as any) || 'forest';
+  });
+  const [customTheme, setCustomTheme] = useState(() => {
+    const saved = localStorage.getItem('app_custom_theme');
+    return saved ? JSON.parse(saved) : {
+      accent: '#C4714A',
+      bgStart: '#1A2618',
+      bgEnd: '#2C3A2A',
+      font: 'Inter'
+    };
+  });
+  const [blurAmount, setBlurAmount] = useState<number>(() => {
+    const saved = localStorage.getItem('app_blur_amount');
+    return saved ? parseInt(saved) : 16;
+  });
+  const [showSettings, setShowSettings] = useState(false);
+  const [unseenIds, setUnseenIds] = useState<string[]>(() => {
+    const saved = localStorage.getItem('unseen_content_ids');
+    // If first time, highlight Explore and Abhidhamma
+    return saved ? JSON.parse(saved) : ['explore', 'abhi'];
+  });
+  const [lastBackClick, setLastBackClick] = useState(0);
   const [showExitToast, setShowExitToast] = useState(false);
-  const [showSettings, setShowSettings] = useState(false); // Lifed up to handle back button
-  const lastBackPress = useRef<number>(0);
-
-  // Helper for consistent navigation
-  const navigateTo = (tabId: string) => {
-    setActiveTab(tabId);
-    window.history.pushState({ tab: tabId }, '', '');
-    haptic(vLevel);
-  };
-
-  // Initial history setup
-  useEffect(() => {
-    // Keep a base state
-    window.history.replaceState({ tab: 'welcome' }, '', '');
-    // Push an additional state so we can catch the first back press on welcome
-    window.history.pushState({ tab: 'welcome' }, '', '');
-  }, []);
 
   useEffect(() => {
+    // Push an initial state to intercept the back button
+    window.history.pushState({ index: 1 }, '', '');
+
     const handlePopState = (e: PopStateEvent) => {
-      // Priority 1: Close settings if open
-      if (showSettings) {
-        setShowSettings(false);
-        window.history.pushState({ tab: activeTab }, '', '');
-        return;
-      }
-
-      // Priority 2: Hierarchical navigation
-      if (activeTab !== 'home' && activeTab !== 'welcome') {
-        // If not on home/welcome, go to home
+      // Re-push state so we can intercept the next one
+      window.history.pushState({ index: 1 }, '', '');
+      
+      const now = Date.now();
+      
+      if (activeTab !== 'home') {
         setActiveTab('home');
-        // Push state back so we can catch next back press
-        window.history.pushState({ tab: 'home' }, '', '');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        haptic(0.5);
       } else {
-        // Already on home or welcome screen, handle double press to exit
-        const now = Date.now();
-        if (now - lastBackPress.current < 2000) {
-          // Double press within 2s - Exit app logic
-          // (In browser context, we can't always close, but we notify)
-          haptic(5);
+        // We are already home
+        if (now - lastBackClick < 2000) {
+          // Double back - simulate exit
+          haptic(2);
+          setShowExitToast(true);
+          // In a real mobile app, this would close. 
+          // Here we show a final goodbye state or just a message.
         } else {
-          lastBackPress.current = now;
+          setLastBackClick(now);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          haptic();
           setShowExitToast(true);
           setTimeout(() => setShowExitToast(false), 2000);
-          // Push state back to prevent actual browser navigation away
-          window.history.pushState({ tab: activeTab }, '', '');
         }
       }
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [activeTab, showSettings]);
+  }, [activeTab, lastBackClick]);
 
-  useEffect(() => {
-    document.documentElement.className = `theme-${theme}`;
-    document.documentElement.style.setProperty('--app-font-size', `${fontSize}px`);
-    document.documentElement.style.setProperty('--vibe-intensity', `${vLevel}`);
-    
-    // Dynamic line height calculation
-    // Base is 1.7. Tighten slightly as font gets larger, loosen for small fonts.
-    // Also loosen slightly for wider screens to improve flow.
-    const baseLH = 1.7;
-    const fontAdjustment = (16 - fontSize) * 0.02;
-    const isDesktop = window.innerWidth > 1024;
-    const widthAdjustment = isDesktop ? 0.1 : 0;
-    const finalLH = Math.max(1.4, Math.min(2.0, baseLH + fontAdjustment + widthAdjustment));
-    document.documentElement.style.setProperty('--app-line-height', `${finalLH}`);
-  }, [theme, fontSize, vLevel]);
-
-  const handleStart = () => {
-    navigateTo('home');
+  const handleTabClick = (id: string) => {
+    if (['home', 'explore', 'abhi'].includes(id)) {
+      setActiveTab(id as any);
+      haptic();
+      
+      // Clear notification dot
+      if (unseenIds.includes(id)) {
+        const newUnseen = unseenIds.filter(uid => uid !== id);
+        setUnseenIds(newUnseen);
+        localStorage.setItem('unseen_content_ids', JSON.stringify(newUnseen));
+      }
+    }
   };
 
-  return (
-    <main className={cn(
-      "relative min-h-screen transition-all duration-500 bg-black/20",
-      activeTab === 'welcome' ? "p-0" : "p-0 lg:p-6 lg:gap-6 lg:grid lg:grid-cols-[400px_1fr]"
-    )}>
-      <ExitToast lang={lang} visible={showExitToast} />
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('app_theme', theme);
+    
+    if (theme === 'custom') {
+      const root = document.documentElement;
+      root.style.setProperty('--x-accent', customTheme.accent);
+      root.style.setProperty('--x-bg-color', customTheme.bgStart);
+      root.style.setProperty('--x-bg-image', `linear-gradient(135deg, ${customTheme.bgStart} 0%, ${customTheme.bgEnd} 100%)`);
       
-      <AnimatePresence>
-        {showTutorial && (
-          <OnboardingTutorial key="tutorial" onComplete={() => setShowTutorial(false)} lang={lang} />
-        )}
-      </AnimatePresence>
+      let fontStack = '"Inter", system-ui, sans-serif';
+      if (customTheme.font === 'Playfair Display') fontStack = '"Playfair Display", serif';
+      if (customTheme.font === 'Space Grotesk') fontStack = '"Space Grotesk", sans-serif';
+      if (customTheme.font === 'JetBrains Mono') fontStack = '"JetBrains Mono", monospace';
+      root.style.setProperty('--app-font-family', fontStack);
+      
+      // Auto-calculate glow for custom theme
+      root.style.setProperty('--x-glow', `${customTheme.accent}66`); // 40% opacity
+      
+      localStorage.setItem('app_custom_theme', JSON.stringify(customTheme));
+    } else {
+      // Reset custom properties when switching back to presets
+      const root = document.documentElement;
+      root.style.removeProperty('--app-font-family');
+      root.style.removeProperty('--x-accent');
+      root.style.removeProperty('--x-bg-color');
+      root.style.removeProperty('--x-bg-image');
+      root.style.removeProperty('--x-glow');
+    }
+  }, [theme, customTheme]);
 
-      <AnimatePresence mode="wait">
-        {activeTab === 'welcome' ? (
-          <WelcomeHero key="welcome" onStart={handleStart} lang={lang} setLang={setLang} vLevel={vLevel} />
-        ) : (
-          <>
-            {/* Left Static Pane */}
-            <motion.aside 
-              initial={{ x: -30, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="hero-pane relative overflow-hidden hidden lg:flex rounded-[2rem] shadow-2xl border border-white/10"
+  useEffect(() => {
+    document.documentElement.style.setProperty('--x-glass-blur', `${blurAmount}px`);
+    localStorage.setItem('app_blur_amount', blurAmount.toString());
+  }, [blurAmount]);
+
+  const themes = [
+    { id: 'forest', label: 'Forest', bg: 'linear-gradient(135deg, #1A2618 0%, #2C3A2A 100%)', accent: '#C4714A', dot: '#4A7C59' },
+    { id: 'dusk', label: 'Dusk', bg: 'linear-gradient(135deg, #1A1520 0%, #2D1F3D 100%)', accent: '#A78BFA', dot: '#7C5CBF' },
+    { id: 'ember', label: 'Ember', bg: 'linear-gradient(135deg, #1C1208 0%, #2E1C0A 100%)', accent: '#E8894A', dot: '#C4714A' },
+    { id: 'lotus', label: 'Lotus', bg: 'linear-gradient(180deg, #F5F0E8 0%, #FFFFFF 100%)', accent: '#C4714A', dot: '#C4714A' },
+    { id: 'slate', label: 'Slate', bg: 'linear-gradient(135deg, #0F1318 0%, #1A2232 100%)', accent: '#60A5FA', dot: '#3B82F6' },
+    { id: 'void', label: 'Void', bg: 'linear-gradient(135deg, #000000 0%, #0a0a0a 100%)', accent: '#ffffff', dot: '#333333' },
+    { id: 'custom', label: 'Custom', bg: `linear-gradient(135deg, ${customTheme.bgStart} 0%, ${customTheme.bgEnd} 100%)`, accent: customTheme.accent, dot: customTheme.accent },
+  ];
+
+  const navItems = [
+    { id: 'home', icon: Leaf, label: lang === 'en' ? 'Home' : 'ပင်မ' },
+    { id: 'explore', icon: Eye, label: lang === 'en' ? 'Explore' : 'ရှာဖွေရန်' },
+    { id: 'abhi', icon: ScrollText, label: lang === 'en' ? 'Abhidhamma' : 'အဘိဓမ္မာ' },
+    { id: 'notif', icon: Bell, label: lang === 'en' ? 'Notifications' : 'သတိပေးချက်များ' },
+    { id: 'messages', icon: HeartHandshake, label: lang === 'en' ? 'Messages' : 'မက်ဆေ့ခ်ျများ' },
+    { id: 'profile', icon: User, label: lang === 'en' ? 'Profile' : 'ပရိုဖိုင်' },
+    { id: 'more', icon: MoreHorizontal, label: lang === 'en' ? 'More' : 'ပိုမိုရန်' },
+  ];
+
+  return (
+    <div className="min-h-screen text-x-ink flex justify-center w-full mx-auto max-w-[1265px]">
+      
+      {/* Left Sidebar (Desktop) */}
+      <header className="hidden sm:flex flex-col w-[88px] xl:w-[275px] h-screen sticky top-0 px-2 xl:px-4 py-3 shrink-0">
+        <div className="flex flex-col h-full">
+          <div className="w-12 h-12 flex items-center justify-center hover:bg-x-hover rounded-full cursor-pointer mb-2 transition-colors">
+            <LotusIcon size={28} className="text-x-ink glow-lotus fill-none" />
+          </div>
+          
+          <nav className="flex flex-col gap-1 w-full">
+            {navItems.map(item => (
+              <button 
+                key={item.id}
+                onClick={() => handleTabClick(item.id)}
+                className="group flex flex-row items-center w-fit relative"
+              >
+                <div className="flex items-center gap-5 p-3 rounded-full group-hover:bg-x-hover transition-colors xl:pr-6 relative">
+                  <div className="relative">
+                    <item.icon 
+                      key={`${item.id}-${activeTab === item.id}`}
+                      size={26} 
+                      className={cn("drawing-icon", activeTab === item.id ? "text-x-ink fill-none glow-lotus" : "text-x-muted glow-icon")} 
+                      strokeWidth={activeTab === item.id ? 2.5 : 2} 
+                    />
+                    {unseenIds.includes(item.id) && (
+                      <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-bg shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
+                    )}
+                  </div>
+                  <span className={cn("hidden xl:block text-xl my-text pl-1", activeTab === item.id ? "font-bold text-x-ink" : "text-x-muted")}>{item.label}</span>
+                </div>
+              </button>
+            ))}
+          </nav>
+
+          <button className="hidden xl:flex bg-x-accent hover:bg-[#1A8CD8] text-x-btn-text font-bold text-[17px] w-[90%] rounded-full py-4 mt-4 transition-colors items-center justify-center shadow-md">
+            {lang === 'en' ? 'Post' : 'တင်ရန်'}
+          </button>
+          <button className="xl:hidden w-12 h-12 bg-x-accent hover:bg-[#1A8CD8] text-x-btn-text flex items-center justify-center rounded-full mt-4 transition-colors shadow-md">
+            <Feather size={24} className="glow-icon" />
+          </button>
+
+          <div className="mt-auto mb-4 relative">
+            <button 
+              onClick={() => { setShowSettings(!showSettings); haptic(); }}
+              className={cn(
+                "flex items-center gap-3 p-3 w-full hover:bg-x-hover rounded-full transition-colors",
+                showSettings && "bg-x-hover-heavy"
+              )}
             >
-              <div className="hero-bg-image" />
+              <div className="w-10 h-10 rounded-full bg-x-border/30 shrink-0 flex items-center justify-center overflow-hidden">
+                <Settings size={20} className={cn("glow-icon drawing-icon", showSettings && "text-x-accent")} />
+              </div>
+              <div className="hidden xl:flex flex-col items-start min-w-0">
+                <span className="font-bold text-[15px] truncate">
+                  {lang === 'en' ? 'Settings' : 'ဆက်တင်များ'}
+                </span>
+                <span className="text-x-muted text-[13px] truncate">
+                  {lang === 'en' ? 'Theme & Language' : 'အပြင်အဆင်နှင့် ဘာသာစကား'}
+                </span>
+              </div>
+              <MoreHorizontal size={18} className="hidden xl:block ml-auto text-x-muted" />
+            </button>
+          </div>
+        </div>
+      </header>
 
-              <div className="z-10">
-                <div className="text-[10px] font-bold tracking-[0.4em] uppercase text-dharma-accent mb-12">The Still Mind</div>
-                <h1 
-                  className={cn("main-quote my-text text-dharma-sidebar-text", lang === 'my' && "text-6xl md:text-7xl")}
-                  style={{ lineHeight: lang === 'my' ? '1.8' : undefined }}
+      {/* New Centered Settings Modal Overlay */}
+      {showSettings && (
+        <div 
+          className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-5 sm:p-0"
+          onClick={() => setShowSettings(false)}
+        >
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+            className="w-full max-w-[380px] bg-x-background rounded-[32px] border border-x-border overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)]"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="px-7 py-6 border-b border-x-border/30 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-x-accent/10 flex items-center justify-center text-x-accent">
+                  <Palette size={22} className="glow-icon" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-x-ink leading-tight">
+                    {lang === 'en' ? 'Preferences' : 'သင်၏အပြင်အဆင်'}
+                  </h2>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-x-muted font-bold opacity-60">
+                    Configuration
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowSettings(false)}
+                className="w-10 h-10 rounded-full hover:bg-x-hover flex items-center justify-center text-x-muted transition-colors active:scale-90"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="px-7 py-7 flex flex-col gap-8 max-h-[70vh] overflow-y-auto hide-scrollbar">
+              {/* Theme Section */}
+              <section>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Atmosphere' : 'အပြင်အဆင်'}</span>
+                  <span className="text-[10px] font-bold text-x-accent px-2 py-0.5 bg-x-accent/10 rounded-full uppercase tracking-tighter capitalize">{theme}</span>
+                </div>
+                <div className="grid grid-cols-4 gap-2">
+                  {themes.map((t) => {
+                    const active = theme === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        onClick={() => { setTheme(t.id as any); haptic(0.5); }}
+                        className={cn(
+                          "group relative h-12 rounded-2xl border-2 transition-all duration-200 active:scale-95 flex items-center justify-center overflow-hidden",
+                          active ? "border-x-accent bg-x-accent/5" : "border-x-border/20 bg-x-hover/50 hover:bg-x-hover"
+                        )}
+                      >
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="w-4 h-4 rounded-full shadow-inner relative" style={{ background: t.bg }}>
+                            {active && (
+                              <motion.div 
+                                layoutId="active-theme-dot"
+                                className="absolute inset-0 flex items-center justify-center text-[7px] text-white"
+                              >
+                                ✓
+                              </motion.div>
+                            )}
+                          </div>
+                          <span className={cn("text-[8px] font-bold tracking-tight", active ? "text-x-ink" : "text-x-muted")}>{t.label.toUpperCase()}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              {/* Customizer Section - Only if custom theme selected */}
+              <AnimatePresence>
+                {theme === 'custom' && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="flex flex-col gap-6 overflow-hidden"
+                  >
+                    <div className="h-px bg-x-border/20 w-full" />
+                    
+                    {/* Font Choice */}
+                    <section>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-[10px] font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Typography' : 'စာလုံးပုံစံ'}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {['Inter', 'Playfair Display', 'Space Grotesk', 'JetBrains Mono'].map((f) => (
+                          <button
+                            key={f}
+                            onClick={() => { setCustomTheme({...customTheme, font: f}); haptic(); }}
+                            className={cn(
+                              "px-3 py-2 rounded-xl border transition-all text-left group",
+                              customTheme.font === f ? "border-x-accent bg-x-accent/5" : "border-x-border/10 hover:border-x-border/40"
+                            )}
+                          >
+                            <span className={cn("text-xs transition-colors", customTheme.font === f ? "text-x-ink font-bold" : "text-x-muted")} style={{ fontFamily: f }}>
+                              {f}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </section>
+
+                    {/* Color Palettes */}
+                    <section>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-[10px] font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Colors' : 'အရောင်များ'}</span>
+                      </div>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between p-3 bg-x-hover/30 rounded-2xl border border-x-border/10">
+                          <div className="flex flex-col">
+                            <span className="text-[11px] font-bold text-x-ink">{lang === 'en' ? 'Accent Glow' : 'အလင်းဦးတည်ချက်'}</span>
+                            <span className="text-[9px] text-x-muted">Highlights & Icons</span>
+                          </div>
+                          <input 
+                            type="color" 
+                            value={customTheme.accent}
+                            onChange={(e) => setCustomTheme({...customTheme, accent: e.target.value})}
+                            className="w-10 h-10 rounded-full border-none p-0 cursor-pointer overflow-hidden shadow-lg"
+                          />
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-x-hover/30 rounded-2xl border border-x-border/10">
+                          <div className="flex flex-col">
+                            <span className="text-[11px] font-bold text-x-ink">{lang === 'en' ? 'Canvas Start' : 'နောက်ခံစတင်ရန်'}</span>
+                            <span className="text-[9px] text-x-muted">Upper gradient</span>
+                          </div>
+                          <input 
+                            type="color" 
+                            value={customTheme.bgStart}
+                            onChange={(e) => setCustomTheme({...customTheme, bgStart: e.target.value})}
+                            className="w-10 h-10 rounded-full border-none p-0 cursor-pointer overflow-hidden shadow-lg"
+                          />
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-x-hover/30 rounded-2xl border border-x-border/10">
+                          <div className="flex flex-col">
+                            <span className="text-[11px] font-bold text-x-ink">{lang === 'en' ? 'Canvas End' : 'နောက်ခံအဆုံးသတ်ရန်'}</span>
+                            <span className="text-[9px] text-x-muted">Lower gradient</span>
+                          </div>
+                          <input 
+                            type="color" 
+                            value={customTheme.bgEnd}
+                            onChange={(e) => setCustomTheme({...customTheme, bgEnd: e.target.value})}
+                            className="w-10 h-10 rounded-full border-none p-0 cursor-pointer overflow-hidden shadow-lg"
+                          />
+                        </div>
+                      </div>
+                    </section>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Clarity Section */}
+              <section>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Vision' : 'ကြည်လင်မှု'}</span>
+                  <span className="text-[10px] font-bold text-x-muted">{blurAmount}px</span>
+                </div>
+                <div className="px-1">
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="40" 
+                    step="2"
+                    value={blurAmount}
+                    onChange={(e) => setBlurAmount(parseInt(e.target.value))}
+                    className="w-full accent-x-accent h-1.5 bg-x-hover rounded-full appearance-none cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[8px] font-bold text-x-muted mt-2 opacity-50">
+                    <span>{lang === 'en' ? 'MIN' : 'အနည်း'}</span>
+                    <span>{lang === 'en' ? 'MAX' : 'အများ'}</span>
+                  </div>
+                </div>
+              </section>
+
+              {/* Language Section */}
+              <section>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Language' : 'ဘာသာစကား'}</span>
+                </div>
+                <div className="grid grid-cols-2 p-1 bg-x-hover rounded-2xl border border-x-border/10 relative">
+                  {['en', 'my'].map((l) => {
+                    const active = lang === l;
+                    return (
+                      <button
+                        key={l}
+                        onClick={() => { setLang(l as any); haptic(); }}
+                        className={cn(
+                          "relative z-10 py-2.5 rounded-xl text-xs font-bold transition-all duration-300",
+                          active ? "text-x-btn-text" : "text-x-muted"
+                        )}
+                      >
+                        {l === 'en' ? 'English' : 'မြန်မာ'}
+                        {active && (
+                          <motion.div 
+                            layoutId="lang-bg"
+                            className="absolute inset-0 bg-x-accent rounded-xl -z-10 shadow-lg"
+                            transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <button 
+                onClick={() => setShowSettings(false)}
+                className="group relative w-full h-14 rounded-2xl font-bold text-sm text-x-btn-text tracking-widest uppercase transition-all active:scale-[0.98] overflow-hidden"
+                style={{ background: themes.find(t => t.id === theme)?.accent }}
+              >
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                {lang === 'en' ? 'Apply changes' : 'အတည်ပြုပါ'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Middle Feed Column */}
+      <main className="w-full sm:max-w-[600px] border-x border-x-border/50 min-h-screen pb-16 sm:pb-0 shrink-0 bg-transparent">
+        
+        {/* Sticky Header - Floating Glassmorphism Style */}
+        <div className="sticky top-0 z-50 transition-all duration-500 px-4 pt-3 pb-2 bg-gradient-to-b from-x-background via-x-background/80 to-transparent">
+          <div className="glass-float rounded-2xl overflow-hidden">
+            <div className="h-10 flex items-center px-4 cursor-pointer border-b border-x-border/10">
+              <h1 className="text-[14px] font-bold my-text tracking-wide text-x-ink page-heading flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-x-accent shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
+                {activeTab === 'home' && (lang === 'en' ? 'Home' : 'ပင်မ')}
+                {activeTab === 'explore' && (lang === 'en' ? 'Explore' : 'ရှာဖွေရန်')}
+                {activeTab === 'abhi' && (lang === 'en' ? 'Abhidhamma' : 'အဘိဓမ္မာ')}
+              </h1>
+            </div>
+            {activeTab === 'home' && (
+              <div className="flex w-full">
+                <button 
+                  onClick={() => { setHomeTab('foryou'); haptic(0.5); }}
+                  className="flex-1 hover:bg-x-hover transition-all font-bold text-[12px] relative h-11"
                 >
-                  {lang === 'en' ? 'The Mind' : 'စိတ်သည်'} <br /> {lang === 'en' ? 'Is' : 'အရာရာ'} <br /> {lang === 'en' ? 'Everything.' : 'ဖြစ်သတည်း။'}
-                </h1>
+                  <div className="flex items-center justify-center h-full w-full relative">
+                    <span className={cn("font-bold transition-all duration-300 tab-label", homeTab === 'foryou' ? "text-x-ink active" : "text-x-muted font-normal opacity-60")}>
+                      {lang === 'en' ? 'For you' : 'သင့်အတွက်'}
+                    </span>
+                    {homeTab === 'foryou' && (
+                      <motion.div 
+                        layoutId="home-tab-pill"
+                        className="absolute bottom-1 left-1.5 right-1.5 h-1 bg-x-accent rounded-full tab-pill-active overflow-hidden"
+                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                      >
+                        <div className="absolute inset-0 shimmer-sweep w-full h-full" />
+                      </motion.div>
+                    )}
+                  </div>
+                </button>
+                <button 
+                  onClick={() => { setHomeTab('following'); haptic(0.5); }}
+                  className="flex-1 hover:bg-x-hover transition-all font-bold text-[12px] relative h-11"
+                >
+                  <div className="flex items-center justify-center h-full w-full relative">
+                    <span className={cn("font-bold transition-all duration-300 tab-label", homeTab === 'following' ? "text-x-ink active" : "text-x-muted font-normal opacity-60")}>
+                      {lang === 'en' ? 'Following' : 'လိုက်ကြည့်နေသူများ'}
+                    </span>
+                    {homeTab === 'following' && (
+                      <motion.div 
+                        layoutId="home-tab-pill"
+                        className="absolute bottom-1 left-1.5 right-1.5 h-1 bg-x-accent rounded-full tab-pill-active overflow-hidden"
+                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                      >
+                        <div className="absolute inset-0 shimmer-sweep w-full h-full" />
+                      </motion.div>
+                    )}
+                  </div>
+                </button>
               </div>
-              
-              <div className="z-10">
-                <div className="w-12 h-0.5 bg-dharma-accent mb-6"></div>
-                <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-dharma-sidebar-text opacity-40">— Gautama Buddha</div>
-              </div>
+            )}
+          </div>
+        </div>
 
-              {/* Decorative Circle */}
-              <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full border border-dharma-accent/10 pointer-events-none" />
-            </motion.aside>
-
-            {/* Right Content Pane */}
-            <motion.section 
-              initial={{ x: 30, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="content-pane relative overflow-hidden flex flex-col lg:rounded-[2rem] shadow-2xl border border-white/20"
-            >
-              <Header 
-                activeTab={activeTab} 
-                setActiveTab={navigateTo} 
-                lang={lang} 
-                setLang={setLang}
-                theme={theme}
-                setTheme={setTheme}
-                fontSize={fontSize}
-                setFontSize={setFontSize}
-                vLevel={vLevel}
-                setVLevel={setVLevel}
-                focus={focus}
-                setFocus={setFocus}
-                showSettings={showSettings}
-                setShowSettings={setShowSettings}
+        {/* Compose Tweet (Dummy) */}
+        {activeTab === 'home' && (
+          <div className="hidden sm:flex px-4 py-3 border-b border-x-border/50 gap-3">
+            <TweetAuthAvatar />
+            <div className="flex-1">
+              <input 
+                type="text" 
+                placeholder={lang === 'en' ? "What is happening?!" : "ဘာတွေဖြစ်နေလဲ။"}
+                className="w-full bg-transparent text-xl my-text py-2 outline-none placeholder:text-x-muted text-x-ink font-medium"
+                disabled
               />
-              
-              <div className="flex-1 relative overflow-hidden">
-                <AnimatePresence mode="wait">
-                  {activeTab === 'home' && (
-                    <motion.div key="home" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full overflow-y-auto scrollbar-hide">
-                      <StepGallery lang={lang} focus={focus} vLevel={vLevel} />
-                    </motion.div>
-                  )}
-                  {activeTab === 'mind' && (
-                    <motion.div key="mind" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full overflow-y-auto scrollbar-hide">
-                      <MindWisdom lang={lang} vLevel={vLevel} />
-                    </motion.div>
-                  )}
-                  {activeTab === 'abhi' && (
-                    <motion.div key="sangha" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full">
-                      <Abhidhamma lang={lang} vLevel={vLevel} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+            <div className="flex justify-between items-center mt-3 border-t border-x-border/30 pt-3">
+                <div className="text-x-accent font-bold text-sm my-text cursor-pointer hover:bg-x-accent/10 px-3 py-1 rounded-full w-fit">
+                  {lang === 'en' ? 'Everyone can reply' : 'အားလုံးအကြောင်းပြန်နိုင်သည်'}
+                </div>
+                <button className="bg-x-accent text-x-btn-text font-bold text-[15px] px-4 py-1.5 rounded-full opacity-60 cursor-not-allowed shadow-md">
+                  {lang === 'en' ? 'Post' : 'တင်ရန်'}
+                </button>
               </div>
-            </motion.section>
-          </>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
-    </main>
+
+        {/* Dynamic Feeds */}
+        {activeTab === 'home' && <HomeFeed lang={lang} tab={homeTab} />}
+        {activeTab === 'explore' && <ExploreFeed lang={lang} />}
+        {activeTab === 'abhi' && <AbhidhammaFeed lang={lang} />}
+
+      </main>
+
+      {/* Right Sidebar (Desktop Trends) */}
+      <aside className="hidden lg:block w-[350px] shrink-0 pl-8 pr-2 py-3 sticky top-0 h-screen">
+        <div className="w-full bg-x-hover backdrop-blur-md rounded-full flex items-center px-4 py-3 gap-3 border border-transparent focus-within:border-x-accent focus-within:bg-x-hover-heavy transition-colors group mb-4">
+          <Search size={18} className="text-x-muted group-focus-within:text-x-accent glow-icon" />
+          <input 
+            type="text" 
+            placeholder={lang === 'en' ? "Search" : "ရှာဖွေရန်"}
+            className="bg-transparent border-none outline-none w-full text-[15px] my-text placeholder:text-x-muted text-x-ink"
+          />
+        </div>
+
+        <div className="bg-x-hover-heavy backdrop-blur-md rounded-2xl pt-3 pb-1 border border-x-border/30">
+          <h2 className="px-4 text-xl font-bold my-text mb-3 text-x-ink">{lang === 'en' ? "What's happening" : "ဘာတွေဖြစ်နေလဲ။"}</h2>
+          
+          {[1,2,3,4].map((item) => (
+             <div key={item} className="px-4 py-3 hover:bg-x-hover cursor-pointer transition-colors border-t border-x-border/30 first:border-t-0 text-x-ink">
+               <div className="flex justify-between">
+                 <span className="text-[13px] text-x-muted my-text">
+                   {lang === 'en' ? 'Trending in Mindfulness' : 'သတိပဋ္ဌာန်တွင် ရေပန်းစားသော'}
+                 </span>
+                 <MoreHorizontal size={16} className="text-x-muted glow-icon" />
+               </div>
+               <div className="font-bold text-[15px] mt-0.5 text-x-ink my-text">
+                 {lang === 'en' ? 'Insight Meditation' : 'ဝိပဿနာ တရား'}
+               </div>
+               <div className="text-[13px] text-x-muted mt-1">{item * 1.5}K posts</div>
+             </div>
+          ))}
+          <div className="px-4 py-4 hover:bg-x-hover cursor-pointer transition-colors rounded-b-2xl">
+            <span className="text-[15px] text-x-accent">{lang === 'en' ? 'Show more' : 'ထပ်မံပြသရန်'}</span>
+          </div>
+        </div>
+      </aside>
+
+      {/* Mobile Bottom Nav - Floating Glassmorphism Style */}
+      <div className="sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[60]">
+        <nav className="glass-float rounded-[24px] h-16 flex items-center justify-around px-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5),0_0_20px_-5px_var(--x-glow)]">
+          <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('home')}>
+            <div className="relative">
+              <Leaf 
+                size={24} 
+                className={cn("transition-all duration-300", activeTab === 'home' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
+                strokeWidth={activeTab === 'home' ? 2.5 : 2} 
+              />
+              {unseenIds.includes('home') && (
+                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
+              )}
+            </div>
+            {activeTab === 'home' && (
+              <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
+            )}
+          </button>
+          <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('explore')}>
+            <div className="relative">
+              <Eye 
+                size={24} 
+                className={cn("transition-all duration-300", activeTab === 'explore' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
+                strokeWidth={activeTab === 'explore' ? 2.5 : 2} 
+              />
+              {unseenIds.includes('explore') && (
+                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
+              )}
+            </div>
+            {activeTab === 'explore' && (
+              <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
+            )}
+          </button>
+          <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('abhi')}>
+            <div className="relative">
+              <ScrollText 
+                size={24} 
+                className={cn("transition-all duration-300", activeTab === 'abhi' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
+                strokeWidth={activeTab === 'abhi' ? 2.5 : 2} 
+              />
+              {unseenIds.includes('abhi') && (
+                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
+              )}
+            </div>
+            {activeTab === 'abhi' && (
+              <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
+            )}
+          </button>
+          <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => { setShowSettings(!showSettings); haptic(); }}>
+            <Settings size={24} className={cn("transition-all", showSettings ? "text-x-accent glow-icon opacity-100 scale-110" : "text-x-muted opacity-60")} />
+          </button>
+        </nav>
+      </div>
+
+      {/* Mobile Settings Modal Overlay */}
+      {showSettings && (
+        <div 
+          className="sm:hidden fixed inset-0 bg-black/40 z-[90]"
+          onClick={() => setShowSettings(false)}
+        >
+          <motion.div 
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+            className="absolute bottom-0 w-full bg-x-background rounded-t-[32px] border-t border-x-border p-7 shadow-[0_-8px_32px_rgba(0,0,0,0.2)]"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="w-12 h-1.5 bg-x-border/30 rounded-full mx-auto mb-8 shadow-inner" />
+            
+            <div className="flex flex-col gap-8 max-h-[75vh] overflow-y-auto hide-scrollbar pb-10">
+              <section>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Choose Theme' : 'အပြင်အဆင်ရွေးချယ်ပါ'}</span>
+                </div>
+                <div className="grid grid-cols-4 gap-2.5">
+                  {themes.map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => { setTheme(t.id as any); haptic(0.5); }}
+                      className={cn(
+                        "aspect-square rounded-2xl border-2 transition-all flex flex-col items-center justify-center relative active:scale-90",
+                        theme === t.id ? "border-x-accent bg-x-accent/5 scale-105" : "border-x-border/10 opacity-60"
+                      )}
+                    >
+                      <div className="w-8 h-8 rounded-full shadow-lg mb-1" style={{ background: t.bg }} />
+                      <span className="text-[8px] font-bold opacity-70 uppercase tracking-tighter">{t.label}</span>
+                      {theme === t.id && (
+                        <motion.div layoutId="mobile-theme-active" className="absolute -top-1 -right-1 w-4 h-4 bg-x-accent rounded-full flex items-center justify-center border-2 border-x-background shadow-sm">
+                            <div className="w-1 h-1 bg-white rounded-full" />
+                        </motion.div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {/* Custom Theme Editor for Mobile */}
+              <AnimatePresence>
+                {theme === 'custom' && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="flex flex-col gap-8 overflow-hidden bg-x-hover/20 p-4 rounded-3xl border border-x-border/10"
+                  >
+                    {/* Font Choice */}
+                    <section>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-[10px] font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Typography' : 'စာလုံးပုံစံ'}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {['Inter', 'Playfair Display', 'Space Grotesk', 'JetBrains Mono'].map((f) => (
+                          <button
+                            key={f}
+                            onClick={() => { setCustomTheme({...customTheme, font: f}); haptic(); }}
+                            className={cn(
+                              "px-3 py-3 rounded-2xl border transition-all text-left",
+                              customTheme.font === f ? "border-x-accent bg-x-accent/10" : "border-x-border/10 bg-x-background/50"
+                            )}
+                          >
+                            <span className={cn("text-xs transition-colors", customTheme.font === f ? "text-x-ink font-bold" : "text-x-muted")} style={{ fontFamily: f }}>
+                              {f}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </section>
+
+                    {/* Colors */}
+                    <section>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-[10px] font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Custom Palette' : 'အရောင်စိတ်ကြိုက်'}</span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-3">
+                         <div className="flex flex-col items-center gap-2">
+                            <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-x-border/20 shadow-inner">
+                               <input 
+                                type="color" 
+                                value={customTheme.accent}
+                                onChange={(e) => setCustomTheme({...customTheme, accent: e.target.value})}
+                                className="absolute inset-0 w-[150%] h-[150%] -translate-x-1/4 -translate-y-1/4 border-none p-0 cursor-pointer"
+                              />
+                            </div>
+                            <span className="text-[9px] font-bold text-x-muted uppercase">{lang === 'en' ? 'Accent' : 'ဦးတည်'}</span>
+                         </div>
+                         <div className="flex flex-col items-center gap-2">
+                            <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-x-border/20 shadow-inner">
+                               <input 
+                                type="color" 
+                                value={customTheme.bgStart}
+                                onChange={(e) => setCustomTheme({...customTheme, bgStart: e.target.value})}
+                                className="absolute inset-0 w-[150%] h-[150%] -translate-x-1/4 -translate-y-1/4 border-none p-0 cursor-pointer"
+                              />
+                            </div>
+                            <span className="text-[9px] font-bold text-x-muted uppercase">{lang === 'en' ? 'Start' : 'စတင်'}</span>
+                         </div>
+                         <div className="flex flex-col items-center gap-2">
+                            <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-x-border/20 shadow-inner">
+                               <input 
+                                type="color" 
+                                value={customTheme.bgEnd}
+                                onChange={(e) => setCustomTheme({...customTheme, bgEnd: e.target.value})}
+                                className="absolute inset-0 w-[150%] h-[150%] -translate-x-1/4 -translate-y-1/4 border-none p-0 cursor-pointer"
+                              />
+                            </div>
+                            <span className="text-[9px] font-bold text-x-muted uppercase">{lang === 'en' ? 'End' : 'အဆုံး'}</span>
+                         </div>
+                      </div>
+                    </section>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <section>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold text-x-muted uppercase tracking-widest">{lang === 'en' ? 'Display Language' : 'ဘာသာစကား'}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-1.5 p-1 bg-x-hover rounded-2xl border border-x-border/20 relative">
+                  {['en', 'my'].map((l) => {
+                    const active = lang === l;
+                    return (
+                      <button
+                        key={l}
+                        onClick={() => { setLang(l as any); haptic(); }}
+                        className={cn(
+                          "relative z-10 py-2.5 rounded-[14px] flex items-center justify-center transition-all duration-300",
+                          active ? "text-x-btn-text" : "text-x-muted"
+                        )}
+                      >
+                        <span className={cn("text-xs font-bold", l === 'my' ? 'my-text' : '')}>
+                          {l === 'en' ? 'ENGLISH' : 'မြန်မာ'}
+                        </span>
+                        {active && (
+                          <motion.div 
+                            layoutId="lang-bg-mobile"
+                            className="absolute inset-0 bg-x-accent rounded-[14px] -z-10 shadow-md"
+                            transition={{ type: 'spring', bounce: 0.1, duration: 0.4 }}
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <button 
+                onClick={() => setShowSettings(false)}
+                className="w-full bg-x-accent h-14 rounded-2xl font-bold text-x-btn-text tracking-widest uppercase shadow-xl mt-2 active:scale-95 transition-all text-sm"
+              >
+                {lang === 'en' ? 'Apply changes' : 'အတည်ပြုပါ'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Mobile FAB Compress */}
+      <button className="sm:hidden fixed bottom-20 right-4 w-14 h-14 bg-x-accent hover:bg-[#1A8CD8] text-x-btn-text flex items-center justify-center rounded-full shadow-lg z-50">
+        <Feather size={24} className="glow-icon" />
+      </button>
+
+      {/* Exit Toast */}
+      {showExitToast && (
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 px-4 py-2 glass-panel rounded-full text-xs font-bold text-x-ink z-[200] shadow-xl"
+        >
+          {activeTab === 'home' && lastBackClick > 0 && Date.now() - lastBackClick < 2000 
+            ? (lang === 'en' ? 'Exiting...' : 'ထွက်ခွာနေသည်...')
+            : (lang === 'en' ? 'Tap again to exit' : 'ထွက်ရန် ထပ်မံနှိပ်ပါ')}
+        </motion.div>
+      )}
+
+    </div>
   );
 }

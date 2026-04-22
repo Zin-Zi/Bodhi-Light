@@ -116,6 +116,7 @@ export const DHARMA_STEPS: MindStep[] = [
 
 export interface GlossaryTerm {
   term: string;
+  termMy: string;
   pali: string;
   meaning: string;
   meaningMy: string;
@@ -123,16 +124,52 @@ export interface GlossaryTerm {
 }
 
 export const ABHIDHAMMA_GLOSSARY: GlossaryTerm[] = [
-  { term: 'Consciousness', pali: 'Citta', meaning: 'The bare awareness of an object.', meaningMy: 'အာရုံကို သိမြင်တတ်သော သဘောရှိသော စိတ်။', bookLink: 0 },
-  { term: 'Mental Factors', pali: 'Cetasika', meaning: 'Qualities that arise and perish with consciousness, shaping its character.', meaningMy: 'စိတ်နှင့်အတူဖြစ်၊ စိတ်နှင့်အတူချုပ်၍ စိတ်ကို ပြုပြင်ပေးသော စေတသိက်များ။', bookLink: 0 },
-  { term: 'Materiality', pali: 'Rupa', meaning: 'The physical phenomena of the body and world.', meaningMy: 'ဖောက်ပြန်တတ်သော သဘောရှိသော ရုပ်တရားများ။', bookLink: 0 },
-  { term: 'The Unconditioned', pali: 'Nibbana', meaning: 'The ultimate reality that is beyond birth, death, and suffering.', meaningMy: 'မဖြစ်မပျက်၊ ငြိမ်းအေးသော ပရမတ္ထတရား (နိဗ္ဗာန်)။', bookLink: 0 },
-  { term: 'Aggregates', pali: 'Khandha', meaning: 'The five constituent groups of an individual.', meaningMy: 'ခန္ဓာ ၅ ပါး။', bookLink: 1 },
-  { term: 'Sense Bases', pali: 'Ayatana', meaning: 'The internal and external spheres of perception.', meaningMy: 'အာယတန ၁၂ ပါး။', bookLink: 1 },
-  { term: 'Elements', pali: 'Dhatu', meaning: 'The fundamental constituents of reality without a soul.', meaningMy: 'ဓာတ် ၁၈ ပါး။', bookLink: 2 },
-  { term: 'Individuals', pali: 'Puggala', meaning: 'The conventional designations for people as they appear in the world.', meaningMy: 'လောကဝေါဟာရအားဖြင့် သတ်မှတ်အပ်သော ပုဂ္ဂိုလ်များ။', bookLink: 3 },
-  { term: 'Pairs', pali: 'Yamaka', meaning: 'The logical method of paired questions to clarify terms.', meaningMy: 'အတွဲလိုက် အမေးအဖြေပြု၍ အဓိပ္ပာယ်သတ်မှတ်သော ယမိုက်ကျမ်း။', bookLink: 5 },
-  { term: 'Causal Relations', pali: 'Patthana', meaning: 'The 24 universal laws of conditionality governing existence.', meaningMy: 'အကြောင်းအကျိုး ဆက်စပ်မှု ပဋိဌာန်း ၂၄ ပစ္စည်း။', bookLink: 6 }
+  { term: 'Consciousness', termMy: 'စိတ်', pali: 'Citta', meaning: 'The bare awareness of an object.', meaningMy: 'အာရုံကို သိမြင်တတ်သော သဘောရှိသော စိတ်။', bookLink: 0 },
+  { term: 'Mental Factors', termMy: 'စေတသိက်', pali: 'Cetasika', meaning: 'Qualities that arise and perish with consciousness, shaping its character.', meaningMy: 'စိတ်နှင့်အတူဖြစ်၊ စိတ်နှင့်အတူချုပ်၍ စိတ်ကို ပြုပြင်ပေးသော စေတသိက်များ။', bookLink: 0 },
+  { term: 'Materiality', termMy: 'ရုပ်', pali: 'Rupa', meaning: 'The physical phenomena of the body and world.', meaningMy: 'ဖောက်ပြန်တတ်သော သဘောရှိသော ရုပ်တရားများ။', bookLink: 0 },
+  { term: 'The Unconditioned', termMy: 'နိဗ္ဗာန်', pali: 'Nibbana', meaning: 'The ultimate reality that is beyond birth, death, and suffering.', meaningMy: 'မဖြစ်မပျက်၊ ငြိမ်းအေးသော ပရမတ္ထတရား (နိဗ္ဗာန်)။', bookLink: 0 },
+  { term: 'Aggregates', termMy: 'ခန္ဓာ', pali: 'Khandha', meaning: 'The five constituent groups of an individual.', meaningMy: 'ခန္ဓာ ၅ ပါး။', bookLink: 1 },
+  { term: 'Sense Bases', termMy: 'အာယတန', pali: 'Ayatana', meaning: 'The internal and external spheres of perception.', meaningMy: 'အာယတန ၁၂ ပါး။', bookLink: 1 },
+  { term: 'Elements', termMy: 'ဓာတ်', pali: 'Dhatu', meaning: 'The fundamental constituents of reality without a soul.', meaningMy: 'ဓာတ် ၁၈ ပါး။', bookLink: 2 },
+  { term: 'Individuals', termMy: 'ပုဂ္ဂိုလ်', pali: 'Puggala', meaning: 'The conventional designations for people as they appear in the world.', meaningMy: 'လောကဝေါဟာရအားဖြင့် သတ်မှတ်အပ်သော ပုဂ္ဂိုလ်များ။', bookLink: 3 },
+  { term: 'Pairs', termMy: 'ယမိုက်', pali: 'Yamaka', meaning: 'The logical method of paired questions to clarify terms.', meaningMy: 'အတွဲလိုက် အမေးအဖြေပြု၍ အဓိပ္ပာယ်သတ်မှတ်သော ယမိုက်ကျမ်း။', bookLink: 5 },
+  { term: 'Causal Relations', termMy: 'ပဋ္ဌာန်း', pali: 'Patthana', meaning: 'The 24 universal laws of conditionality governing existence.', meaningMy: 'အကြောင်းအကျိုး ဆက်စပ်မှု ပဋိဌာန်း ၂၄ ပစ္စည်း။', bookLink: 6 }
+];
+
+export const FOLLOWING_POSTS = [
+  {
+    id: 'f1',
+    author: 'Ven. Uttama',
+    handle: 'forest_monk',
+    time: '2h',
+    title: 'Morning Reflections',
+    titleMy: 'နံနက်ခင်း ဆင်ခြင်ခြင်း',
+    content: 'Do not seek peace outside. It is found within the silent gaps between thoughts.',
+    contentMy: 'ငြိမ်းချမ်းမှုကို ပြင်ပမှာ မရှာပါနဲ့။ အတွေးတွေကြားက တိတ်ဆိတ်မှုထဲမှာပဲ တွေ့နိုင်ပါတယ်။',
+    pali: 'Santutthi'
+  },
+  {
+    id: 'f2',
+    author: 'Sayadaw U Jotika',
+    handle: 'snow_in_summer',
+    time: '5h',
+    title: 'The Art of Living',
+    titleMy: 'နေထိုင်မှုအနုပညာ',
+    content: 'Awareness is like a mirror; it catches everything but keeps nothing.',
+    contentMy: 'သတိဆိုတာ မှန်နဲ့တူတယ်၊ အရာအားလုံးကို ထင်ဟပ်စေပေမယ့် ဘာကိုမှ သိမ်းမထားဘူး။',
+    pali: 'Sati'
+  },
+  {
+    id: 'f3',
+    author: 'Abhidhamma Master',
+    handle: 'dharma_science',
+    time: '1d',
+    title: 'The Nature of Time',
+    titleMy: 'အချိန်၏သဘာဝ',
+    content: 'Past is a memory, future is a dream. Only the present moment is real and actionable.',
+    contentMy: 'အတိတ်ဆိုတာ အမှတ်ရမှု၊ အနာဂတ်ဆိုတာ အိပ်မက်။ ပစ္စုပ္ပန်အချိန်တစ်ခုတည်းကသာ အစစ်အမှန်ဖြစ်ပြီး လက်တွေ့ကျပါတယ်။',
+    pali: 'Khana'
+  }
 ];
 
 export const MIND_AGGREGATES = [
