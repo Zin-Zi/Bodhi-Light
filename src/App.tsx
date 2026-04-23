@@ -682,6 +682,11 @@ export default function App() {
     showSettingsRef.current = showSettings;
   }, [showSettings]);
 
+  const activeTabRef = useRef(activeTab);
+  useEffect(() => {
+    activeTabRef.current = activeTab;
+  }, [activeTab]);
+
   const [contentKey, setContentKey] = useState(0);
   const [unseenIds, setUnseenIds] = useState<string[]>(() => {
     const saved = localStorage.getItem('unseen_content_ids');
@@ -695,49 +700,54 @@ export default function App() {
   });
 
   useEffect(() => {
-    // Push an initial state to intercept the back button
-    window.history.pushState({ index: 1 }, '', '');
+    // Replace initial state with root marker so we know where we started
+    window.history.replaceState({ page: 'root' }, '', '');
+    // Push an interceptor state so we can detect back clicks
+    window.history.pushState({ intercept: true }, '', '');
 
     const handlePopState = (e: PopStateEvent) => {
-      // Re-push state so we can intercept the next one
-      window.history.pushState({ index: 1 }, '', '');
-      
       const now = Date.now();
       
-      // Close settings if open
+      // If we are showing settings, close it. The browser already popped the modal state.
       if (showSettingsRef.current) {
-        closeSettings();
+        setShowSettings(false);
+        haptic(0.5);
+        window.history.pushState({ intercept: true }, '', '');
         return;
       }
 
-      // Increment contentKey to force collapse all items in sub-feeds
-      setContentKey(prev => prev + 1);
-
-      if (activeTab !== 'home') {
+      // If not on home tab, go to home tab
+      if (activeTabRef.current !== 'home') {
         setActiveTab('home');
         window.scrollTo({ top: 0, behavior: 'smooth' });
         haptic(0.5);
-      } else {
-        // We are already home
-        // Always return to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        if (now - lastBackClick < 2000) {
-          // Double back - simulate exit
+        window.history.pushState({ intercept: true }, '', '');
+        return;
+      }
+
+      // We are already home
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      setLastBackClick((prev) => {
+        if (now - prev < 2000) {
+          // Double back - allow actual exit this time by NOT pushing a new intercept state
           haptic(2);
           setShowExitToast(true);
+          return now;
         } else {
-          setLastBackClick(now);
+          // Push intercept state again to prevent exit
+          window.history.pushState({ intercept: true }, '', '');
           haptic();
           setShowExitToast(true);
           setTimeout(() => setShowExitToast(false), 2000);
+          return now;
         }
-      }
+      });
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [activeTab, lastBackClick]);
+  }, []);
 
   const openSettings = () => {
     window.history.pushState({ modal: 'settings' }, '', '');
@@ -747,9 +757,11 @@ export default function App() {
 
   const closeSettings = () => {
     if (window.history.state?.modal === 'settings') {
-      window.history.back();
+      window.history.back(); // This triggers popstate, which handles the closing
+    } else {
+      setShowSettings(false);
+      haptic(0.5);
     }
-    setShowSettings(false);
   };
 
   const handleTabClick = (id: string) => {
@@ -970,74 +982,60 @@ export default function App() {
         </div>
       </aside>
 
-      {/* Mobile Bottom Nav - Floating Glassmorphism Style */}
-      <div className="sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[60]">
-        <nav className="glass-float rounded-[24px] h-16 flex items-center justify-around px-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5),0_0_20px_-5px_var(--x-glow)] bottom-nav">
-          <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('home')}>
-            <div className="relative">
-              <Leaf 
-                size={24} 
-                className={cn("transition-all duration-300", activeTab === 'home' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
-                strokeWidth={activeTab === 'home' ? 2.5 : 2} 
-              />
-              {unseenIds.includes('home') && (
-                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
-              )}
-            </div>
-            {activeTab === 'home' && (
-              <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
-            )}
-          </button>
-          <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('explore')}>
-            <div className="relative">
-              <Eye 
-                size={24} 
-                className={cn("transition-all duration-300", activeTab === 'explore' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
-                strokeWidth={activeTab === 'explore' ? 2.5 : 2} 
-              />
-              {unseenIds.includes('explore') && (
-                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
-              )}
-            </div>
-            {activeTab === 'explore' && (
-              <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
-            )}
-          </button>
-          <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('abhi')}>
-            <div className="relative">
-              <ScrollText 
-                size={24} 
-                className={cn("transition-all duration-300", activeTab === 'abhi' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
-                strokeWidth={activeTab === 'abhi' ? 2.5 : 2} 
-              />
-              {unseenIds.includes('abhi') && (
-                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
-              )}
-            </div>
-            {activeTab === 'abhi' && (
-              <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
-            )}
-          </button>
-          <button className="flex-1 flex justify-center items-center h-full relative" onClick={openSettings}>
-            <Settings size={24} className={cn("transition-all", showSettings ? "text-x-accent glow-icon opacity-100 scale-110" : "text-x-muted opacity-60")} />
-          </button>
-        </nav>
-      </div>
+    </div> {/* End of Zoom Content container */}
 
-      {/* Exit Toast */}
-      {showExitToast && (
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 50 }}
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 px-4 py-2 glass-panel rounded-full text-xs font-bold text-x-ink z-[200] shadow-xl"
-        >
-          {activeTab === 'home' && lastBackClick > 0 && Date.now() - lastBackClick < 2000 
-            ? (lang === 'en' ? 'Exiting...' : 'ထွက်ခွာနေသည်...')
-            : (lang === 'en' ? 'Tap again to exit' : 'ထွက်ရန် ထပ်မံနှိပ်ပါ')}
-        </motion.div>
-      )}
-
+    {/* Mobile Bottom Nav - Floating Glassmorphism Style */}
+    <div className="sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[60]">
+      <nav className="glass-float rounded-[24px] h-16 flex items-center justify-around px-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5),0_0_20px_-5px_var(--x-glow)] bottom-nav">
+        <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('home')}>
+          <div className="relative">
+            <Leaf 
+              size={24} 
+              className={cn("transition-all duration-300", activeTab === 'home' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
+              strokeWidth={activeTab === 'home' ? 2.5 : 2} 
+            />
+            {unseenIds.includes('home') && (
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
+            )}
+          </div>
+          {activeTab === 'home' && (
+            <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
+          )}
+        </button>
+        <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('explore')}>
+          <div className="relative">
+            <Eye 
+              size={24} 
+              className={cn("transition-all duration-300", activeTab === 'explore' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
+              strokeWidth={activeTab === 'explore' ? 2.5 : 2} 
+            />
+            {unseenIds.includes('explore') && (
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
+            )}
+          </div>
+          {activeTab === 'explore' && (
+            <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
+          )}
+        </button>
+        <button className="flex-1 flex justify-center items-center h-full relative" onClick={() => handleTabClick('abhi')}>
+          <div className="relative">
+            <ScrollText 
+              size={24} 
+              className={cn("transition-all duration-300", activeTab === 'abhi' ? "text-x-ink glow-lotus" : "text-x-muted opacity-60")} 
+              strokeWidth={activeTab === 'abhi' ? 2.5 : 2} 
+            />
+            {unseenIds.includes('abhi') && (
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-x-accent rounded-full border-2 border-x-background shadow-[0_0_10px_rgba(var(--x-accent),0.5)]" />
+            )}
+          </div>
+          {activeTab === 'abhi' && (
+            <motion.div layoutId="mobile-nav-pill" className="absolute bottom-2 w-1.5 h-1.5 bg-x-accent rounded-full shadow-[0_0_10px_var(--x-accent)]" />
+          )}
+        </button>
+        <button className="flex-1 flex justify-center items-center h-full relative" onClick={openSettings}>
+          <Settings size={24} className={cn("transition-all", showSettings ? "text-x-accent glow-icon opacity-100 scale-110" : "text-x-muted opacity-60")} />
+        </button>
+      </nav>
     </div>
 
     {/* Settings Modal Overlay - Desktop & Mobile (Outside Zoom Container) */}
@@ -1048,28 +1046,24 @@ export default function App() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={closeSettings}
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 sm:p-6"
         >
           <motion.div 
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full sm:max-w-md bg-x-background rounded-t-[32px] sm:rounded-[32px] overflow-hidden shadow-2xl border border-x-border/30 flex flex-col max-h-[85vh] sm:max-h-[80vh]"
+            className="w-full max-w-[360px] bg-x-background rounded-[28px] overflow-hidden shadow-2xl border border-x-border/30 flex flex-col max-h-[85vh]"
           >
-            <div className="flex justify-center pt-3 pb-2 sm:hidden">
-              <div className="w-12 h-1.5 bg-x-border rounded-full" />
-            </div>
-            
-            <div className="px-6 py-4 border-b border-x-border/10 flex justify-between items-center shrink-0">
-              <h2 className="text-xl font-bold my-text text-x-ink">{lang === 'en' ? 'Display & Settings' : 'ပြသမှုနှင့် သတ်မှတ်ချက်များ'}</h2>
-              <button onClick={closeSettings} className="p-2 rounded-full hover:bg-x-hover transition-colors text-x-muted text-xl leading-none">
+            <div className="px-5 py-4 border-b border-x-border/10 flex justify-between items-center shrink-0">
+              <h2 className="text-[17px] font-bold my-text text-x-ink">{lang === 'en' ? 'Display & Settings' : 'ပြသမှုနှင့် သတ်မှတ်ချက်များ'}</h2>
+              <button onClick={closeSettings} className="p-1.5 -mr-1.5 rounded-full hover:bg-x-hover transition-colors text-x-muted text-xl leading-none">
                 &times;
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto space-y-8 my-text w-full">
+            <div className="p-5 overflow-y-auto space-y-7 my-text w-full">
               
               {/* Language Section */}
               <section>
@@ -1187,15 +1181,31 @@ export default function App() {
 
             </div>
             
-            <div className="px-6 py-5 border-t border-x-border/10 w-full bg-x-surface shrink-0">
+            <div className="px-5 py-4 border-t border-x-border/10 w-full bg-x-surface shrink-0">
               <button 
                 onClick={closeSettings}
-                className="w-full py-3.5 bg-x-ink text-x-background rounded-full font-bold text-[15px] hover:scale-[0.98] active:scale-[0.95] transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-x-accent"
+                className="w-full py-3 bg-x-ink text-x-background rounded-full font-bold text-[15px] hover:scale-[0.98] active:scale-[0.95] transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-x-accent"
               >
                 {lang === 'en' ? 'Done' : 'ပြီးပါပြီ'}
               </button>
             </div>
           </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+
+    {/* Exit Toast */}
+    <AnimatePresence>
+      {showExitToast && (
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 px-4 py-2 glass-panel rounded-full text-[13px] font-bold text-x-ink z-[200] shadow-xl"
+        >
+          {activeTab === 'home' && lastBackClick > 0 && Date.now() - lastBackClick < 2000 
+            ? (lang === 'en' ? 'Exiting...' : 'ထွက်ခွာနေသည်...')
+            : (lang === 'en' ? 'Tap again to exit' : 'ထွက်ရန် ထပ်မံနှိပ်ပါ')}
         </motion.div>
       )}
     </AnimatePresence>
