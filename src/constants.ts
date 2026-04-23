@@ -1,82 +1,96 @@
-export interface MeditationBenefit {
-  title: string;
-  titleMy: string;
-  desc: string;
-  descMy: string;
-}
-
-export const MEDITATION_BENEFITS: MeditationBenefit[] = [
+export const ANAPANA_INSTRUCTIONS = [
   {
-    title: "Mental Clarity",
-    titleMy: "စိတ်ကြည်လင်ခြင်း",
-    desc: "Reduces mental fatigue and overthinking, allowing you to focus purely on the present moment.",
-    descMy: "အာရုံစူးစိုက်မှုကောင်းမွန်စေပြီး တွေးလွန်မှုများနှင့် စိတ်ပင်ပန်းမှုများကို လျော့ကျစေပါသည်။"
+    id: 1,
+    title: 'Posture & Preparation',
+    titleMy: 'နေရာထိုင်ခင်းနှင့် ဣရိယာပုတ်ပြင်ဆင်ခြင်း',
+    description: 'Go to a quiet place, sit in a comfortable cross-legged position with the body held erect, and establish mindfulness.',
+    descriptionMy: 'ဆိတ်ငြိမ်သော ဒေသသို့ သွားရောက်ပြီး ထက်ဝယ်ဖွဲ့ခွေထိုင်ပါ။ ခန္ဓာကိုယ်ကို ဖြောင့်မတ်စွာထားပြီး မိမိစိတ်ကို သတိနှင့် ယှဉ်စေပါ။',
+    details: 'Ensure your back is straight but relaxed, not rigid. Gently close your eyes. Take a few moments to scan your body from head to toe, releasing any obvious physical tension. Make a firm mental resolution to stay aware of the breath for the duration of the session.',
+    detailsMy: 'ကျောရိုးကို ဖြောင့်မတ်စွာထားပါ၊ သို့သော် တောင့်တင်းမနေစေရပါ။ မျက်စိကို အသာအယာ မှိတ်ထားပါ။ ခန္ဓာကိုယ်ထိပ်မှ ခြေဖျားအထိ စိတ်ဖြင့် အကဲခတ်ကာ တင်းမာနေသော အကြောများကို လျှော့ချပါ။ ဤတရားထိုင်မည့် အချိန်အတွင်း ဝင်လေထွက်လေအပေါ်၌သာ စိတ်ကိုထားမည်ဟု ခိုင်မာသော အဓိဋ္ဌာန်ပြုပါ။'
   },
   {
-    title: "Emotional Equilibrium",
-    titleMy: "စိတ်ခံစားမှုတည်ငြိမ်ခြင်း",
-    desc: "Develops the space between stimulus and response, leading to fewer reactive habits and lower stress.",
-    descMy: "စိတ်ဖိစီးမှုကင်းဝေးစေကာ ပြဿနာများကို တည်ငြိမ်စွာ တုံ့ပြန်နိုင်သည့် စွမ်းရည်ကို တိုးတက်စေပါသည်။"
+    id: 2,
+    title: 'Anchoring Mindfulness',
+    titleMy: 'သတိကို နှာသီးဖျား၌ ကပ်ထားခြင်း (အာရုံစူးစိုက်ရာနေရာ)',
+    description: 'Keep your attention continuously anchored at the tip of the nose or upper lip, right where the breath first touches.',
+    descriptionMy: 'လေဝင်လေထွက် ရိုက်ခတ်သွားသော နှာသီးဖျား သို့မဟုတ် အထက်နှုတ်ခမ်း၌ သတိကို စွဲမြဲစွာ ကပ်ထားပါ။',
+    details: 'Imagine a gatekeeper standing at a door. The gatekeeper only notes who enters and exits at the gate, without following them inside or outside. Similarly, do not follow the breath down into the lungs or out into the air. Just stay at the "touch point".',
+    detailsMy: 'တံခါးစောင့်တစ်ဦးသည် တံခါးဝမှနေ၍ ဝင်သူထွက်သူကိုသာ စောင့်ကြည့်သကဲ့သို့ ဖြစ်ရမည်။ လေဝင်သွားလျှင် ရင်ဘတ်၊ ဝမ်းဗိုက်အထိ လိုက်မကြည့်ရပါ။ လေထွက်သွားလျှင်လည်း အပြင်သို့ လိုက်မကြည့်ရပါ။ လေထိသွားသော နှာသီးဖျား (သို့) အထက်နှုတ်ခမ်း (ထိ-သိ) နေရာကိုသာ စိတ်ကပ်ထားပါ။'
   },
   {
-    title: "Physical Restoration",
-    titleMy: "ရုပ်ပိုင်းဆိုင်ရာသက်သာခြင်း",
-    desc: "Lowers heart rate and blood pressure, naturally signaling the nervous system into a state of deep rest.",
-    descMy: "နှလုံးခုန်နှုန်းမှန်ကန်စေပြီး အိပ်စက်မှုစနစ်ကို ပိုမိုကောင်းမွန်စေကာ ခန္ဓာကိုယ်ကို အနားရစေပါသည်။"
+    id: 3,
+    title: 'Observing the Breath',
+    titleMy: 'ဝင်လေထွက်လေကို သိမှတ်ခြင်း',
+    description: 'Breathing in, simply know you are breathing in. Breathing out, know you are breathing out. Do not alter the natural rhythm.',
+    descriptionMy: 'လေဝင်လာလျှင် ဝင်လာသည်ဟု အသာအယာ သိပါ။ လေထွက်သွားလျှင် ထွက်သွားသည်ဟု သတိကပ်၍ သိနေပါ။',
+    details: 'Do not force or control your breathing. Let the body breathe naturally and automatically. Your only job is to be a silent, passive observer. If the mind wanders, gently but firmly bring it back to the breath without judgment.',
+    detailsMy: 'အသက်ရှူမှုကို တမင်ဖန်တီးခြင်း၊ ထိန်းချုပ်ခြင်း မပြုလုပ်ရပါ။ ခန္ဓာကိုယ်၏ သဘာဝအလျောက် ရှူနေမှုကိုသာ အသာအယာ စောင့်ကြည့်ပါ။ စိတ်သည် ပြင်ပသို့ လွင့်သွားပါက စိတ်ပျက်ခြင်း၊ ဒေါသထွက်ခြင်း မဖြစ်ဘဲ သတိဖြင့် ဝင်လေထွက်လေထံသို့ ဖြည်းညှင်းစွာ ပြန်ခေါ်လာပါ။'
   },
   {
-    title: "Deep Intuitive Insight",
-    titleMy: "အသိဉာဏ်ပွင့်လင်းခြင်း",
-    desc: "Gradually dissolves the illusion of a separated self, unlocking profound wisdom regarding the nature of reality.",
-    descMy: "အတ္တဟူသော အထင်မှားမှုကို ဖယ်ရှားပေးပြီး ခန္ဓာနှင့်လောက၏ သဘာဝအမှန်ကို ထိုးထွင်းသိမြင်စေပါသည်။"
+    id: 4,
+    title: 'Noticing Length',
+    titleMy: 'လေရှည် လေတို သိခြင်းအဆင့်',
+    description: 'When a breath is long, discern it as long. When it is short, discern it as short. Just neutrally observe.',
+    descriptionMy: 'ရှည်ရှည်ဝင်လျှင် ရှည်ရှည်ဝင်သည်ဟု သိပါ၊ တိုတိုဝင်လျှင် တိုတိုဝင်သည်ဟု သိပါ။',
+    details: 'At the beginning of a session, breaths are usually coarse and long. Later, as the body relaxes, they may become naturally short. Do not try to breathe deeply or shallowly on purpose. Simply recognize the current characteristic of the breath clearly.',
+    detailsMy: 'တရားစထိုင်ချိန်တွင် လေသည် ကြမ်းတမ်းပြီး ရှည်တတ်ပါသည်။ နောက်ပိုင်း ငြိမ်သက်လာသောအခါ လေသည် တိုသွားတတ်ပါသည်။ တမင်သက်သက် လေကို ရှည်အောင်၊ တိုအောင် မလုပ်ရပါ။ ရှည်လျှင် ရှည်သည့်အတိုင်း၊ တိုလျှင် တိုသည့်အတိုင်း ရှင်းလင်းစွာ သိနေရန်သာ ဖြစ်ပါသည်။'
+  },
+  {
+    id: 5,
+    title: 'Experiencing the Whole Breath',
+    titleMy: 'အဆက်မပြတ် သိမြင်ခြင်း (အစ၊ အလယ်၊ အဆုံး)',
+    description: 'Train yourself to experience the entire continuous course of each breath from beginning, through the middle, to the end.',
+    descriptionMy: 'ဝင်လေထွက်လေ တစ်စအစမှ အဆုံးတိုင်အောင် အစ၊ အလယ်၊ အဆုံး အကုန်လုံးကို အဆက်မပြတ် ထင်ရှားစွာ သိမြင်အောင် ကြိုးစားပါ။',
+    details: 'Try to maintain unbroken awareness of the breath. Note the very beginning of the inhalation, its continuation, and its end. Then notice the subtle turning point (pause) before the exhalation begins. Do the same for the out-breath. Uninterrupted focus brings calmness.',
+    detailsMy: 'ဝင်လေစတင်ဝင်ရောက်လာချိန်၊ ဝင်နေဆဲအချိန်၊ ဝင်လေဆုံးသွားချိန် အားလုံးကို အလွတ်မခံဘဲ ထက်မြက်သော သတိဖြင့် သိနေပါ။ ဝင်လေနှင့် ထွက်လေကြားရှိ မသိမသာ ရပ်တန့်သွားသော အချိန်လေးကိုလည်း သိအောင် ကြိုးစားပါ။ ဤသို့ အဆက်မပြတ် သတိကပ်နိုင်လျှင် သမာဓိ အလွန်အားကောင်းလာပါမည်။'
+  },
+  {
+    id: 6,
+    title: 'Calming the Formations',
+    titleMy: 'ရုပ်နာမ်တို့ ငြိမ်းအေးစေခြင်း',
+    description: 'Train to calm the breathing process. Let the breath become finer and more subtle until the mind attains deep tranquility.',
+    descriptionMy: 'ရုန့်ရင်းသော အသက်ရှူမှုများကို သိမ်မွေ့သွားစေရန် လေ့ကျင့်ပါ။ စိတ်သည် ဝင်လေထွက်လေနှင့်အတူ တဖြည်းဖြည်း ငြိမ်းအေးသွားပါလိမ့်မည်။',
+    details: 'As your concentration deepens, your metabolic rate drops and the breath becomes incredibly fine, almost imperceptible. Sometimes it may feel as though breath has completely stopped. Do not panic; as long as you are alive, the body is breathing. Just calmly abide with the subtle signs.',
+    detailsMy: 'သမာဓိ အားကောင်းလာသောအခါ အသက်ရှူမှုသည် အလွန်သိမ်မွေ့သွားပြီး လေဝင်လေထွက် ရှိမှန်းပင် မသိရလောက်အောင် သိမ်မွေ့သွားတတ်ပါသည်။ တစ်ခါတစ်ရံ အသက်ရှူရပ်သွားသည်ဟုပင် ထင်ရတတ်သည်။ ထိုအခါ မကြောက်ပြားဘဲ တည်ငြိမ်စွာ ဆက်လက် ရှုမှတ်နေပါ။'
+  },
+  {
+    id: 7,
+    title: 'Joy & Deep Concentration',
+    titleMy: 'ပီတိနှင့် နိမိတ်ထင်ခြင်း (ဥပစာရသမာဓိ)',
+    description: 'With sustained calming, mental joy (piti) arises. A sign of concentration (nimitta) may appear in the mind’s eye.',
+    descriptionMy: 'သမာဓိ ရင့်သန်လာသောအခါ ပီတိ (ဝမ်းမြောက်ခြင်း) ဖြစ်ပေါ်လာတတ်ပြီး၊ စိတ်ထဲတွင် အလင်းရောင်စသော နိမိတ်များ ပေါ်လာတတ်ပါသည်။',
+    details: 'As the hindrances fall away, you may experience pleasant mental and physical sensations. A visual mental sign (nimitta), like a star or bright light, might appear at the touch point. Ignore the light and keep focusing purely on the breath itself to deepen absorption.',
+    detailsMy: 'နီဝရဏတရားများ ကင်းစင်သွားသောအခါ စိတ်ကြည်လင်မှုနှင့်အတူ ကြယ်ပွင့်၊ လမင်း သို့မဟုတ် အလင်းရောင် ကဲ့သို့သော နိမိတ်များ ပေါ်လာတတ်ပါသည်။ ထိုအလင်းရောင်များကို လိုက်ကာ စိတ်ကူးမယဉ်ရပါ။ မိမိ၏ မူလအာရုံဖြစ်သော ဝင်လေထွက်လေ အပေါ်၌သာ အာရုံကို ဆက်လက်စူးစိုက်ထားပါ။'
+  },
+  {
+    id: 8,
+    title: 'Insight Transition (Vipassana)',
+    titleMy: 'ဝိပဿနာဉာဏ်သို့ ကူးပြောင်းခြင်း',
+    description: 'Using the concentrated mind to observe the impermanence of the breath, the touch points, and the mind itself.',
+    descriptionMy: 'တည်ငြိမ်နေသော သမာဓိကို အခြေခံ၍ ဝင်လေထွက်လေနှင့် ခန္ဓာကိုယ်၏ ဖောက်ပြန်မှု၊ မမြဲမှု (အနိစ္စ) သဘောများကို ရှုမှတ်ခြင်း ဖြစ်သည်။',
+    details: 'Once strong concentration (samatha) is established, shift to insight (vipassana). Notice how each breath arises and passes away instantly. Nothing is permanent. The sensation of touch, the breath, and the knowing mind are all constantly changing phenomena. Realizing this leads to liberation.',
+    detailsMy: 'သမာဓိ မြဲမြံလာပါက ဝင်လေထွက်လေ ဖြစ်ပြီးပျက်နေပုံ၊ ထိသိသော နေရာရှိ ရုပ်တရားများ၏ ပြောင်းလဲနေပုံတို့ကို ဉာဏ်ဖြင့် ထိုးထွင်းသိမြင်အောင် ရှုမှတ်ရမည်။ အရာအားလုံးသည် အနိစ္စ (မမြဲခြင်း)၊ ဒုက္ခ (ဆင်းရဲခြင်း)၊ အနတ္တ (အစိုးမရခြင်း) သဘောများသာ ဖြစ်သည်ဟု ကိုယ်တိုင် ဉာဏ်သက်ဝင် သိမြင်လာပါလိမ့်မည်။'
   }
 ];
 
-export interface MindStep {
-  id: string;
-  title: string;
-  titleMy: string;
-  pali: string;
-  description: string;
-  descriptionMy: string;
-  practice: string;
-  practiceMy: string;
-  content: string;
-  contentMy: string;
-  categories: string[];
-}
-
-export const DHARMA_STEPS: MindStep[] = [
-  {
-    id: 'mindfulness',
-    title: 'Mindfulness of Breath',
-    titleMy: 'ထွက်လေဝင်လေကို သတိပြုခြင်း',
-    pali: 'Anapanasati',
-    description: 'The foundation of all mind control is simple awareness.',
-    descriptionMy: 'စိတ်ကို ထိန်းချုပ်ခြင်း၏ အခြေခံမှာ ရိုးရှင်းစွာ သတိပြုခြင်း ဖြစ်သည်။',
-    practice: 'Sit quietly. Observe the breath as it enters and leaves. Don\'t change it, just know it.',
-    practiceMy: 'ငြိမ်သက်စွာ ထိုင်ပါ။ ထွက်လေဝင်လေကို သတိပြုပါ။ မပြင်ပါနှင့်၊ သိရုံသာ သိပါ။',
-    content: 'Anapanasati is the most widely taught form of meditation. The Buddha emphasized that the breath is a bridge between the physical and mental worlds. By focusing on the "touch" of the breath at the nostrils, we stabilize the mind\'s tendency to wander into the past (regret) or future (anxiety). As the breath becomes refined, so does the consciousness, leading eventually to Jhana (deep absorption).',
-    contentMy: 'အာနာပါနဿတိသည် အသုံးအများဆုံး ကမ္မဋ္ဌာန်းတရားဖြစ်သည်။ ထွက်လေဝင်လေသည် ရုပ်နှင့် နာမ်ကို ဆက်သွယ်ပေးသော တံတားဖြစ်ကြောင်း မြတ်စွာဘုရားရှင်က ဟောကြားခဲ့သည်။ နှာသီးဖျားတွင် လေ၏ ထိမှုကို သတိပြုခြင်းဖြင့် အတိတ်၏ နောင်တနှင့် အနာဂတ်၏ စိုးရိမ်ပူပန်မှုများမှ လွတ်ကင်းစေပြီး စိတ်ကို ငြိမ်သက်စေပါသည်။ လေသည် သိမ်မွေ့လာသည်နှင့်အမျှ စိတ်သည်လည်း သိမ်မွေ့လာပြီး ဈာန်တရားများအထိ ရရှိနိုင်ပါသည်။',
-    categories: ['Mindfulness', 'Calm']
-  },
+export const DHARMA_STEPS = [
   {
     id: 'awareness',
-    title: 'Awareness of Sensations',
-    titleMy: 'ဝေဒနာကို သတိပြုခြင်း',
-    pali: 'Vedana',
-    description: 'Understand that all mental states arise from bodily sensations.',
-    descriptionMy: 'စိတ်အခြေအနေအားလုံးသည် ကိုယ်ခန္ဓာ၏ ဝေဒနာများမှ ဖြစ်ပေါ်လာကြောင်း နားလည်ပါ။',
-    practice: 'Scan your body. Notice heat, cold, tension, or ease. Observe without labeling as good or bad.',
-    practiceMy: 'ခန္ဓာကိုယ်ကို စစ်ဆေးပါ။ အပူ၊ အအေး၊ တင်းကျပ်မှု သို့မဟုတ် သက်သာမှုကို သတိပြုပါ။ ကောင်းသည်၊ ဆိုးသည်ဟု မသတ်မှတ်ဘဲ ရှုမှတ်ပါ။',
-    content: 'Vedana-anupassana is the observation of feelings. We often think we react to external events, but we actually react to the sensations (pain, pleasure, or neutral) that those events trigger in the body. By maintaining equanimity (upekkha) towards these sensations, we stop create new "Sankharas" (mental reactions), eventually purifying the mind from its oldest habits.',
-    contentMy: 'ဝေဒနာနုပဿနာသည် ခံစားမှုများကို ရှုမှတ်ခြင်းဖြစ်သည်။ ကျွန်ုပ်တို့သည် ပြင်ပဖြစ်ရပ်များကို တုံ့ပြန်သည်ဟု ထင်ရသော်လည်း အမှန်စင်စစ်မှာ ထိုဖြစ်ရပ်များကြောင့် ခန္ဓာကိုယ်တွင် ဖြစ်ပေါ်လာသော ဝေဒနာ (ချမ်းသာ၊ ဆင်းရဲ၊ အလတ်စား) ကိုသာ တုံ့ပြန်နေခြင်းဖြစ်သည်။ ထိုဝေဒနာများအပေါ် ဥပေက္ခာတရားဖြင့် ရှုမှတ်နိုင်လျှင် အကျင့်ဟောင်းများမှ လွတ်မြောက်ပြီး စိတ်ကို သန့်စင်စေနိုင်ပါသည်။',
-    categories: ['Awareness', 'Insight']
+    title: 'Self-Awareness',
+    titleMy: 'မိမိကိုယ်ကို သိရှိခြင်း',
+    pali: 'Sati',
+    description: 'The foundation of all progress is knowing where you are.',
+    descriptionMy: 'တိုးတက်မှုအားလုံး၏ အခြေခံမှာ မိမိရောက်ရှိနေသော နေရာကို သိရှိခြင်းဖြစ်သည်။',
+    practice: 'Close your eyes. Notice your breath. When the mind wanders, gently bring it back.',
+    practiceMy: 'မျက်စိမှိတ်ပါ။ ထွက်လေဝင်လေကို သတိထားပါ။ စိတ်လွင့်သွားလျှင် ညင်သာစွာ ပြန်ခေါ်ပါ။',
+    content: 'Awareness is the gatekeeper of the mind. In Abhidhamma, it is taught that consciousness arises and falls away in trillions of cycles per second. Most of us live in a blur of these cycles. By practicing mindfulness (Sati), we begin to see the "gap" between a stimulus and our reaction. This gap is where freedom lives. It is the first step toward breaking habitual cycles of suffering.',
+    contentMy: 'သတိဆိုသည်မှာ စိတ်၏ တံခါးစောင့်ဖြစ်သည်။ အဘိဓမ္မာသင်ကြားချက်အရ စိတ်သည် တစ်စက္ကန့်လျှင် အကြိမ်ပေါင်း ကုဋေကုဋာမက ဖြစ်ပျက်နေသည်။ ကျွန်ုပ်တို့ အများစုသည် ထိုဖြစ်ပျက်မှုများကို သတိမထားမိဘဲ နေထိုင်ကြသည်။ သတိတရားကို လေ့ကျင့်ခြင်းအားဖြင့် အာရုံနှင့် တုံ့ပြန်မှုအကြား "လွတ်လပ်သော နေရာ" ကို စတင်သိမြင်လာပါသည်။ ဤလွတ်လပ်သော နေရာသည် ဆင်းရဲခြင်းမှ လွတ်မြောက်ရန် ပထမဆုံးသော ခြေလှမ်းဖြစ်သည်။',
+    categories: ['Basics', 'Daily']
   },
   {
     id: 'guarding',
-    title: 'Guarding the Sense Doors',
-    titleMy: 'ဣန္ဒြေကို စောင့်စည်းခြင်း',
+    title: 'Guarding the Senses',
+    titleMy: 'ဣန္ဒြေလုံခြုံခြင်း',
     pali: 'Indriya Samvara',
     description: 'Stop the mind from being overwhelmed by external stimuli.',
     descriptionMy: 'ပြင်ပအာရုံများကြောင့် စိတ်မငြိမ်မသက် ဖြစ်ခြင်းကို တားဆီးပါ။',
@@ -114,61 +128,278 @@ export const DHARMA_STEPS: MindStep[] = [
   }
 ];
 
-export interface GlossaryTerm {
-  term: string;
-  termMy: string;
-  pali: string;
-  meaning: string;
-  meaningMy: string;
-  bookLink: number; // Index of ABHIDHAMMA_BOOKS
-}
-
-export const ABHIDHAMMA_GLOSSARY: GlossaryTerm[] = [
-  { term: 'Consciousness', termMy: 'စိတ်', pali: 'Citta', meaning: 'The bare awareness of an object.', meaningMy: 'အာရုံကို သိမြင်တတ်သော သဘောရှိသော စိတ်။', bookLink: 0 },
-  { term: 'Mental Factors', termMy: 'စေတသိက်', pali: 'Cetasika', meaning: 'Qualities that arise and perish with consciousness, shaping its character.', meaningMy: 'စိတ်နှင့်အတူဖြစ်၊ စိတ်နှင့်အတူချုပ်၍ စိတ်ကို ပြုပြင်ပေးသော စေတသိက်များ။', bookLink: 0 },
-  { term: 'Materiality', termMy: 'ရုပ်', pali: 'Rupa', meaning: 'The physical phenomena of the body and world.', meaningMy: 'ဖောက်ပြန်တတ်သော သဘောရှိသော ရုပ်တရားများ။', bookLink: 0 },
-  { term: 'The Unconditioned', termMy: 'နိဗ္ဗာန်', pali: 'Nibbana', meaning: 'The ultimate reality that is beyond birth, death, and suffering.', meaningMy: 'မဖြစ်မပျက်၊ ငြိမ်းအေးသော ပရမတ္ထတရား (နိဗ္ဗာန်)။', bookLink: 0 },
-  { term: 'Aggregates', termMy: 'ခန္ဓာ', pali: 'Khandha', meaning: 'The five constituent groups of an individual.', meaningMy: 'ခန္ဓာ ၅ ပါး။', bookLink: 1 },
-  { term: 'Sense Bases', termMy: 'အာယတန', pali: 'Ayatana', meaning: 'The internal and external spheres of perception.', meaningMy: 'အာယတန ၁၂ ပါး။', bookLink: 1 },
-  { term: 'Elements', termMy: 'ဓာတ်', pali: 'Dhatu', meaning: 'The fundamental constituents of reality without a soul.', meaningMy: 'ဓာတ် ၁၈ ပါး။', bookLink: 2 },
-  { term: 'Individuals', termMy: 'ပုဂ္ဂိုလ်', pali: 'Puggala', meaning: 'The conventional designations for people as they appear in the world.', meaningMy: 'လောကဝေါဟာရအားဖြင့် သတ်မှတ်အပ်သော ပုဂ္ဂိုလ်များ။', bookLink: 3 },
-  { term: 'Pairs', termMy: 'ယမိုက်', pali: 'Yamaka', meaning: 'The logical method of paired questions to clarify terms.', meaningMy: 'အတွဲလိုက် အမေးအဖြေပြု၍ အဓိပ္ပာယ်သတ်မှတ်သော ယမိုက်ကျမ်း။', bookLink: 5 },
-  { term: 'Causal Relations', termMy: 'ပဋ္ဌာန်း', pali: 'Patthana', meaning: 'The 24 universal laws of conditionality governing existence.', meaningMy: 'အကြောင်းအကျိုး ဆက်စပ်မှု ပဋိဌာန်း ၂၄ ပစ္စည်း။', bookLink: 6 }
+export const ABHIDHAMMA_GLOSSARY = [
+  { 
+    term: 'Consciousness', 
+    termMy: 'စိတ်', 
+    pali: 'Citta', 
+    meaning: 'The bare awareness of an object. In Abhidhamma, it is described as the foundational element of experience that arises and vanishes constantly.', 
+    meaningMy: 'အာရုံကို သိမြင်တတ်သော သဘောဖြစ်သည်။ စိတ်သည် အလိုအလျောက် ဖြစ်ပေါ်ခြင်းမဟုတ်ဘဲ အာရုံနှင့် ဒွါရဆုံမှသာ ဖြစ်ပေါ်သည်။ စိတ်တစ်ချက်ဖြစ်လျှင် စေတသိက်များလည်း အတူတကွ ဖြစ်ပေါ်ပြီး အာရုံကို ခံစား၊ မှတ်သား၊ ပြုပြင်ကြသည်။', 
+    bookLink: 0 
+  },
+  { 
+    term: 'Mental Factors', 
+    termMy: 'စေတသိက်', 
+    pali: 'Cetasika', 
+    meaning: 'The 52 factors that arise with consciousness, defining whether a thought is wholesome, unwholesome, or neutral.', 
+    meaningMy: 'စိတ်နှင့်အတူ ဖြစ်ပေါ်ပြီး စိတ်နှင့်အတူချုပ်ပျောက်သော တရား ၅၂ ပါး ဖြစ်သည်။ စေတသိက်များသည် စိတ်ကို အမျိုးမျိုး ပြုပြင်တတ်သည်။ ဥပမာ - လောဘစေတသိက် ယှဉ်လျှင် အကုသိုလ်စိတ်ဖြစ်ပြီး၊ မေတ္တာစေတသိက် ယှဉ်လျှင် ကုသိုလ်စိတ် ဖြစ်ပေါ်သည်။', 
+    bookLink: 0 
+  },
+  { 
+    term: 'Materiality', 
+    termMy: 'ရုပ်', 
+    pali: 'Rupa', 
+    meaning: 'Physical phenomena that change due to temperature, kamma, mind, and nutriment. It is the non-aware aspect of reality.', 
+    meaningMy: 'သိတတ်သော သဘောမရှိဘဲ အေးခြင်း၊ ပူခြင်း စသည့် အကြောင်းတရားတို့ကြောင့် ဖောက်ပြန်တတ်သော သဘောဖြစ်သည်။ မဟာဘုတ် ၄ ပါးနှင့် ဥပါဒါရုပ် ၂၄ ပါး ဟူ၍ စုစုပေါင်း ၂၈ ပါး ရှိသည်။ ရုပ်သည် သိမှု ဝိညာဉ် မပါဝင်သော ဒြပ်ဝတ္ထု သဘောဖြစ်သည်။', 
+    bookLink: 0 
+  },
+  { 
+    term: 'The Unconditioned', 
+    termMy: 'နိဗ္ဗာန်', 
+    pali: 'Nibbana', 
+    meaning: 'The third ultimate reality which is unconditioned by any cause. It is the total cessation of suffering and rebirth.', 
+    meaningMy: 'အကြောင်းတရားတို့က ပြုပြင်ထားခြင်း မရှိသော (အသင်္ခတ) တရားဖြစ်သည်။ ဖြစ်ခြင်း၊ ပျက်ခြင်း၊ အိုခြင်း၊ နာခြင်း၊ သေခြင်း တို့မှ ကင်းလွတ်ရာ အစစ်အမှန် ဖြစ်သည်။ လောဘ၊ ဒေါသ၊ မောဟ အပူမီးများ ငြိမ်းအေးရာ ပရမတ္ထတရား ဖြစ်သည်။', 
+    bookLink: 0 
+  },
+  { 
+    term: 'Reality of Aggregates', 
+    termMy: 'ခန္ဓာ ၅ ပါး', 
+    pali: 'Khandha', 
+    meaning: 'The classification of all conditioned things into five functional groups: form, feeling, perception, formation, and consciousness.', 
+    meaningMy: 'သတ္တဝါတို့၏ ခန္ဓာကိုယ်နှင့် စိတ်အစဉ်ကို အစုအပုံ ၅ ခုဖြင့် ခွဲခြားပြဆိုခြင်း ဖြစ်သည်။ ရုပ်အစု (ရူပက္ခန္ဓာ)၊ ခံစားမှုအစု (ဝေဒနဲ့က်ခန်ဓာ)၊ မှတ်သားမှုအစု (သညနဲ့က်ခန်ဓာ)၊ ပြုပြင်မှုအစု (သင်္ခါရနဲ့က်ခန်ဓာ) နှင့် သိမှုအစု (ဝိညာဏနဲ့က်ခန်ဓာ) တို့ ဖြစ်သည်။', 
+    bookLink: 1 
+  },
+  { 
+    term: 'Universal Law of Cause', 
+    termMy: 'ပဋ္ဌာန်း ၂၄ ပစ္စည်း', 
+    pali: 'Patthana', 
+    meaning: 'The 24 modes of conditionality explaining how mental and material phenomena support and influence each other.', 
+    meaningMy: 'ရုပ်နာမ်တရားတို့ အချင်းချင်း အထောက်အပံ့ပြုပုံ နည်းလမ်း ၂၄ သွယ် ဖြစ်သည်။ အမြစ်သဖွယ် ကျေးဇူးပြုသော ဟိတ်ပစ္စည်း၊ အာရုံသဖွယ် ကျေးဇူးပြုသော အာရမ္မဏပစ္စည်း စသည်တို့ဖြင့် လောက၏ နိယာမတရားကို အလွန်ကျယ်ဝန်းစွာ ဟောကြားထားသည်။', 
+    bookLink: 6 
+  },
+  { 
+    term: 'Contact', 
+    termMy: 'ဖဿ', 
+    pali: 'Phassa', 
+    meaning: 'The initial mental touch or meeting of the sense organ, object, and consciousness.', 
+    meaningMy: 'အာရုံ၊ ဒွါရ နှင့် စိတ်တို့ ပေါင်းစုံထိတွေ့မှု သဘောဖြစ်သည်။ ဤထိတွေ့မှုကြောင့်သာ ဝေဒနာ (ခံစားမှု) ဆက်လက် ဖြစ်ပေါ်လာရခြင်း ဖြစ်သည်။', 
+    bookLink: 0 
+  },
+  { 
+    term: 'Wisdom/Insight', 
+    termMy: 'ပညာ', 
+    pali: 'Panna', 
+    meaning: 'The mental factor that sees things as they truly are, cutting through delusion and ignorance.', 
+    meaningMy: 'အရာခပ်သိမ်းကို အမှန်အတိုင်း ထိုးထွင်းသိမြင်သော သဘောဖြစ်သည်။ အမှောင်ထဲတွင် အလင်းရောင် ရောက်လာသကဲ့သို့ မောဟ (အမှောင်) ကို ပယ်ဖျောက်ပြီး သစ္စာလေးပါးကို သိမြင်စေသည်။', 
+    bookLink: 0 
+  }
 ];
 
-export const FOLLOWING_POSTS = [
+export const ABHIDHAMMA_BOOKS = [
   {
-    id: 'f1',
-    author: 'Ven. Uttama',
-    handle: 'forest_monk',
-    time: '2h',
-    title: 'Morning Reflections',
-    titleMy: 'နံနက်ခင်း ဆင်ခြင်ခြင်း',
-    content: 'Do not seek peace outside. It is found within the silent gaps between thoughts.',
-    contentMy: 'ငြိမ်းချမ်းမှုကို ပြင်ပမှာ မရှာပါနဲ့။ အတွေးတွေကြားက တိတ်ဆိတ်မှုထဲမှာပဲ တွေ့နိုင်ပါတယ်။',
-    pali: 'Santutthi'
+    title: 'Dhammasangani',
+    titleMy: 'ဓမ္မသင်္ဂဏီ',
+    summary: 'Enumeration of Phenomena',
+    summaryMy: 'ရုပ်၊ နာမ်၊ ဓမ္မတို့ကို အသေးစိတ် သရုပ်ခွဲပြခြင်း။',
+    brief: 'A comprehensive list and classification of mental and physical phenomena.',
+    briefMy: 'နာမ်တရား၊ ရုပ်တရားတို့ကို စာရင်းပြုစု၍ အတိုချုပ် သရုပ်ဖွဲပြသော ကျမ်းဖြစ်သည်။',
+    detailedSummary: 'The first book that systematically maps the entirety of consciousness (Citta), mental factors (Cetasika), and physical matter (Rupa). It categorizes them into ethical groups like wholesome, unwholesome, and neutral.',
+    detailedSummaryMy: 'အဘိဓမ္မာ ၇ ကျမ်း၏ အခြေခံအကျဆုံး ကျမ်းဖြစ်သည်။ ဤကျမ်းတွင် တရားအားလုံးကို ကုသိုလ်၊ အကုသိုလ်၊ အဗျာကတ ဟု သရုပ်ခွဲပြီး၊ စိတ် ၁၂၁ ပါး၊ စေတသိက် ၅၂ ပါး၊ ရုပ် ၂၈ ပါးတို့ကို အသေးစိတ် စာရင်းပြုစု ဟောကြားထားသည်။',
+    content: 'The core of this book is the Matika (The Matrix). It contains 22 Triplets (Tikas) and 100 Doublets (Dukas) which serve as the headings for the entire Abhidhamma. Through these headings, the Buddha analyzes every possible reality in the universe from an ethical and functional perspective.',
+    contentMy: 'ဓမ္မသင်္ဂဏီ၏ အသက်သွေးကြောမှာ "မာတိကာ" ဖြစ်သည်။ တရားတစ်ပါးစီကို ခွဲခြမ်းစိတ်ဖြာရာတွင် အဓိက ခေါင်းစဉ်ကြီးများဖြစ်သော တိက (၃ ပါးတွဲ) ၂၂ ပါးနှင့် ဒုက (၂ ပါးတွဲ) ၁၀၀ တို့ဖြင့် လွှမ်းခြုံဟောကြားထားသည်။ ဤကျမ်းကို လေ့လာခြင်းဖြင့် လောကရှိ ရုပ်နာမ်အားလုံး၏ သဘာဝကို အခြေခံမှစ၍ နားလည်နိုင်သည်။',
+    chapters: [
+      { title: 'Cittuppada Kanda', titleMy: 'စိတ္တုပ္ပါဒကဏ္ဍ', desc: 'Detailed analysis of consciousness (Citta) and mental factors (Cetasika) as they arise together.', descMy: 'စိတ်နှင့် စေတသိက်တို့တွဲဖက်၍ အတူတကွ ဖြစ်ပေါ်လာပုံကို အသေးစိတ် ခွဲခြမ်းစိတ်ဖြာပြသော အခန်း။' },
+      { title: 'Rupa Kanda', titleMy: 'ရူပကဏ္ဍ', desc: 'Classification of physical matter (Rupa) and its origins from kamma, mind, temperature, and nutriment.', descMy: 'ရုပ်တရားများ၏ သဘာဝနှင့် ကံ၊ စိတ်၊ ဥတု၊ အာဟာရ ဟူသော အကြောင်းတရား ၄ ပါးမှ ဖြစ်ပေါ်လာပုံ အကျယ်။' },
+      { title: 'Nikkhepa Kanda', titleMy: 'နိက္ခေပကဏ္ဍ', desc: 'A concluding summary that avoids excessive detail to provide a clear overview of the Dhamma.', descMy: 'အထက်ပါ တရားများကို အကျယ်တဝင့် မသွားဘဲ လွယ်ကူစွာ နားလည်နိုင်ရန် အနှစ်ချုပ်၍ ဟောကြားထားသော အခန်း။' }
+    ],
+    keyPrinciples: [
+      { title: 'Matika System', desc: 'The structural matrix of 22 triplets and 100 doublets that form the framework for all Abhidhamma analysis.' },
+      { title: 'Ethical Classification', desc: 'Categorizing all phenomena into wholesome (kusala), unwholesome (akusala), or indeterminate (abyakata).' },
+      { title: 'Citta-Cetasika Relation', desc: 'The inseparable arising and interaction of consciousness and its accompanying mental factors.' }
+    ],
+    keyPrinciplesMy: [
+      { title: 'မာတိကာ စနစ်', desc: 'အဘိဓမ္မာတစ်ခုလုံး၏ အခြေခံမူဘောင်ဖြစ်သော တိက(၃ ပါးတွဲ) ၂၂ ပါးနှင့် ဒုက(၂ ပါးတွဲ) ၁၀၀ တို့ဖြင့် ဖွဲ့စည်းထားသော စနစ်။' },
+      { title: 'ကုသိုလ်/အကုသိုလ် ခွဲခြားခြင်း', desc: 'တရားဓမ္မအားလုံးကို ကုသိုလ်၊ အကုသိုလ်၊ သို့မဟုတ် အဗျာကတ ဟူ၍ ကိုယ်ကျင့်တရားရှုထောင့်မှ တိကျစွာ ခွဲခြားခြင်း။' },
+      { title: 'စိတ်နှင့်စေတသိက် ဆက်စပ်မှု', desc: 'စိတ်နှင့် ၎င်းကို ခြံရံသော စေတသိက်တို့ ခွဲခြား၍မရဘဲ တပြိုင်နက် အတူတကွ ဖြစ်ပေါ်လာပုံ သဘာဝ။' }
+    ]
   },
   {
-    id: 'f2',
-    author: 'Sayadaw U Jotika',
-    handle: 'snow_in_summer',
-    time: '5h',
-    title: 'The Art of Living',
-    titleMy: 'နေထိုင်မှုအနုပညာ',
-    content: 'Awareness is like a mirror; it catches everything but keeps nothing.',
-    contentMy: 'သတိဆိုတာ မှန်နဲ့တူတယ်၊ အရာအားလုံးကို ထင်ဟပ်စေပေမယ့် ဘာကိုမှ သိမ်းမထားဘူး။',
-    pali: 'Sati'
+    title: 'Vibhanga',
+    titleMy: 'ဝိဘင်း',
+    summary: 'Book of Analysis',
+    summaryMy: 'တရားဓမ္မများကို ဝေဖန်ပိုင်းခြားပြခြင်း။',
+    detailedSummary: 'A detailed analysis of eighteen central topics like the aggregates, sense bases, and elements. It uses three ways of explaining: Sutta method, Abhidhamma method, and Catechism.',
+    detailedSummaryMy: 'ဓမ္မသင်္ဂဏီ၌ ဟောကြားအပ်သော တရားများကို ခန္ဓာ၊ အာယတန၊ ဓာတ် အစရှိသည့် အပိုင်းကြီး ၁၈ ပိုင်းဖြင့် ခွဲခြားပိုင်းခြား ဟောကြားသော ကျမ်းဖြစ်သည်။',
+    content: 'Each chapter in Vibhanga is divided into Suttanta-bhajaniya (explanation for laypeople), Abhidhamma-bhajaniya (technical analysis), and Panha-pucchaka (a logic of questions and answers to clear all doubts).',
+    contentMy: 'ဝိဘင်းကျမ်းတွင် "ဘာဇနီ" ဟုခေါ်သော ခွဲခြမ်းစိတ်ဖြာခြင်း နည်းစနစ်ကို သုံးသည်။ သုတ္တန်နည်းဖြင့် ရှင်းလင်းခြင်း၊ အဘိဓမ္မာနည်းဖြင့် ရှင်းလင်းခြင်းနှင့် အမေးအဖြေနည်းဖြင့် တိကျစေခြင်း တို့ကို ပြုလုပ်ပေးထားသဖြင့် တရား၏ အနက်အဓိပ္ပာယ်မှာ ပိုမိုရှင်းလင်းသွားသည်။',
+    chapters: [
+      { title: 'Khandha Vibhanga', titleMy: 'ခန္ဓာဝိဘင်း', desc: 'Deep-dive into the five aggregates of clinging, revealing them as empty of self.', descMy: 'ရုပ်၊ ဝေဒနာ၊ သညာ၊ သင်္ခါရ၊ ဝိညာဉ် ဟူသော ခန္ဓာ ၅ ပါးတို့၏ အနတ္တသဘောကို အကျယ်တဝင့် ဝေဖန်ပိုင်းခြားပြခြင်း။' },
+      { title: 'Ayatana Vibhanga', titleMy: 'အာယတနဝိဘင်း', desc: 'Analysis of how the six internal sense organs interact with six external sense objects.', descMy: 'မျက်စိ၊ နား စသည့် အတွင်းအာယတန ၆ ပါးနှင့် အဆင်း၊ အသံ စသည့် အပြင်အာယတန ၆ ပါးတို့ ဆက်စပ်ပုံကို ဝေဖန်ခြင်း။' },
+      { title: 'Sacca Vibhanga', titleMy: 'သစ္စာဝိဘင်း', desc: 'Comprehensive elaboration on the Four Noble Truths to understand suffering and its cessation.', descMy: 'ဒုက္ခ၊ သမုဒယ၊ နိရောဓ၊ မဂ္ဂ ဟူသော သစ္စာ ၄ ပါးတရားမြတ်တို့ကို ထိုးထွင်းသိမြင်ရန် ဝေဖန်ပြခြင်း။' }
+    ],
+    keyPrinciples: [
+      { title: 'Three-way Pedagogy', desc: 'Explaining concepts sequentially via Sutta discourses, Abhidhamma abstraction, and analytical questioning.' },
+      { title: 'Systematic Classification', desc: 'Breaking down complex concepts like the aggregates into their fundamental, irreducible components.' }
+    ],
+    keyPrinciplesMy: [
+      { title: 'ရှင်းလင်းနည်း ၃ သွယ်', desc: 'သုတ္တန်နည်း၊ အဘိဓမ္မာနည်း၊ အမေးအဖြေနည်း ဟူသော နည်းစနစ် သုံးမျိုးဖြင့် အဆင့်လိုက် ရှင်းလင်းပြသခြင်း။' },
+      { title: 'စနစ်တကျ ခွဲခြားပြဆိုမှု', desc: 'ခန္ဓာ၊ အာယတန စသည့် နက်နဲသော တရားများကို ၎င်းတို့၏ အခြေခံအကျဆုံး အစိတ်အပိုင်းများအထိ သရုပ်ခွဲပြခြင်း။' }
+    ]
   },
   {
-    id: 'f3',
-    author: 'Abhidhamma Master',
-    handle: 'dharma_science',
-    time: '1d',
-    title: 'The Nature of Time',
-    titleMy: 'အချိန်၏သဘာဝ',
-    content: 'Past is a memory, future is a dream. Only the present moment is real and actionable.',
-    contentMy: 'အတိတ်ဆိုတာ အမှတ်ရမှု၊ အနာဂတ်ဆိုတာ အိပ်မက်။ ပစ္စုပ္ပန်အချိန်တစ်ခုတည်းကသာ အစစ်အမှန်ဖြစ်ပြီး လက်တွေ့ကျပါတယ်။',
-    pali: 'Khana'
+    title: 'Dhatukatha',
+    titleMy: 'ဓာတုကထာ',
+    summary: 'Discourse on Elements',
+    summaryMy: 'ဓာတ်တရားများကို အမေးအဖြေပြုသောကျမ်း။',
+    detailedSummary: 'A highly technical book that discusses the relationship of various phenomena to the aggregates, bases, and elements through inclusion and association.',
+    detailedSummaryMy: 'ရုပ်နာမ်တရားတို့ကို ခန္ဓာ၊ အာယတန၊ ဓာတ် တို့၌ မည်မျှပါဝင်သည်၊ မည်သို့ဆက်စပ်သည်ကို သရုပ်ခွဲပြသော ကျမ်းဖြစ်သည်။',
+    content: 'It focuses on whether a mental factor is included in a certain aggregate or associated with a certain element. It is like a relational database of Buddhist terminology.',
+    contentMy: 'ဓာတုကထာသည် တရားဓမ္မများကို "အစုအုပ်" အနေဖြင့်လည်းကောင်း၊ "ယှဉ်ဖော်ယှဉ်ဖက်" အနေဖြင့်လည်းကောင်း စနစ်တကျ ခွဲခြားသည်။ ဤကျမ်းကို လေ့လာခြင်းဖြင့် တရားတစ်ခုနှင့် တစ်ခု၏ ဆက်စပ်ပုံကို သိမြင်နိုင်သည်။',
+    chapters: [
+      { title: 'Sangaha-asangaha', titleMy: 'သင်္ဂဟ-အသင်္ဂဟ', desc: 'Analyzing which phenomena are included within specific groups (like Aggregates) and which are not.', descMy: 'တရားတစ်ခုသည် ခန္ဓာ၊ အာယတန၊ ဓာတ် တို့တွင် အကျုံးဝင်မှု(သွင်းယူရခြင်း) ရှိ၊ မရှိ ခွဲခြမ်းစိတ်ဖြာခြင်း။' },
+      { title: 'Sampayoga-vippayoga', titleMy: 'သမ္ပယောဂ-ဝိပ္ပယောဂ', desc: 'Examining the necessary association or dissociation of different mental states.', descMy: 'စိတ်နှင့် စေတသိက်တို့ အချင်းချင်း တွဲဖက်ယှဉ်တွဲမှု(သမ္ပယုတ်) ရှိ၊ မရှိ ကို ဆန်းစစ်ခြင်း။' }
+    ],
+    keyPrinciples: [
+      { title: 'Relational Logic', desc: 'Understanding reality by mapping how different mental and physical components group together or separate.' },
+      { title: 'Element Analysis', desc: 'Trimming complex phenomena down to the basic 18 elements to remove the illusion of a core entity.' }
+    ],
+    keyPrinciplesMy: [
+      { title: 'ဆက်စပ်မှုယုတ္တိ', desc: 'ရုပ်နာမ် အစိတ်အပိုင်းများ မည်သို့ ပူးပေါင်းဖွဲ့စည်းသည်၊ မည်သို့ကွဲကွာသည် ကို ပုံဖော်၍ အမှန်တရားကို နားလည်စေခြင်း။' },
+      { title: 'ဓာတ်ခွဲခြမ်းစိတ်ဖြာမှု', desc: 'ရှုပ်ထွေးသော တရားများကို အခြေခံ ဓာတ် ၁၈ ပါးအထိ ဖြိုခွဲ၍ "ငါ" ဟူသော အတ္တအထင်အမြင်ကို ပယ်ဖျက်ခြင်း။' }
+    ]
+  },
+  {
+    title: 'Puggalapannatti',
+    titleMy: 'ပုဂ္ဂလပညတ်',
+    summary: 'Designation of Individuals',
+    summaryMy: 'ပုဂ္ဂိုလ်များကို အမည်နာမအားဖြင့် သတ်မှတ်ခြင်း။',
+    brief: 'Classifications of individuals based on their spiritual progress.',
+    briefMy: 'အဘိဓမ္မာတွင် ပရမတ်ကိုအသားပေးသော်လည်း ဤကျမ်း၌ ပညတ်ကိုအသားပေး၍ ပုဂ္ဂိုလ်အမျိုးအစားများကို ခွဲခြားထားပါသည်။',
+    detailedSummary: 'While the rest of the Abhidhamma deals with ultimate realities, this book deals with conventional designations, specifically classifying different types of human individuals based on their spiritual progress.',
+    detailedSummaryMy: 'အဘိဓမ္မာကျမ်းအများစုသည် ပရမတ္ထတရားများကိုသာ ဟောကြားသော်လည်း၊ ဤကျမ်းသည် လောကဝေါဟာရ ပညတ်အားဖြင့် ပုဂ္ဂိုလ်အမျိုးမျိုးကို စာရင်းပြုစု၍ ဟောကြားထားသော ကျမ်းဖြစ်သည်။',
+    content: 'The Puggalapannatti is unique because it discusses persons (puggala). It classifies individuals into groups—from the common person to the fully enlightened Arahant—helping to understand terminology used in the Suttas.',
+    contentMy: 'ဤကျမ်းသည် ရုပ်နာမ်တရားများထက် "လူ/ပုဂ္ဂိုလ်" ကိုသာ အဓိကထား၍ ဟောကြားသည်။ ပုဂ္ဂိုလ် တစ်ဦးချင်းစီ၏ စိတ်ဓာတ်အဆင့်အတန်း၊ ကျင့်ကြံမှု အဆင့်အတန်းအလိုက် အမျိုးအစားခွဲခြား ပြဆိုထားပါသည်။ လူမိုက်၊ လူလိမ္မာ၊ အရိယာပုဂ္ဂိုလ် စသည်တို့ကို အုပ်စုဖွဲ့ ရှင်းလင်းထားသည်။',
+    chapters: [
+      { title: 'Eka Puggala', titleMy: 'ဧကက ပုဂ္ဂလ', desc: 'Descriptions of single, distinct individual types like a Buddha, Paccekabuddha, or ordinary person.', descMy: 'ဗုဒ္ဓ၊ ပစ္စေကဗုဒ္ဓ၊ ပုထုဇဉ် စသော တစ်ဦးချင်းစီဖြစ်သော ပုဂ္ဂိုလ်များ၏ သဘောသဘာဝနှင့် အရည်အသွေးများ။' },
+      { title: 'Duka Puggala', titleMy: 'ဒုက ပုဂ္ဂလ', desc: 'Grouping persons in pairs, contrasting their qualities (e.g., the angry vs the patient).', descMy: 'အမြတ်ထွက်တတ်သူနှင့် သည်းခံနိုင်သူ စသည်ဖြင့် ဆန့်ကျင်ဘက် သို့မဟုတ် ဆင်တူသော ပုဂ္ဂိုလ်နှစ်ဦးတွဲများ ခွဲခြားခြင်း။' },
+      { title: 'Tika Puggala', titleMy: 'တိက ပုဂ္ဂလ', desc: 'Categorizing persons in groups of three to explain deeper karmic characteristics.', descMy: 'ကျင်ဝတ်သိက္ခာပိုင်းဆိုင်ရာ အရည်အသွေးများကို အခြေခံ၍ ပုဂ္ဂိုလ်များကို ၃ ဦးတွဲ အုပ်စုများဖြင့် ရှင်းလင်းပြသခြင်း။' }
+    ],
+    keyPrinciples: [
+      { title: 'Conventional Reality', desc: 'Operating within the realm of worldly language (Sammuti Sacca) to establish moral clarity.' },
+      { title: 'Stages of Awakening', desc: 'Clearly demarcating the progress from a regular unenlightened person to the four stages of sainthood.' },
+      { title: 'Ethical Personhood', desc: 'Judging human worth solely based on purity of mind and liberation from defilements.' }
+    ],
+    keyPrinciplesMy: [
+      { title: 'ပညတ်တရား', desc: 'ကိုယ်ကျင့်တရားပိုင်းဆိုင်ရာ ရှင်းလင်းမှုရရှိစေရန် လောကဝေါဟာရ(သမုတိသစ္စာ) နယ်ပယ်မှနေ၍ ဟောကြားထားခြင်း။' },
+      { title: 'အရိယာအဆင့်အတန်းများ', desc: 'သာမန် ပုထုဇဉ်ဘဝမှစ၍ သောတာပန် အစရှိသော အရိယာအဆင့် ၄ ဆင့်သို့ တက်လှမ်းပုံကို တိကျစွာ ပိုင်းခြားပြခြင်း။' },
+      { title: 'ပုဂ္ဂိုလ်ရေးဆိုင်ရာ ကိုယ်ကျင့်တရား', desc: 'လူတစ်ဦး၏ တန်ဖိုးကို ၎င်း၏ စိတ်နှလုံး ဖြူစင်မှုနှင့် ကိလေသာမှ ကင်းဝေးမှုတို့ဖြင့်သာ တိုင်းတာခြင်း။' }
+    ]
+  },
+  {
+    title: 'Kathavatthu',
+    titleMy: 'ကထာဝတ္ထု',
+    summary: 'Points of Controversy',
+    summaryMy: 'ဝါဒကွဲပြားမှုများကို ဖြေရှင်းသောကျမ်း။',
+    detailedSummary: 'Composed during the time of King Asoka to refute 216 heretical or deviating views within the Buddhist Sangha using rigorous Abhidhamma logic.',
+    detailedSummaryMy: 'တတိယသံဂါယနာတင်ချိန်တွင် အယူဝါဒလွဲမှားမှုများကို ပယ်ဖျက်ရန် အရှင်မောဂ္ဂလိပုတ္တတိဿထေရ် ဟောကြားခဲ့သော ကျမ်းဖြစ်သည်။',
+    content: 'It covers debates on whether a person exists as a permanent entity, whether attainment can be lost, and other subtle points. It demonstrates the analytical power of the Dhamma.',
+    contentMy: 'ဗုဒ္ဓသာသနာအတွင်း ဖြစ်ပေါ်လာသော အယူလွဲ ၂၀၀ ကျော်ကို အဘိဓမ္မာ ယုတ္တိဗေဒနည်းလမ်းများဖြင့် စနစ်တကျ ပယ်ဖျက်၍ စင်ကြယ်သော မူလဝါဒကို တည်ဆောက်ထားသော ကျမ်းဖြစ်သည်။ အခြားဂိုဏ်းကွဲများ၏ အယူအဆများကို မေးခွန်းထုတ်၍ ချေပထားသည်။',
+    chapters: [
+      { title: 'Puggala katha', titleMy: 'ပုဂ္ဂလကထာ', desc: 'Logical arguments refuting the existence of a permanent soul or self (Atman).', descMy: 'မြဲမြံသော အတ္တ၊ ပုဂ္ဂိုလ်လိပ်ပြာ အမှန်တကယ်ရှိသည် ဟူသော အယူဝါဒကို ယုတ္တိဖြင့် အတိအကျ ပယ်ဖျက်ခြင်း။' },
+      { title: 'Parihani katha', titleMy: 'ပရိဟာနိကထာ', desc: 'Debate resolving whether a fully enlightened Arahant can fall back from their status.', descMy: 'ရဟန္တာပုဂ္ဂိုလ်များသည် အရဟတ္တဖိုလ်မှ အောက်သို့ ပြန်လည်ဆုတ်ယုတ်နိုင်သလား ဟူသော အငြင်းပွားမှုကို ဖြေရှင်းခြင်း။' },
+      { title: 'Sabbasatthikavada', titleMy: 'သဗ္ဗမတ္ထိကဝါဒ', desc: 'Refuting the idea that past, present, and future realities exist simultaneously.', descMy: 'အတိတ်၊ ပစ္စုပ္ပန်၊ အနာဂတ် ကာလသုံးပါးလုံး၌ တရားတို့သည် အမြဲတမ်းရှိနေသည် ဟူသော အယူအဆကို ခြေပခြင်း။' }
+    ],
+    keyPrinciples: [
+      { title: 'Debate Methodology', desc: 'A strict, formal dialectic algorithm designed to force opponents into self-contradiction.' },
+      { title: 'Orthodoxy Shield', desc: 'Preserving the pure teaching (Theravada) against internal deviations over time.' },
+      { title: 'Refutation of Heresy', desc: 'Systematically disproving the existence of a permanent self, showing that all continuity is causal.' }
+    ],
+    keyPrinciplesMy: [
+      { title: 'ငြင်းခုံနည်းစနစ်', desc: 'တစ်ဖက်သားအား ၎င်း၏အယူအဆ မှားယွင်းကြောင်း ကိုယ်တိုင်ဝန်ခံလာစေရန် ဖိအားပေးနိုင်သော တိကျသည့် ယုတ္တိဗေဒ နည်းလမ်း။' },
+      { title: 'မူလဝါဒကို ကာကွယ်ခြင်း', desc: 'ခေတ်ကာလကြာလာသည်နှင့်အမျှ သာသနာတွင်း၌ ပေါ်ပေါက်လာနိုင်သော လွဲမှားမှုများမှ စစ်မှန်သော ထေရဝါဒကို ကာကွယ်ခြင်း။' },
+      { title: 'အယူလွဲများကို ပယ်ဖျက်ခြင်း', desc: 'မြဲမြံသောအသက်၊ လိပ်ပြာ ရှိသည်ဟူသော အယူကိုစနစ်တကျ ခြေပ၍ အရာရာသည် အကြောင်းတရားကြောင့်သာ ဖြစ်စဉ်ဆက်နေကြောင်း ပြသခြင်း။' }
+    ]
+  },
+  {
+    title: 'Yamaka',
+    titleMy: 'ယမိုက်',
+    summary: 'Book of Pairs',
+    summaryMy: 'အမေးအဖြေများကို အတွဲလိုက်ဟောကြားသောကျမ်း။',
+    brief: 'The logical formulation using pairs of questions to clarify terms.',
+    briefMy: 'အဘိဓမ္မာ ဝေါဟာရများ၏ နယ်ပယ်ကို အမေးအဖြေ "အတွဲ" လိုက်ဖြင့် တိကျစွာ သတ်မှတ်ပေးသော ကျမ်းဖြစ်သည်။',
+    detailedSummary: 'The Yamaka aims at clarifying meanings and clarifying the boundaries of technical terms by using a dual system of questions (pairs), exploring the logical relationships between concepts.',
+    detailedSummaryMy: 'ယမိုက်ကျမ်းသည် တရားဓမ္မများ၏ အဓိပ္ပာယ်နှင့် အတိုင်းအတာကို တိကျစေရန် အမေးနှင့်အဖြေကို "အတွဲ" လိုက် ပြုလုပ်၍ ဟောကြားသော ကျမ်းဖြစ်သည်။',
+    content: 'The Yamaka applies a logical method to ensure that terms are applied correctly. For example: "Are all wholesome states root-causes? Are all root-causes wholesome states?" This rigorous logic prevents semantic confusion.',
+    contentMy: 'ဤကျမ်းသည် "ယမိုက်" ဟုခေါ်သော အတွဲလိုက်နည်းလမ်းဖြင့် ဟောကြားသည်။ "ကုသိုလ်ဖြစ်သော တရားအားလုံးသည် ဟိတ် (အမြစ်) လား? ဟိတ် (အမြစ်) ဖြစ်သော တရားအားလုံးသည် ကုသိုလ်လား?" စသည်ဖြင့် အသွားအပြန် မေးခွန်းထုတ်၍ ဝေါဟာရများ မရောထွေးစေရန် ကာကွယ်ပေးသည်။',
+    chapters: [
+      { title: 'Mula Yamaka', titleMy: 'မူလယမိုက်', desc: 'Applying the pairs logic to the roots (mula) of wholesome and unwholesome actions.', descMy: 'ကုသိုလ်၊ အကုသိုလ်တို့၏ အရင်းခံဖြစ်သော ဟိတ်တရားများကို ယမိုက်အတွဲနည်းဖြင့် အနက်ဖွင့်ဆိုခြင်း။' },
+      { title: 'Khandha Yamaka', titleMy: 'ခန္ဓာယမိုက်', desc: 'Pairs used to precisely define the boundaries of the five aggregates.', descMy: 'ခန္ဓာ ၅ ပါး၏ နယ်ပယ်နှင့် အဓိပ္ပာယ် အတိအကျကို အမေးအဖြေ အတွဲများဖြင့် ရှင်းလင်း သတ်မှတ်ခြင်း။' },
+      { title: 'Ayatana Yamaka', titleMy: 'အာယတနယမိုက်', desc: 'Logical pairing to eliminate ambiguity regarding the sense bases.', descMy: 'အာယတန ၁၂ ပါးနှင့် ပတ်သက်၍ အထင်အမြင်လွဲမှားမှုများ မရှိစေရန် ယုတ္တိဗေဒနည်းဖြင့် သရုပ်ဖော်ခြင်း။' }
+    ],
+    keyPrinciples: [
+      { title: 'Logical Pairs', desc: 'A dual-question format (direct and inverse) to eliminate any linguistic loopholes.' },
+      { title: 'Terminological Boundaries', desc: 'Defining the exact breadth and depth of Dhamma concepts so they cannot be misinterpreted.' },
+      { title: 'Semantic Precision', desc: 'Preventing the mixing of categories, ensuring clear communication of the ultimate realities.' }
+    ],
+    keyPrinciplesMy: [
+      { title: 'ယုတ္တိဗေဒ အတွဲများ', desc: 'ဝေါဟာရကွာဟမှုများ မရှိစေရန် အသွားအပြန် (အနုလုံ၊ ပဋိလုံ) မေးခွန်းအတွဲများဖြင့် ချုပ်ထားခြင်း။' },
+      { title: 'ဝေါဟာရ အတိုင်းအတာ', desc: 'တရားဓမ္မ အယူအဆများ၏ အတိအကျ ကျယ်ပြန့်မှုနှင့် နက်ရှိုင်းမှုကို သတ်မှတ်၍ အထင်လွဲမှားမှုများကို တားဆီးခြင်း။' },
+      { title: 'အဓိပ္ပာယ် တိကျမှု', desc: 'အုပ်စုများ ရောထွေးမှုမရှိစေဘဲ ပရမတ္ထတရားများကို ရှင်းလင်းပြတ်သားစွာ ပြောဆိုဆက်သွယ်နိုင်စေခြင်း။' }
+    ]
+  },
+  {
+    title: 'Patthana',
+    titleMy: 'ပဋ္ဌာန်း',
+    summary: 'Book of Causal Relations',
+    summaryMy: 'အကြောင်းတရား ၂၄ ပစ္စည်းကို ဟောသောကျမ်း။',
+    brief: 'The vast network of 24 conditional relations mapping the entire universe.',
+    briefMy: 'လောကကြီးတစ်ခုလုံး မည်သို့ ဆက်စပ်နေသနည်း ဆိုသည်ကို အကြောင်းတရား(ပစ္စည်း) ၂၄ ပါးဖြင့် ရှင်းလင်းထားသော မဟာကျမ်းကြီးဖြစ်သည်။',
+    detailedSummary: 'The Great Book (Mahapakarana). It explains the 24 universal laws of conditionality that govern the arising and movement of all phenomena.',
+    detailedSummaryMy: 'အဘိဓမ္မာ ၇ ကျမ်းတွင် နောက်ဆုံးနှင့် အကြီးကျယ်ဆုံး ကျမ်းဖြစ်သည်။ စကြဝဠာအတွင်းရှိ ရုပ်နာမ်တရားအားလုံး အကြောင်းအကျိုး မည်သို့ ဆက်စပ်နေသည်ကို ပစ္စည်း ၂၄ ပါးဖြင့် အသေးစိတ် ပြဆိုသည်။',
+    content: 'Patthana analyzes reality not as static things, but as a dynamic, interconnected web where causes and conditions work together in complex ways to produce results.',
+    contentMy: 'ပဋ္ဌာန်းကျမ်းသည် အလွန်ကျယ်ဝန်းနက်နဲသဖြင့် "မဟာပကရဏ" ဟု ခေါ်ဆိုသည်။ ဟိတ်၊ အာရမ္မဏ၊ အဓိပတိ အစရှိသော ပစ္စည်း ၂၄ ပါးတို့ဖြင့် လောက၏ နိယာမတရားကို အလုံးစုံ လွှမ်းခြုံဟောကြားထားခြင်း ဖြစ်သည်။ အရာရာသည် အကြောင်းတရားကြောင့်သာ ဖြစ်ပေါ်လာကြောင်း အထင်အရှား ပြသသည်။',
+    chapters: [
+      { title: 'Paccayauddesa', titleMy: 'ပစ္စယုဒ္ဒေသ', desc: 'A brief recitation introducing the 24 conditions (Paccayas).', descMy: 'လောကနိယာမကို အုပ်စိုးသော ၂၄ ပစ္စည်း အမည်နာမများကို အကျဉ်းချုပ် ရွတ်ဆိုပြသော အခန်း။' },
+      { title: 'Paccayaniddesa', titleMy: 'ပစ္စယနိဒ္ဒေသ', desc: 'Detailed explanation of each of the 24 conditions and how they operate.', descMy: 'ပစ္စည်း ၂၄ ပါး တစ်ခုချင်းစီ၏ သဘောသဘာဝနှင့် ၎င်းတို့ မည်သို့ အလုပ်လုပ်ပုံကို အကျယ်တဝင့် ဖွင့်ဆိုချက်။' },
+      { title: 'Tika Patthana', titleMy: 'တိကပဋ္ဌာန်း', desc: 'Explaining conditions organized around the triplets of the Matika.', descMy: 'ကုသိုလ်၊ အကုသိုလ် သုံးပါးတွဲ (တိက) တရားများကို အခြေခံ၍ ပဋ္ဌာန်းနည်းဖြင့် ကျေးဇူးပြုပုံ အကျယ်။' },
+      { title: 'Duka Patthana', titleMy: 'ဒုကပဋ္ဌာန်း', desc: 'Explaining conditions organized around the doublets of the Matika.', descMy: 'နှစ်ပါးတွဲ (ဒုက) တရားများကို အခြေခံ၍ ပဋ္ဌာန်းဆက်စပ်မှု နိယာမများကို အသေးစိတ် ရှင်းလင်းချက်။' }
+    ],
+    paccayas: [
+      { title: "Hetu Paccaya", titleMy: "ဟေတုပစ္စည်း", desc: "Root condition. Supports phenomena like a root grounds a tree.", descMy: "အမြစ်ကဲ့သို့ ခိုင်မြဲစေရန် ကျေးဇူးပြုသော အကြောင်းတရား (လောဘ၊ ဒေါသ၊ မောဟ လောဘကင်းခြင်း စသည်)။" },
+      { title: "Arammana Paccaya", titleMy: "အာရမ္မဏပစ္စည်း", desc: "Object condition. Supports consciousness by acting as an object, like a walking stick supports a person.", descMy: "စိတ်၊ စေတသိက်တို့ ဖြစ်ပေါ်ရန် ဆွဲမီရာ အာရုံအဖြစ် ကျေးဇူးပြုသော တရား။" },
+      { title: "Adhipati Paccaya", titleMy: "အဓိပတိပစ္စည်း", desc: "Predominance condition. Exercises control over associated states, like a king ruling his kingdom.", descMy: "အစိုးတရ အုပ်ချုပ်ခြင်းဖြင့် ကျေးဇူးပြုသော တရား။" },
+      { title: "Anantara Paccaya", titleMy: "အနန္တရပစ္စည်း", desc: "Contiguity condition. Preceding states giving way to succeeding ones without interval.", descMy: "ကြားမလပ် အဆက်မပြတ် ဖြစ်ပေါ်ခြင်းဖြင့် ကျေးဇူးပြုသော တရား။" },
+      { title: "Samanantara Paccaya", titleMy: "သမနန္တရပစ္စည်း", desc: "Immediate contiguity condition. Similar to Anantara but emphasizing absolute immediacy.", descMy: "အလွန်တရာ အဆက်မပြတ် ဖြစ်ပေါ်ခြင်းဖြင့် ကျေးဇူးပြုသော တရား။" },
+      { title: "Sahajata Paccaya", titleMy: "သဟဇာတပစ္စည်း", desc: "Co-nascence condition. Phenomena supporting each other by arising simultaneously, like a lamp and light.", descMy: "ဆီမီးနှင့် အလင်းရောင်ကဲ့သို့ အတူတကွဖြစ်ပေါ်၍ ကျေးဇူးပြုသော တရား။" },
+      { title: "Aññamañña Paccaya", titleMy: "အညမညပစ္စည်း", desc: "Mutuality condition. Mutually supporting one another like three sticks standing tightly together.", descMy: "ခြေတံသုံးချောင်းပါ ခုံကဲ့သို့ အချင်းချင်း အပြန်အလှန် မှီတင်းကျေးဇူးပြုသော တရား။" },
+      { title: "Nissaya Paccaya", titleMy: "နိဿယပစ္စည်း", desc: "Dependence condition. Providing a base for other states to exist upon, like the earth supporting trees.", descMy: "ကမ္ဘာမြေကြီးကဲ့သို့ မှီခိုရာအဖြစ် ကျေးဇူးပြုသော တရား။" },
+      { title: "Upanissaya Paccaya", titleMy: "ဥပနိဿယပစ္စည်း", desc: "Decisive support condition. A powerful preceding cause that heavily influences future states.", descMy: "မိုးသည်းထန်စွာ ရွာသွန်းခြင်းသည် သစ်ပင်များအတွက် အားကြီးသကဲ့သို့ အားကြီးသော အမှီအခိုအဖြစ် ကျေးဇူးပြုသော တရား။" },
+      { title: "Purejata Paccaya", titleMy: "ပုရေဇာတပစ္စည်း", desc: "Pre-nascence condition. A previously arisen physical base or object that continues to exist to support new states.", descMy: "ရှေးဦးစွာဖြစ်ပေါ်၍ နောက်မှဖြစ်သော တရားအား ကျေးဇူးပြုသော တရား။" },
+      { title: "Pacchajata Paccaya", titleMy: "ပစ္ဆာဇာတပစ္စည်း", desc: "Post-nascence condition. Later mental states that support a pre-existing physical body.", descMy: "နောက်မှဖြစ်ပေါ်၍ ရှေးဦးစွာဖြစ်ပြီးသော ရုပ်တရားအား ကျေးဇူးပြုသော တရား။" },
+      { title: "Asevana Paccaya", titleMy: "အာသေဝနပစ္စည်း", desc: "Repetition condition. Repeated kamma giving strength to subsequent instances.", descMy: "ထပ်ကာထပ်ကာ အကြိမ်ကြိမ် မှီဝဲခြင်းဖြင့် နောက်နောက်သော တရားများကို အားကောင်းစေရန် ကျေးဇူးပြုသော တရား။" },
+      { title: "Kamma Paccaya", titleMy: "ကမ္မပစ္စည်း", desc: "Kamma condition. Action (volition) generating results.", descMy: "ပြုလုပ်ခြင်း၊ စေ့ဆော်ခြင်း သဘောဖြင့် အကျိုးကို ဖြစ်ပွားစေသော (ကံ) အကြောင်းတရား။" },
+      { title: "Vipaka Paccaya", titleMy: "ဝိပါကပစ္စည်း", desc: "Kamma-result condition. The effortless ripening of past kamma.", descMy: "ကံ၏ အကျိုးရလဒ်အနေဖြင့် ငြိမ်းအေးစွာ ကျေးဇူးပြုသော တရား။" },
+      { title: "Ahara Paccaya", titleMy: "အာဟာရပစ္စည်း", desc: "Nutriment condition. Sustaining the material and mental body.", descMy: "ရုပ်နာမ်တို့ကို ထောက်ပံ့ကျွေးမွေးခြင်း သဘောဖြင့် ကျေးဇူးပြုသော အာဟာရတရား။" },
+      { title: "Indriya Paccaya", titleMy: "ဣန္ဒြိယပစ္စည်း", desc: "Faculty condition. Exercising dominance over its specific domain.", descMy: "မိမိတို့၏ သက်ဆိုင်ရာကိစ္စများတွင် အကြီးအကဲအဖြစ် ကျေးဇူးပြုသော တရား။" },
+      { title: "Jhana Paccaya", titleMy: "ဈာနပစ္စည်း", desc: "Jhana condition. Closely contemplating an object, preventing distraction.", descMy: "အာရုံတစ်ခုတည်းကို စူးစိုက်ရှုမှတ်ခြင်းဖြင့် ကျေးဇူးပြုသော တရား။" },
+      { title: "Magga Paccaya", titleMy: "မဂ္ဂပစ္စည်း", desc: "Path condition. Factors that lead one towards a destination.", descMy: "နိဗ္ဗာန် သို့မဟုတ် အပါယ် သို့ ရောက်စေရန် လမ်းကြောင်းအဖြစ် ကျေးဇူးပြုသော တရား။" },
+      { title: "Sampayutta Paccaya", titleMy: "သမ္ပယုတ္တပစ္စည်း", desc: "Association condition. Blending perfectly together physically or mentally.", descMy: "နွားနို့နှင့် ရေ ရောနှောသကဲ့သို့ ခွဲခြား၍မရအောင် ယှဉ်တွဲ၍ ကျေးဇူးပြုသော တရား။" },
+      { title: "Vippayutta Paccaya", titleMy: "ဝိပ္ပယုတ္တပစ္စည်း", desc: "Dissociation condition. Supporting one another while remaining entirely distinct.", descMy: "မယှဉ်တွဲဘဲ သီးခြားစီနေလျက် တစ်ခုကိုတစ်ခု ကျေးဇူးပြုသော တရား။" },
+      { title: "Atthi Paccaya", titleMy: "အတ္ထိပစ္စည်း", desc: "Presence condition. Supporting other phenomena simply by continuing to exist.", descMy: "ထင်ရှားရှိနေခြင်းဖြင့် မှီခိုရာအဖြစ် ကျေးဇူးပြုသော တရား။" },
+      { title: "Natthi Paccaya", titleMy: "နတ္ထိပစ္စည်း", desc: "Absence condition. A phenomenon making way for a new one by ceasing to exist.", descMy: "ကွယ်ပျောက်သွားခြင်းဖြင့် နေရာဖယ်ပေး၍ ကျေးဇူးပြုသော တရား။" },
+      { title: "Vigata Paccaya", titleMy: "ဝိဂတပစ္စည်း", desc: "Disappearance condition. Almost identical to Natthi Paccaya—making space by disappearing.", descMy: "ကင်းလွတ်သွားခြင်း၊ ထွက်ခွာသွားခြင်းဖြင့် နောက်တရားများဖြစ်ပေါ်ရန် ကျေးဇူးပြုသော တရား။" },
+      { title: "Avigata Paccaya", titleMy: "အဝိဂတပစ္စည်း", desc: "Non-disappearance condition. Similar to Atthi Paccaya—supporting by not yet ceasing.", descMy: "မကင်းလွတ်သေးဘဲ ဆက်လက်တည်ရှိနေခြင်းဖြင့် ကျေးဇူးပြုသော တရား။" }
+    ],
+    keyPrinciples: [
+      { title: 'Universal Connectivity', desc: 'The paradigm that absolutely nothing arises independently; everything is part of an infinite causal web.' },
+      { title: '24 Paccayas', desc: 'The comprehensive framework of 24 specific types of conditionality (e.g., Root condition, Object condition) mapping how causes interact.' },
+      { title: 'Dynamic Reality', desc: 'Shifting the view from a universe of static objects to a fluid continuum of interconnected processes.' }
+    ],
+    keyPrinciplesMy: [
+      { title: 'အလုံးစုံ ဆက်စပ်မှု', desc: 'အကြောင်းတရားမရှိဘဲ မည်သည့်အရာမှ သီးခြားဖြစ်ပေါ်မလာနိုင်ဘဲ အရာရာသည် အဆုံးမဲ့ ဆက်စပ်ကွန်ရက်ကြီးတစ်ခု ဖြစ်သည်ဟူသော အမြင်။' },
+      { title: '၂၄ ပစ္စည်း နိယာမ', desc: 'ဟိတ်(အမြစ်) ၊ အာရမ္မဏ(အာရုံ) စသည့် အကြောင်းတရား အမျိုးအစား ၂၄ မျိုးဖြင့် အကြောင်းနှင့်အကျိုး မည်သို့ဆက်စပ်သည်ကို အသေးစိတ် ပုံဖော်ခြင်း။' },
+      { title: 'ပြောင်းလဲနေသော အမှန်တရား', desc: 'လောကကို မပြောင်းလဲသော အရာဝတ္ထုများအဖြစ် မမြင်စေဘဲ၊ တစ်ခုနှင့်တစ်ခု အပြန်အလှန် ဆက်စပ်ဖြစ်ပေါ်နေသော ဖြစ်စဉ် ရေစီးကြောင်းအဖြစ် ရှုမြင်စေခြင်း။' }
+    ]
   }
 ];
 
@@ -212,285 +443,85 @@ export const MIND_AGGREGATES = [
   { 
     name: 'Vinnana', 
     title: 'Consciousness', 
-    titleMy: 'ဝိညာဏ်', 
-    desc: 'The base awareness that knows the other four.', 
-    descMy: 'သိမှု ဝိညာဉ်။',
+    titleMy: 'ဝိညာဉ်', 
+    desc: 'Bare awareness of an object.', 
+    descMy: 'အာရုံကို သိမြင်တတ်သော သဘော။',
     details: 'Vinnana is the awareness itself. It is the clarity that allows for the experience of an object. While the other four aggregates are like the picture, consciousness is the "screen" or the "mirror" that reflects the presence of the data.',
-    detailsMy: 'ဝိညာဏ်သည် သိခြင်းသဘောဖြစ်သည်။ အာရုံကို သိမြင်တတ်သော သဘောရှိသည်။ အခြားခန္ဓာ ၄ ပါးသည် အချက်အလက်များဆိုလျှင် ဝိညာဏ်သည် ထိုအချက်အလက်များကို ထင်ဟပ်ဖော်ပြသော "မှန်" သို့မဟုတ် "ဖန်သားပြင်" ကဲ့သို့ ဖြစ်သည်။'
+    detailsMy: 'ဝိညာဉ်သည် သိခြင်းသဘောဖြစ်သည်။ အာရုံကို သိမြင်တတ်သော သဘောရှိသည်။ အခြားခန္ဓာ ၄ ပါးသည် အချက်အလက်များဆိုလျှင် ဝိညာဉ်သည် ထိုအချက်အလက်များကို ထင်ဟပ်ဖော်ပြသော "မှန်" သို့မဟုတ် "ဖန်သားပြင်" ကဲ့သို့ ဖြစ်သည်။'
   }
 ];
 
-export const ABHIDHAMMA_BOOKS = [
+export const FOLLOWING_POSTS = [
   {
-    title: 'Dhammasangani',
-    titleMy: 'ဓမ္မသင်္ဂဏီ',
-    summary: 'Enumeration of Phenomena',
-    summaryMy: 'ရုပ်၊ နာမ်၊ ဓမ္မတို့ကို အသေးစိတ် သရုပ်ခွဲပြခြင်း။',
-    brief: 'A comprehensive list and classification of mental and physical phenomena.',
-    briefMy: 'နာမ်တရား၊ ရုပ်တရားတို့ကို စာရင်းပြုစု၍ အတိုချုပ် သရုပ်ဖွဲပြသော ကျမ်းဖြစ်သည်။',
-    detailedSummary: 'This primary text functions as the analytical dictionary of the Buddhist philosophical system. It systematically maps the entirety of consciousness (Citta), the 52 associated mental factors (Cetasika), and the properties of physical matter (Rupa), organizing them into ethical categories that help the practitioner distinguish between paths that lead to suffering and those that lead to liberation.',
-    detailedSummaryMy: 'ဤကျမ်းသည် ဗုဒ္ဓဘာသာ ဒဿနဗေဒ၏ အခြေခံအကျဆုံး "အဘိဓာန်" ကဲ့သို့ ဖြစ်ပါသည်။ စိတ်၊ စေတသိက်၊ ရုပ် ဟူသော ပရမတ္ထတရားတို့ကို ကုသိုလ်၊ အကုသိုလ်၊ အဗျာကတ ဟူသော ကဏ္ဍကြီး ၃ ခုဖြင့် အသေးစိတ် သရုပ်ခွဲပြဆိုထားပါသည်။ တရားကျင့်ကြံသူများအတွက် မည်သည့်တရားသည် ဆင်းရဲကြောင်း၊ မည်သည့်တရားသည် ငြိမ်းအေးကြောင်းကို အခြေခံမှစ၍ နားလည်စေသော ကျမ်းဖြစ်သည်။',
-    content: 'The Dhammasangani (Enumeration of Phenomena) is the inaugural text of the Abhidhamma Pitaka, serving as the definitive analytical dictionary of the Buddhist philosophical system. It meticulously classifies the ultimate constituents of reality into four primary categories: 121 types of Consciousness (Citta), 52 Mental Factors (Cetasika), 28 types of Materiality (Rupa), and the unconditioned element, Nibbana. The text starts with the "Matika" or Matrix, a set of 22 Triplets (Tikas) and 100 Doublets (Dukas) that categorize all phenomena based on their ethical quality (wholesome, unwholesome, or neutral) and their relationship to various stages of the path. It provides the microscopic level of detail needed to understand how a single moment of awareness is constructed from multiple mental components.',
-    contentMy: 'ဓမ္မသင်္ဂဏီကျမ်းသည် အဘိဓမ္မာ ၇ ကျမ်းတွင် ပထမဆုံးနှင့် အဓိကအကျဆုံး အခြေခံကျမ်းကြီးဖြစ်သည်။ ဤကျမ်းကြီးသည် ရုပ်နာမ်ဓမ္မတို့၏ သဘာဝကို အဏုမြူစွယ်အထိ စိတ်ဖြာ၍ ကုသိုလ်၊ အကုသိုလ်၊ အဗျာကတ ဟူသော ကဏ္ဍကြီးများဖြင့် ခွဲခြားပြဆိုသည်။ စိတ် (၁၂၁) ပါး၊ စေတသိက် (၅၂) ပါး၊ ရုပ် (၂၈) ပါးနှင့် နိဗ္ဗာန် ဟူသော ပရမတ္ထတရား လေးပါးတို့ကို အသေးစိတ် သရုပ်ဖော်ထားသည်။ အထူးသဖြင့် "မာတိကာ" ဟုခေါ်သော သရုပ်ခွဲနည်းစနစ်သစ်ဖြင့် တရားအားလုံးကို တိက (၃ ပါးတွဲ) ၂၂ ပါးနှင့် ဒုက (၂ ပါးတွဲ) ၁၀၀ တို့ဖြင့် လွှမ်းခြုံဟောကြားထားရာ ဗုဒ္ဓဘာသာ တစ်ခုလုံး၏ ဒဿနဗေဒ အဘိဓာန်ကြီးသဖွယ် ဖြစ်ပါသည်။',
-    chapters: [
-      { title: 'Citta-vibhatti', titleMy: 'စိတ္တဝိဘတ္တိ', desc: 'Analysis of Consciousness', descMy: 'စိတ်အမျိုးမျိုးကို ခွဲခြားခြင်း' },
-      { title: 'Cetasika-vibhatti', titleMy: 'စေတသိကဝိဘတ္တိ', desc: 'Analysis of Mental Factors', descMy: 'စေတသိက်များကို ခွဲခြားခြင်း' },
-      { title: 'Rupa-kanda', titleMy: 'ရူပကဏ္ဍ', desc: 'Section on Materiality', descMy: 'ရုပ်တရားများ အပိုင်း' },
-      { title: 'Nikkhepa-kanda', titleMy: 'နိက္ခေပကဏ္ဍ', desc: 'Summary of the Matrix', descMy: 'မာတိကာ အကျဉ်းချုပ်' },
-      { title: 'Atthasara-kanda', titleMy: 'အတ္ထသာရကဏ္ဍ', desc: 'The Essence of Meaning', descMy: 'အနှစ်ချုပ် အဓိပ္ပာယ်' }
-    ],
-    keyPrinciples: [
-      'Classification by Ethical Quality',
-      'The Four Ultimate Realities',
-      'Construction of Consciousness'
-    ],
-    keyPrinciplesMy: [
-      'ကုသိုလ်၊ အကုသိုလ်၊ အဗျာကတ သရုပ်ခွဲခြင်း',
-      'ပရမတ္ထတရား လေးပါး',
-      'စိတ်ဖြစ်ပေါ်ပုံ နည်းစနစ်'
-    ]
+    id: 'milinda-deep-1',
+    author: 'King Milinda',
+    handle: 'indo_greek_king',
+    time: 'now',
+    title: 'What represents the Chariot?',
+    titleMy: 'ရထားဆိုသည်မှာ အဘယ်နည်း (အနတ္တသဘော)',
+    content: '"O Sage, is the axle the chariot? Or is it the wheels, the chassis, the stabilizers, or the reins? If none of these are the chariot, then the chariot does not exist!" I challenged. Nagasena replied: "In the same way, O King, the name \'Nagasena\' is but a designation for the collection of the Five Aggregates—the body, feelings, perceptions, mental formations, and consciousness. Just as the word \'chariot\' depends on the assembly of its parts, \'self\' depends on the assembly of these elements."',
+    contentMy: '"အရှင်နာဂသိန်၊ ရထားဆိုတာ ဝင်ရိုးလား? ဘီးလား? ဘောင်လား? ထိန်းကျောင်းတဲ့ ကြိုးတွေလား? ဒီအရာတွေ တစ်ခုမှ ရထားမဟုတ်ရင် ရထားဆိုတာ လောကမှာ တကယ်မရှိဘူးပေါ့" ဟု ကျွန်ုပ်က ယုတ္တိဖြင့် စိန်ခေါ်ခဲ့ပါသည်။ အရှင်နာဂသိန်က "မင်းကြီး၊ ရထားဆိုတာ အစိတ်အပိုင်းတွေ စုစည်းထားမှုကို ခေါ်ဝေါ်တဲ့ ပညတ်တစ်ခုသာ ဖြစ်သလို၊ \'နာဂသိန်\' ဆိုတာဟာလည်း ရုပ်၊ ဝေဒနာ၊ သညာ၊ သင်္ခါရ၊ ဝိညာဏ် ဆိုတဲ့ ခန္ဓာငါးပါး စုစည်းမှုကို ခေါ်ဝေါ်တဲ့ နာမည်တစ်ခုသာ ဖြစ်ပါတယ်။ အစိတ်အပိုင်းတွေကို ဖယ်ထုတ်လိုက်ရင် ရထားမရှိသလို၊ ခန္ဓာတွေကို ဖယ်ထုတ်လိုက်ရင် \'ငါ\' ဆိုတဲ့ အတ္တဟာလည်း ရှာမတွေ့နိုင်တော့ပါဘူး" ဟု အနတ္တသဘောကို နက်နဲစွာ ရှင်းပြခဲ့ပါသည်။',
+    pali: 'Anatta',
+    icon: '🏛️'
   },
   {
-    title: 'Vibhanga',
-    titleMy: 'ဝိဘင်း',
-    summary: 'The Book of Analysis',
-    summaryMy: 'ဓမ္မသဘောများကို ဝေဖန်ခြားနားပြခြင်း။',
-    brief: 'Analysis of key Buddhist concepts like the five aggregates and truth.',
-    briefMy: 'ခန္ဓာ၊ အာယတန၊ ဓာတ်၊ သစ္စာစသည်တို့ကို ကျယ်ပြန့်စွာ ခွဲခြမ်းစိတ်ဖြာ ဟောကြားသော ကျမ်းဖြစ်သည်။',
-    detailedSummary: 'The Vibhanga applies the microscopic analysis of the first book to the broader concepts found in the Suttas. Through 18 specialized chapters, it dissects the Nature of Truth, the Path of Purification, and the 12 Links of Dependent Origination, providing a complete structural map of how suffering arises and how it is definitively ended.',
-    detailedSummaryMy: 'ဝိဘင်းကျမ်းသည် ပထမကျမ်းရှိ အသေးစိတ်ခွဲခြမ်းမှုများကို သုတ္တန်လာ တရားများနှင့် ပေါင်းစပ်ရှင်းလင်းသည်။ ခန္ဓာ၊ အာယတန၊ ဓာတ်၊ သစ္စာနှင့် ပဋိစ္စသမုပ္ပါဒ် စသော အခန်းပေါင်း ၁၈ အခန်းဖြင့် ဆင်းရဲဒုက္ခ မည်သို့ဖြစ်ပေါ်သည်၊ မည်သို့ချုပ်ငြိမ်းသည်ကို စနစ်တကျ ပြဆိုထားပါသည်။',
-    content: 'The Vibhanga (Book of Analysis) continues the systematic deconstruction of reality by taking the broader concepts taught in the Suttas and applying the rigorous Abhidhamma method to them. It consists of 18 chapters (Vibhangas), each providing an exhaustive analysis of topics such as the Five Aggregates (Khandha), the Twelve Sense Bases (Ayatana), the Eighteen Elements (Dhatu), and the Four Noble Truths (Sacca). For every topic, the text uses a three-fold analytical approach: the "Suttanta-bhajaniya" (the simple Sutta-style explanation), the "Abhidhamma-bhajaniya" (detailed technical analysis), and the "Pañha-pucchaka" (a vigorous question-and-answer format). This ensures that the student understands the teachings both as practical guidance and as deep ontological truth.',
-    contentMy: 'ဝိဘင်းကျမ်းသည် ဓမ္မသင်္ဂဏီ၌ ဟောကြားခဲ့သော တရားများကို အကြောင်းအရာအလိုက် သရုပ်ခွဲ၍ ပိုမိုကျယ်ပြန့်စွာ ရှင်းလင်းဟောကြားသော ကျမ်းဖြစ်သည်။ ခန္ဓာ၊ အာယတန၊ ဓာတ်၊ သစ္စာ၊ ဣန္ဒြေနှင့် ပဋိစ္စသမုပ္ပါဒ် စသည့် အခန်းကြီး ၁၈ ခန်း ပါဝင်သည်။ အခန်းတစ်ခန်းစီတွင် (၁) သုတ္တန်နည်း (သာမန်လူတို့ နားလည်စေရန် ဟောကြားချက်)၊ (၂) အဘိဓမ္မာနည်း (ပရမတ္ထတရားသက်သက်ဖြင့် ခွဲခြမ်းစိတ်ဖြာချက်) နှင့် (၃) အမေးအဖြေနည်း (အမေးနှင့် အဖြေပြုလုပ်၍ အဓိပ္ပာယ်ကို နယ်ပယ်သတ်မှတ်ချက်) ဟူသော နည်းလမ်းသုံးပါးဖြင့် ပြည့်ပြည့်စုံစုံ ဟောကြားထားသောကြောင့် တရားတော်၏ အနက်အဓိပ္ပာယ်ကို ရှုထောင့်ပေါင်းစုံမှ သိမြင်နိုင်စေပါသည်။',
-    chapters: [
-      { title: 'Khandha Vibhanga', titleMy: 'ခန္ဓာဝိဘင်း', desc: 'Analysis of Aggregates', descMy: 'ခန္ဓာငါးပါးကို ခွဲခြားခြင်း' },
-      { title: 'Ayatana Vibhanga', titleMy: 'အာယတနဝိဘင်း', desc: 'Analysis of Sense Bases', descMy: 'အာယတနများကို ခွဲခြားခြင်း' },
-      { title: 'Dhatu Vibhanga', titleMy: 'ဓာတုဝိဘင်း', desc: 'Analysis of Elements', descMy: 'ဓာတ်များကို ခွဲခြားခြင်း' },
-      { title: 'Sacca Vibhanga', titleMy: 'သစ္စာဝိဘင်း', desc: 'Analysis of Truths', descMy: 'သစ္စာလေးပါးကို ခွဲခြားခြင်း' },
-      { title: 'Indriya Vibhanga', titleMy: 'ဣန္ဒြေဝိဘင်း', desc: 'Analysis of Faculties', descMy: 'ဣန္ဒြေများကို ခွဲခြားခြင်း' },
-      { title: 'Paticcasamuppada', titleMy: 'ပဋိစ္စသမုပ္ပါဒဝိဘင်း', desc: 'Dependent Origination', descMy: 'ပဋိစ္စသမုပ္ပါဒ်ကို ခွဲခြားခြင်း' },
-      { title: 'Satipatthana', titleMy: 'သတိပဋ္ဌာနဝိဘင်း', desc: 'Analysis of Mindfulness', descMy: 'သတိပဋ္ဌာန်လေးပါးကို ခွဲခြားခြင်း' },
-      { title: 'Sammappadhana', titleMy: 'သမ္မပ္ပဓာနဝိဘင်း', desc: 'Right Exertion', descMy: 'သမ္မပ္ပဓာန်ကို ခွဲခြားခြင်း' },
-      { title: 'Iddhipada', titleMy: 'ဣဒ္ဓိပါဒဝိဘင်း', desc: 'Bases of Power', descMy: 'ဣဒ္ဓိပါဒ်ကို ခွဲခြားခြင်း' },
-      { title: 'Bojjhanga', titleMy: 'ဗောဇ္ဈင်္ဂဝိဘင်း', desc: 'Factors of Enlightenment', descMy: 'ဗောဇ္ဈင်္ဂခုနစ်ပါးကို ခွဲခြားခြင်း' },
-      { title: 'Magga', titleMy: 'မဂ္ဂဝိဘင်း', desc: 'The Path', descMy: 'မဂ္ဂင်ရှစ်ပါးကို ခွဲခြားခြင်း' },
-      { title: 'Jhana', titleMy: 'ဈာနဝိဘင်း', desc: 'Absorption', descMy: 'ဈာန်တရားများကို ခွဲခြားခြင်း' },
-      { title: 'Appamanna', titleMy: 'အပ္ပမညာဝိဘင်း', desc: 'Limitless States', descMy: 'အပ္ပမညာကို ခွဲခြားခြင်း' },
-      { title: 'Sikkhapada', titleMy: 'သိက္ခာပဒဝိဘင်း', desc: 'The Precepts', descMy: 'သိက္ခာပုဒ်များကို ခွဲခြားခြင်း' },
-      { title: 'Patisambhida', titleMy: 'ပဋိသမ္ဘိဒါဝိဘင်း', desc: 'Analytical Knowledge', descMy: 'ပဋိသမ္ဘိဒါကို ခွဲခြားခြင်း' },
-      { title: 'Nana', titleMy: 'ဉာဏဝိဘင်း', desc: 'Knowledge', descMy: 'ဉာဏ်တော်ကို ခွဲခြားခြင်း' },
-      { title: 'Khuddakavatthu', titleMy: 'ခုဒ္ဒကဝတ္ထုဝိဘင်း', desc: 'Minor Points', descMy: 'ခုဒ္ဒကဝတ္ထုကို ခွဲခြားခြင်း' },
-      { title: 'Dhammahadaya', titleMy: 'ဓမ္မဟဒယဝိဘင်း', desc: 'Heart of Dhamma', descMy: 'ဓမ္မဟဒယကို ခွဲခြားခြင်း' }
-    ],
-    keyPrinciples: [
-      'Technical Deconstruction',
-      'Method of Triplets',
-      'Purification Mapping'
-    ],
-    keyPrinciplesMy: [
-      'အနုစိတ် ခွဲခြမ်းစိတ်ဖြာနည်း',
-      'နည်းလမ်း ၃ သွယ်ဖြင့် ဟောကြားချက်',
-      'စင်ကြယ်ခြင်းလမ်းကြောင်း ပြေပုံ'
-    ]
+    id: 'milinda-deep-2',
+    author: 'Ven. Nagasena',
+    handle: 'nagasena_sage',
+    time: '10m',
+    title: "The Continuity of the Flame",
+    titleMy: 'မီးလျှံ၏ ဆက်စပ်မှု (သန္တာန်တရား)',
+    content: 'The King asked: "When a person is reborn, is he the same person or another?" I used the lamp analogy: "Consider a lamp, O King, that burns throughout the night. Is the flame of the first watch the same as the flame of the middle watch, or the last? They are not the same, yet the light depends on the same lamp. Thus, rebirth is the continuity of a mental-physical stream—neither strictly the same, nor entirely different (Na ca so, na ca añño)." ',
+    contentMy: 'မင်းကြီးက "လူတစ်ယောက်ဟာ သေပြီးနောက် ပြန်လည်မွေးဖွားတဲ့အခါ အရင်လူပဲလား၊ တခြားလူလား" ဟု သိလိုဇောဖြင့် မေးမြန်းပါသည်။ ကျွန်ုပ်က ဆီမီးဥပမာဖြင့် ဤသို့ရှင်းပြခဲ့သည် "မင်းကြီး၊ တစ်ညလုံး ထွန်းထားတဲ့ ဆီမီးကို ကြည့်ပါ။ ပထမယံမှာ တောက်တဲ့မီးဟာ ဒုတိယယံမှာ တောက်တဲ့မီးနဲ့ အတူတူပဲလား? မဟုတ်ပါဘူး။ ဒါပေမဲ့ အလင်းရောင်ကတော့ ထိုဆီမီးကပဲ လာတာဖြစ်ပါတယ်။ ဒါကြောင့် တစ်ဘဝကနေ တစ်ဘဝကို ကူးပြောင်းရာမှာလည်း အရင်လူဟောင်းလည်း မဟုတ်၊ လုံးဝတခြားလူသစ်လည်း မဟုတ်ဘဲ အကြောင်းတရားတွေ ဆက်စပ်စီးဆင်းနေတဲ့ သန္တာန်တစ်ခုသာ ဖြစ်ပါတယ်" ဟု ဖြေကြားခဲ့ပါသည်။',
+    pali: 'Santana',
+    icon: '🪷'
   },
   {
-    title: 'Dhatukatha',
-    titleMy: 'ဓာတုကထာ',
-    summary: 'Discussion with Reference to Elements',
-    summaryMy: 'ဓာတ်သဘောတို့ကို အခြေခံ၍ ဟောကြားခြင်း။',
-    brief: 'Examination of physical and mental elements and their relationships.',
-    briefMy: 'ဓမ္မတို့ကို ခန္ဓာ၊ အာယတန၊ ဓာတ်တို့နှင့် စပ်ဟပ်၍ အမေးအဖြေပြုသော ကျမ်းဖြစ်သည်။',
-    detailedSummary: 'This text is a dynamic study of relationships. Using a question-and-answer format, it investigates how every conceivable mental state relates to the physical elements and the sense gates. It teaches the practitioner to see the mind not as a solid entity, but as a flowing confluence of elements that are either associated or dissociated from one another.',
-    detailedSummaryMy: 'ဤကျမ်းသည် တရားသဘောတို့၏ ဆက်စပ်မှုကို စစ်ဆေးသည်။ အမေးအဖြေနည်းလမ်းဖြင့် စိတ်၏ အခြေအနေတိုင်းသည် ရုပ်တရား၊ အာယတနတို့နှင့် မည်သို့ စပ်ဟပ်သည်ကို ဖော်ထုတ်သည်။ စိတ်သည် ခိုင်မာသောအရာမဟုတ်ဘဲ ဓာတ်တရားများ၏ စီးဆင်းမှုသာဖြစ်ကြောင်း နားလည်စေသော ကျမ်းဖြစ်သည်။',
-    content: 'The Dhatukatha (Discussion with Reference to Elements) is the third book of the Abhidhamma Pitaka and is written entirely as a dialogue or catechism. Its primary function is to investigate how various mental and physical states relate to the three fundamental rubrics of Buddhist classification: the 5 Aggregates, the 12 Sense Bases, and the 18 Elements. The text explores fourteen distinct regularized methods of analysis to determine whether a given phenomenon is included in or excluded from these categories, and whether it is associated with or dissociated from other phenomena. This rigorous training helps the practitioner eliminate the deep-seated illusion of a unified "Self" or "Soul" by showing only impersonal elements in constant interaction.',
-    contentMy: 'ဓာတုကထာကျမ်းသည် ဓမ္မများကို ခန္ဓာ၊ အာယတန၊ ဓာတ်တို့နှင့် မည်သို့ စပ်ဟပ်သည်၊ မည်သို့ ပါဝင်သည်၊ မည်သို့ မပါဝင်သည်တို့ကို အမေးအဖြေပြု၍ ဟောကြားသောကျမ်းဖြစ်သည်။ ဤကျမ်းတွင် နည်းလမ်း ၁၄ ပါး (၁၄ နယ) ဖြင့် ရုပ်နာမ်တရားတို့ကို ခွဲခြားစိတ်ဖြာသည်။ သင်္ဂဟ-အသင်္ဂဟ (ပါဝင်ခြင်း၊ မပါဝင်ခြင်း) နှင့် သမ္ပယုတ္တ-ဝိပ္ပယုတ္တ (ယှဉ်တွဲခြင်း၊ မယှဉ်တွဲခြင်း) ဟူသော ရှုထောင့်များမှနေ၍ တရားအားလုံးကို စစ်ဆေးသည်။ ဤကဲ့သို့ ရှုမှတ်ခြင်းဖြင့် မိမိကိုယ်ကိုယ် "ငါ" ဟု ထင်နေသော အထင်မှားမှုကို ပယ်ဖျက်စေပြီး၊ မိမိသည် ဓာတ်တရားသဘောများ၏ စုစည်းမှုသာဖြစ်ကြောင်း အသိဉာဏ်ကို ဖြစ်ပေါ်စေပါသည်။',
-    chapters: [
-      { title: 'Sangaho-Asangaho', titleMy: 'သင်္ဂဟ အသင်္ဂဟ', desc: 'Inclusion and Exclusion', descMy: 'ဓမ္မများ ပါဝင်မှုနှင့် မပါဝင်မှု' },
-      { title: 'Sangahitena-Asangahitam', titleMy: 'သင်္ဂဟိတေန အသင်္ဂဟိတံ', desc: 'Inclusion and the Excluded', descMy: 'ပါဝင်သောတရားတို့ဖြင့် မပါဝင်သည်ကို ပြခြင်း' },
-      { title: 'Asangahitena-Sangahitam', titleMy: 'အသင်္ဂဟိတေန သင်္ဂဟိတံ', desc: 'Exclusion and the Included', descMy: 'မပါဝင်သောတရားတို့ဖြင့် ပါဝင်သည်ကို ပြခြင်း' },
-      { title: 'Sangahitena-Sangahitam', titleMy: 'သင်္ဂဟိတေန သင်္ဂဟိတံ', desc: 'Inclusion and the Included', descMy: 'ပါဝင်သောတရားတို့ဖြင့် ပါဝင်သည်ကို ပြခြင်း' },
-      { title: 'Asangahitena-Asangahitam', titleMy: 'အသင်္ဂဟိတေန အသင်္ဂဟိတံ', desc: 'Exclusion and the Excluded', descMy: 'မပါဝင်သောတရားတို့ဖြင့် မပါဝင်သည်ကို ပြခြင်း' },
-      { title: 'Sampayoga-Vippayogo', titleMy: 'သမ္ပယောဂ ဝိပ္ပယောဂ', desc: 'Association and Dissociation', descMy: 'ယှဉ်တွဲမှုနှင့် မယှဉ်တွဲမှု' },
-      { title: 'Sampayuttena-Vippayuttan', titleMy: 'သမ္ပယုတ္တေန ဝိပ္ပယုတ္တံ', desc: 'Association and the Dissociated', descMy: 'ယှဉ်တွဲသောတရားတို့ဖြင့် မယှဉ်တွဲသည်ကို ပြခြင်း' },
-      { title: 'Vippayuttena-Sampayuttan', titleMy: 'ဝိပ္ပယုတ္တေန သမ္ပယုတ္တံ', desc: 'Dissociation and the Associated', descMy: 'မယှဉ်တွဲသောတရားတို့ဖြင့် ယှဉ်တွဲသည်ကို ပြခြင်း' },
-      { title: 'Sampayuttena-Sampayuttan', titleMy: 'သမ္ပယုတ္တေန သမ္ပယုတ္တံ', desc: 'Association and the Associated', descMy: 'ယှဉ်တွဲသောတရားတို့ဖြင့် ယှဉ်တွဲသည်ကို ပြခြင်း' },
-      { title: 'Vippayuttena-Vippayuttan', titleMy: 'ဝိပ္ပယုတ္တေန ဝိပ္ပယုတ္တံ', desc: 'Dissociation and the Dissociated', descMy: 'မယှဉ်တွဲသောတရားတို့ဖြင့် မယှဉ်တွဲသည်ကို ပြခြင်း' },
-      { title: 'Sangahitena-Sampayuttan', titleMy: 'သင်္ဂဟိတေန သမ္ပယုတ္ံ', desc: 'Included and the Associated', descMy: 'ပါဝင်သောတရားတို့ဖြင့် ယှဉ်တွဲသည်ကို ပြခြင်း' },
-      { title: 'Sampayuttena-Sangahitam', titleMy: 'သမ္ပယုတ္တေန သင်္ဂဟိတံ', desc: 'Associated and the Included', descMy: 'ယှဉ်တွဲသောတရားတို့ဖြင့် ပါဝင်သည်ကို ပြခြင်း' },
-      { title: 'Asangahitena-Vippayuttan', titleMy: 'အသင်္ဂဟိတေန ဝိပ္ပယုတ္တံ', desc: 'Excluded and the Dissociated', descMy: 'မပါဝင်သောတရားတို့ဖြင့် မယှဉ်တွဲသည်ကို ပြခြင်း' },
-      { title: 'Vippayuttena-Asangahitam', titleMy: 'ဝိပ္ပယုတ္တေန သင်္ဂဟိတံ', desc: 'Dissociated and the Excluded', descMy: 'မယှဉ်တွဲသောတရားတို့ဖြင့် မပါဝင်သည်ကို ပြခြင်း' }
-    ],
-    keyPrinciples: [
-      'Identity Dissolution',
-      'Relational Inclusion',
-      'Sense Gate Analytics'
-    ],
-    keyPrinciplesMy: [
-      'အတ္တကို ပယ်ဖျက်နည်း',
-      'ဆက်စပ်မှု ခွဲခြမ်းစိတ်ဖြာခြင်း',
-      'အာယတနနှင့် ဓာတ် ဆက်စပ်မှု'
-    ]
+    id: 'milinda-deep-3',
+    author: 'King Milinda',
+    handle: 'indo_greek_king',
+    time: '25m',
+    title: 'The Reality of a Name',
+    titleMy: 'နာမည်သည် ပညတ်သာဖြစ်ခြင်း',
+    content: '"You say you are Nagasena, but who or what is this Nagasena? Is it the hair? The skin? The blood? The bones? If Nagasena cannot be found in any of these, then what is Nagasena?" Nagasena looked at me calmly and asked: "How did you come here, O King?" I replied, "In a chariot." He then deconstructed my chariot piece by piece to show that its name was a mere convention for a functional unity of parts.',
+    contentMy: '"အရှင်ဘုရားက ကိုယ့်ကိုယ်ကိုယ် နာဂသိန်လို့ ခေါ်တယ်။ ဒါဆို နာဂသိန်ဆိုတာ ဘယ်အရာလဲ? ဆံပင်လား? အရေခွံလား? သွေးလား? အရိုးလား? ဒီအရာတွေထဲမှာ နာဂသိန်ကို ရှာမတွေ့ရင် နာဂသိန်ဆိုတာ ဘယ်မှာလဲ" ဟု ကျွန်ုပ်က မေးခွန်းထုတ်ခဲ့ပါသည်။ အရှင်နာဂသိန်က ပြုံးလျက် "မင်းကြီး ဒီနေရာကို ဘယ်လိုလာခဲ့သလဲ" ဟု ပြန်မေးပါသည်။ ကျွန်ုပ်က "ရထားနဲ့ လာခဲ့တယ်" ဟု ဖြေသောအခါ၊ အရှင်က ကျွန်ုပ်စီးလာသော ရထားကို တစ်စစီ အစိတ်အပိုင်းခွဲပြပြီး "ရထား" ဆိုသည်မှာ အစိတ်အပိုင်းများ စုစည်းမှုကို ခေါ်ဆိုသော ဝေါဟာရပညတ်သာ ဖြစ်ကြောင်း၊ လောကရှိ အရာအားလုံးသည်လည်း ထိုနည်းအတိုင်းသာ ဖြစ်ကြောင်း သက်သေပြခဲ့ပါသည်။',
+    pali: 'Pannatti',
+    icon: '🏛️'
   },
   {
-    title: 'Puggala Pannatti',
-    titleMy: 'ပုဂ္ဂလပညတ်',
-    summary: 'Designation of Individuals',
-    summaryMy: 'ပုဂ္ဂိုလ်အမျိုးမျိုးကို သတ်မှတ်ချက်ပြုခြင်း။',
-    brief: 'Classification of people according to their level of spiritual progress.',
-    briefMy: 'ပုဂ္ဂိုလ်တို့၏ အဆင့်အတန်းနှင့် စရိုက်လက္ခဏာများကို ခွဲခြားသတ်မှတ်ပြသော ကျမ်းဖြစ်သည်။',
-    detailedSummary: 'While the rest of the Abhidhamma focuses on impersonal "ultimate realities," this book provides a compassionate guide to the types of human characters encountered in the world. It classifies individuals by their spiritual maturity, temperament, and capacity for wisdom, acting as a manual for understanding both oneself and others on the path to liberation.',
-    detailedSummaryMy: 'ဤကျမ်းသည် အခြားအဘိဓမ္မာကျမ်းများနှင့်မတူဘဲ ပုဂ္ဂိုလ်များ၏ စရိုက်နှင့် အဆင့်အတန်းကို အလေးပေးဖော်ပြသည်။ လောကရှိ လူသားတို့၏ စရိုက်လက္ခဏာ၊ ပညာအဆင့်အတန်းနှင့် တရားထူးရနိုင်စွမ်းတို့ကို ခွဲခြားပြဆိုထားရာ မိမိနှင့် သူတစ်ပါးကို နားလည်သဘောပေါက်စေရန် အထောက်အကူပြုသော ကျမ်းဖြစ်သည်။',
-    content: 'In the Puggala Pannatti (Designation of Individuals), the Abhidhamma methodology is applied to the conventional world of "beings" and "persons." While most of the Abhidhamma is concerned with impersonal ultimate realities (Paramattha), this book deals with concepts (Pannatti). It organizes types of individuals according to their spiritual attainment, moral standing, and character traits, ranging from the common worldling (Puthujjana) to the fully enlightened Arahant. The book provides a masterful map of human character and temperament, helping spiritual practitioners identify their own stage of progress and understand the diverse capacities of those around them.',
-    contentMy: 'ပုဂ္ဂလပညတ်ကျမ်းသည် အခြားအဘိဓမ္မာကျမ်းများနှင့်မတူဘဲ ပရမတ္ထတရားသက်သက်ထက် "ပုဂ္ဂိုလ်" ဟူသော ပညတ်တရားများကို အလေးပေးဖော်ပြသည်။ လောကရှိလူသားတို့၏ စရိုက်၊ ဝါသနာ၊ ပညာနှင့် တရားထူးရရှိမှု အဆင့်အတန်းအလိုက် အမျိုးအစားများစွာ ခွဲခြားထားသည်။ သာမန်လူ (ပုထုဇဉ်) မှစ၍ အရိယာပုဂ္ဂိုလ် (ရှစ်ပါး) အထိ ပုဂ္ဂိုလ်တို့၏ အဆင့်အတန်းကို တိကျစွာ သတ်မှတ်ပြသထားသဖြင့် မိမိကိုယ်မိမိ နားလည်ရန်နှင့် သူတစ်ပါးတို့ကို ကူညီလမ်းပြရာတွင် အလွန်အရေးကြီးသော ကျမ်းဖြစ်ပါသည်။',
-    chapters: [
-      { title: 'Eka-puggala', titleMy: 'ဧကကပုဂ္ဂလ', desc: 'Groups of One', descMy: 'ပုဂ္ဂိုလ်တစ်မျိုးချင်း' },
-      { title: 'Dve-puggala', titleMy: 'ဒုကပုဂ္ဂလ', desc: 'Groups of Two', descMy: 'ပုဂ္ဂိုလ်နှစ်မျိုးတွဲ' },
-      { title: 'Ti-puggala', titleMy: 'တိကပုဂ္ဂလ', desc: 'Groups of Three', descMy: 'ပုဂ္ဂိုလ်သုံးမျိုးတွဲ' },
-      { title: 'Catu-puggala', titleMy: 'စတုက္ကပုဂ္ဂလ', desc: 'Groups of Four', descMy: 'ပုဂ္ဂိုလ်လေးမျိုးတွဲ' },
-      { title: 'Pancaka-puggala', titleMy: 'ပဉ္စကပုဂ္ဂလ', desc: 'Groups of Five', descMy: 'ပုဂ္ဂိုလ်ငါးမျိုးတွဲ' },
-      { title: 'Chakka-puggala', titleMy: 'ဆက္ကပုဂ္ဂလ', desc: 'Groups of Six', descMy: 'ပုဂ္ဂိုလ်ခြောက်မျိုးတွဲ' },
-      { title: 'Sattaka-puggala', titleMy: 'သတ္တကပုဂ္ဂလ', desc: 'Groups of Seven', descMy: 'ပုဂ္ဂိုလ်ခုနစ်မျိုးတွဲ' },
-      { title: 'Atthaka-puggala', titleMy: 'အဋ္ဌကပုဂ္ဂလ', desc: 'Groups of Eight', descMy: 'ပုဂ္ဂိုလ်ရှစ်မျိုးတွဲ' },
-      { title: 'Navaka-puggala', titleMy: 'နဝကပုဂ္ဂလ', desc: 'Groups of Nine', descMy: 'ပုဂ္ဂိုလ်ကိုးမျိုးတွဲ' },
-      { title: 'Dasaka-puggala', titleMy: 'ဒသကပုဂ္ဂလ', desc: 'Groups of Ten', descMy: 'ပုဂ္ဂိုလ်ဆယ်မျိုးတွဲ' }
-    ],
-    keyPrinciples: [
-      'Character Classification',
-      'Spiritual Maturity Guide',
-      'Compassionate Wisdom'
-    ],
-    keyPrinciplesMy: [
-      'ပုဂ္ဂိုလ်တို့၏ စရိုက် ခွဲခြားခြင်း',
-      'တရားထူးရနိုင်စွမ်း သတ်မှတ်ချက်',
-      'သုတ္တန်လာ ပုဂ္ဂိုလ်ဝိဘာဂ'
-    ]
+    id: 'milinda-deep-4',
+    author: 'Ven. Nagasena',
+    handle: 'nagasena_sage',
+    time: '45m',
+    title: 'Identity and Responsibility',
+    titleMy: 'ကံနှင့် တာဝန်ယူမှု (ကမ္မပထ)',
+    content: 'The King questioned: "If there is no permanent soul, who receives the results of Karma?" I answered: "Just as a mango thief steals a mango, and the owner catches him—if the thief says, \'I did not steal these mangoes, for the mangoes I stole were different seeds than these grown fruits\', would he be free? No, for the fruit came from the seed he planted. Thus, even if the person changes, the continuity of the karma-stream connects the action to the result."',
+    contentMy: '"အရှင်ဘုရား၊ အမြဲမြဲတဲ့ အတ္တလိပ်ပြာ မရှိဘူးဆိုရင် ကံရဲ့အကျိုးကို ဘယ်သူက ခံစားမှာလဲ" ဟု မင်းကြီးက မေးပါသည်။ ကျွန်ုပ်က သရက်သီးခိုးသူ ဥပမာဖြင့် ရှင်းပြခဲ့သည် "မင်းကြီး၊ လူတစ်ယောက်ဟာ သရက်စေ့ကို စိုက်ခဲ့တယ်၊ သရက်ပင် ကြီးလာလို့ အသီးသီးတဲ့အခါ တခြားလူတစ်ယောက်က အသီးကို ခိုးစားတယ်။ ပိုင်ရှင်က ဖမ်းမိတဲ့အခါ ခိုးသူက \'ငါစိုက်ခဲ့တာက အစေ့ပဲ၊ အခုဒါက အသီးတွေလေ၊ ဒါကြောင့် ငါနဲ့မဆိုင်ဘူး\' လို့ ငြင်းလို့ရမလား? မရပါဘူး။ ဘာလို့လဲဆိုတော့ အသီးဟာ အစေ့ကနေ ဆက်စပ်ထွက်ပေါ်လာလို့ပါပဲ။ ဒီလိုပါပဲ ခန္ဓာတစ်ခု ချုပ်ပြီး နောက်ခန္ဓာတစ်ခု ဖြစ်ပေါ်ပေမဲ့ ကံရဲ့အကျိုးဟာ သန္တာန်တစ်ခုတည်းမှာ ဆက်စပ်နေတဲ့အတွက် ပြသူနဲ့ ခံရသူဟာ ကင်းကွာလို့မရပါဘူး" ဟု ဖြေကြားခဲ့ပါသည်။',
+    pali: 'Kamma',
+    icon: '🪷'
   },
   {
-    title: 'Kathavatthu',
-    titleMy: 'ကထာဝတ္ထု',
-    summary: 'Points of Controversy',
-    summaryMy: 'အယူဝါဒဆိုင်ရာ ဆွေးနွေးငြင်းခုံမှုများ။',
-    brief: 'Refutation of different philosophical views to clarify correct doctrine.',
-    briefMy: 'အယူဝါဒဆိုင်ရာ မှားယွင်းမှုများကို ချေဖျက်၍ အမှန်ကို တည်ဆောက်သော ကျမ်းဖြစ်သည်။',
-    detailedSummary: 'The Kathavatthu is a fortress of logic built to protect the purity of the Dhamma. It contains over 200 systematic debates that refute false interpretations and clarify the Buddha\'s actual intent. It is an essential study for anyone seeking to distinguish the core teachings from later additions or misunderstandings.',
-    detailedSummaryMy: 'ကထာဝတ္ထုကျမ်းသည် သဒ္ဓမ္မတရားတော် သန့်ရှင်းစင်ကြယ်စေရန်အတွက် တည်ဆောက်ထားသော "ယုတ္တိဗေဒခံတပ်" ကြီး ဖြစ်သည်။ မှားယွင်းသော အယူဝါဒပေါင်း ၂၀၀ ကျော်ကို အမေးအဖြေများဖြင့် ချေဖျက်ထားသည်။ ဗုဒ္ဓမြတ်စွာ၏ အဆုံးအမစစ်စစ်ကို ခွဲခြားသိမြင်လိုသူများအတွက် မရှိမဖြစ် လေ့လာသင့်သော ကျမ်းဖြစ်သည်။',
-    content: 'The Kathavatthu (Points of Controversy) is unique because it was introduced during the Third Buddhist Council by the elder Moggaliputta Tissa. It is essentially a work of high-level dialectics designed to refute 216 specific false views that had arisen within various Buddhist sects. Using a sophisticated five-point logical method (the Pañcakas), the text exposes internal contradictions in heterodox beliefs while clarifying the Theravadin "Vibhajjavada" (Doctrine of Analysis) position. It stands as a powerful testament to the value of critical thinking, logical rigor, and the preservation of original doctrine in the face of philosophical deviation.',
-    contentMy: 'ကထာဝတ္ထုကျမ်းသည် တတိယသံဂါယနာတင်ပွဲတွင် အရှင်မောဂ္ဂလိပုတ္တတိဿမထေရ် ဟောကြားခဲ့သော ကျမ်းဖြစ်၍ တရားတော် သန့်ရှင်းစင်ကြယ်စေရန် ရည်ရွယ်သည်။ ထိုခေတ်က ပေါ်ပေါက်ခဲ့သော အယူဝါဒလက်ခွဲပေါင်းများစွာ၏ မှားယွင်းသော ပွိုင့်ပေါင်း ၂၁၆ ပွိုင့် (ကထာပေါင်း ၂၁၆ ခု) ကို ယုတ္တိဗေဒနည်းလမ်း ၅ မျိုး (အစုံ ၅ မျိုး) ဖြင့် အခြေအတင် ဆွေးနွေးချေပထားသည်။ ဤကျမ်းသည် ဗုဒ္ဓမြတ်စွာ၏ တကယ့်အဆုံးအမစစ်စစ် (သုဒ္ဓဝိဘဇ္ဇဝါဒ) ကို သိမြင်စေရန်နှင့် မိစ္ဆာအယူဝါဒများမှ ကာကွယ်ရန်အတွက် အလွန်အနှစ်သာရရှိသော ယုတ္တိဗေဒကျမ်းကြီး ဖြစ်ပါသည်။',
-    chapters: [
-      { title: 'Pathama Vaggo', titleMy: 'ပထမဝဂ်', desc: 'First Division', descMy: 'ပထမဆုံး ဆွေးနွေးချက်များ' },
-      { title: 'Dutiya Vaggo', titleMy: 'ဒုတိယဝဂ်', desc: 'Second Division', descMy: 'ဒုတိယ ဆွေးနွေးချက်များ' },
-      { title: 'Tatiya Vaggo', titleMy: 'တတိယဝဝဂ်', desc: 'Third Division', descMy: 'တတိယ ဆွေးနွေးချက်များ' },
-      { title: 'Catuttha Vaggo', titleMy: 'စတုတ္ထဝဂ်', desc: 'Fourth Division', descMy: 'စတုတ္ထ ဆွေးနွေးချက်များ' },
-      { title: 'Pancama Vaggo', titleMy: 'ပဉ္စမဝဂ်', desc: 'Fifth Division', descMy: 'ပဉ္စမ ဆွေးနွေးချက်များ' },
-      { title: 'Chattha Vaggo', titleMy: 'ဆဋ္ဌဝဂ်', desc: 'Sixth Division', descMy: 'ဆဋ္ဌမ ဆွေးနွေးချက်များ' },
-      { title: 'Sattama Vaggo', titleMy: 'သတ္တမဝဂ်', desc: 'Seventh Division', descMy: 'သတ္တမ ဆွေးနွေးချက်များ' },
-      { title: 'Atthama Vaggo', titleMy: 'အဋ္ဌမဝဂ်', desc: 'Eighth Division', descMy: 'အဋ္ဌမ ဆွေးနွေးချက်များ' },
-      { title: 'Navama Vaggo', titleMy: 'နဝမဝဂ်', desc: 'Ninth Division', descMy: 'နဝမ ဆွေးနွေးချက်များ' },
-      { title: 'Dasama Vaggo', titleMy: 'ဒသမဝဂ်', desc: 'Tenth Division', descMy: 'ဒသမ ဆွေးနွေးချက်များ' },
-      { title: 'Ekadasama Vaggo', titleMy: 'ဧကာဒသမဝဂ်', desc: 'Eleventh Division', descMy: 'တစ်ဆယ့်တစ်ကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Dvadasama Vaggo', titleMy: 'ဒွါဒသမဝဂ်', desc: 'Twelfth Division', descMy: 'တစ်ဆယ့်နှစ်ကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Terasama Vaggo', titleMy: 'တေရသမဝဂ်', desc: 'Thirteenth Division', descMy: 'တစ်ဆယ့်သုံးကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Cuddasama Vaggo', titleMy: 'စုဒ္ဒသမဝဂ်', desc: 'Fourteenth Division', descMy: 'တစ်ဆယ့်လေးကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Pannarasama Vaggo', titleMy: 'ပန္နရသမဝဂ်', desc: 'Fifteenth Division', descMy: 'တစ်ဆယ့်ငါးကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Solasama Vaggo', titleMy: 'သောဠသမဝဂ်', desc: 'Sixteenth Division', descMy: 'တစ်ဆယ့်ခြောက်ကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Sattarasama Vaggo', titleMy: 'သတ္တရသမဝဂ်', desc: 'Seventeenth Division', descMy: 'တစ်ဆယ့်ခုနစ်ကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Attharasama Vaggo', titleMy: 'အဋ္ဌာရသမဝဂ်', desc: 'Eighteenth Division', descMy: 'တစ်ဆယ့်ရှစ်ကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Unavisatima Vaggo', titleMy: 'ဧကူနဝီသတိမဝဂ်', desc: 'Nineteenth Division', descMy: 'တစ်ဆယ့်ကိုးကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Visatima Vaggo', titleMy: 'ဝီသတိမဝဂ်', desc: 'Twentieth Division', descMy: 'အကြိမ်နှစ်ဆယ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Ekavisatima Vaggo', titleMy: 'ဧကဝီသတိမဝဂ်', desc: 'Twenty-first Division', descMy: 'နှစ်ဆယ့်တစ်ကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Bavisatima Vaggo', titleMy: 'ဗာဝီသတိမဝဂ်', desc: 'Twenty-second Division', descMy: 'နှစ်ဆယ့်နှစ်ကြိမ်မြောက် ဆွေးနွေးချက်များ' },
-      { title: 'Te-visatima Vaggo', titleMy: 'တေဝီသတိမဝဂ်', desc: 'Twenty-third Division', descMy: 'နှစ်ဆယ့်သုံးကြိမ်မြောက် ဆွေးနွေးချက်များ' }
-    ],
-    keyPrinciples: [
-      'Logical Protection',
-      'Doctrine Refutation',
-      'Dialectical Clarity'
-    ],
-    keyPrinciplesMy: [
-      'သာသနာတော်ကို ယုတ္တိဖြင့် ကာကွယ်ခြင်း',
-      'မှားယွင်းသော အယူဝါဒများကို ချေဖျက်ခြင်း',
-      'အမေးအဖြေဖြင့် အမှန်တရားကို ရှာဖွေခြင်း'
-    ]
+    id: 'milinda-deep-5',
+    author: 'King Milinda',
+    handle: 'indo_greek_king',
+    time: '1h',
+    title: 'The Great Conversion',
+    titleMy: 'မင်းကြီး၏ သာသနာဝင်ဖြစ်ခြင်း',
+    content: 'After many days of debate, the darkness in my mind was dispelled like a morning fog by the rising sun. I discarded my pride and realized the truth of the Middle Way. "O Nagasena, you have spoken with the voice of the Lion. From this day forth, May the Buddha, the Dharma, and the Sangha be my refuge until the end of my life."',
+    contentMy: 'ရက်ပေါင်းများစွာ ဆွေးနွေးငြင်းခုံပြီးနောက်၊ ကျွန်ုပ်၏ စိတ်အစဉ်၌ ဖုံးလွှမ်းနေသော အမှောင်ထုသည် နေထွက်လာချိန်တွင် မြူနှင်းများ ပျောက်ကွယ်သွားသကဲ့သို့ လွင့်စင်သွားခဲ့ပါသည်။ ကျွန်ုပ်၏ မာန်မာနကို စွန့်လွှတ်ပြီး မဇ္ဈိမပဋိပဒါ လမ်းစဉ်၏ အမှန်တရားကို လက်ခံနိုင်ခဲ့ပါသည်။ "အရှင်နာဂသိန်၊ အရှင်ဘုရားသည် ခြင်္သေ့ဟောက်သကဲ့သို့ ရဲဝံ့ပြတ်သားသော ပညာဖြင့် ဟောကြားခဲ့ပါပြီ။ ယနေ့မှစ၍ ကျွန်ုပ်သည် ဘုရား၊ တရား၊ သံဃာ ရတနာသုံးပါးကို အသက်ထက်ဆုံး ကိုးကွယ်ရာအဖြစ် ခံယူပါ၏" ဟု ကြည်ညိုစွာ လျှောက်ထားခဲ့ပါသည်။',
+    pali: 'Saranagamana',
+    icon: '🏛️'
   },
   {
-    title: 'Yamaka',
-    titleMy: 'ယမိုက်',
-    summary: 'The Book of Pairs',
-    summaryMy: 'အတွဲလိုက် ဟောကြားသော အမေးအဖြေများ။',
-    brief: 'Logical analysis of terms using pairs of questions to define their scope.',
-    briefMy: 'ဓမ္မတို့ကို အစုံလိုက် အမေးအဖြေပြု၍ အနက်အဓိပ္ပာယ်ကို နယ်ပယ်သတ်မှတ်သော ကျမ်းဖြစ်သည်။',
-    detailedSummary: 'Considered the most rigorous logical exercise in the Canon, the Yamaka uses a "Method of Pairs" to define the exact boundaries of terms. For example: "Are all mental factors consciousness? Is all consciousness a mental factor?" This relentless interrogation sharpens the mind, removing every trace of ambiguity and ensuring a precise understanding of the path.',
-    detailedSummaryMy: 'ယမိုက်ကျမ်းသည် အဘိဓမ္မာတွင် ယုတ္တိဗေဒအကျဆုံး ကျမ်းဖြစ်သည်။ ဓမ္မများကို အတွဲလိုက် အစုံလိုက် အမေးအဖြေပြုလုပ်ကာ အဓိပ္ပာယ်ကို နယ်ပယ်သတ်မှတ်သည်။ ဤကဲ့သို့ ရှုထောင့်အမျိုးမျိုးမှ စစ်ဆေးခြင်းဖြင့် ဝေဝါးမှုများကို ပယ်ဖျက်ပြီး တရားတော်ကို တိကျစွာ နားလည်စေပါသည်။',
-    content: 'The Yamaka (The Book of Pairs) is regarded as the most challenging logical exercise in the Abhidhamma Pitaka. Its purpose is to demonstrate the precise boundaries of psychological and philosophical terms using a unique method of dual questions. For every term analyzed, it asks: "Is X always Y?" and "Is Y always X?" This relentless cross-interrogation, applied to 10 specific chapters like Roots (Mula), Aggregates (Khandha), and Elements (Dhatu), strips away every layer of conceptual ambiguity. By working through the Yamaka, the student develops a mind that is razor-sharp and immune to the vagueness of common language, leading to a truly scientific understanding of the mind.',
-    contentMy: 'ယမိုက်ကျမ်းသည် အဘိဓမ္မာ ၇ ကျမ်းတွင် ဘုရားရှင်၏ ယုတ္တိဗေဒစွမ်းရည်ကို အထင်ရှားဆုံးတွေ့မြင်နိုင်သော ကျမ်းဖြစ်သည်။ "ယမိုက်" ဆိုသည်မှာ အတွဲ (အစုံ) ဟု အဓိပ္ပာယ်ရသည်။ တရားတစ်ပါးစီကို (၁) အနုလောမ (အဖြောင့်) နှင့် (၂) ပဋိလောမ (အပြန်) ဟူ၍ အစုံလိုက် အမေးအဖြေပြုလုပ်ကာ အဓိပ္ပာယ်ကို နယ်ပယ်သတ်မှတ်သည်။ ယမိုက် ၁၀ မျိုးဖြင့် ရုပ်၊ နာမ်၊ ဓမ္မတို့ကို စစ်ဆေးရာတွင် ဝေဝါးမှုများကို ပယ်ဖျက်ပြီး၊ တရားတစ်ခုချင်းစီ၏ အဓိပ္ပာယ်ကို ပိုင်ပိုင်နိုင်နိုင် တိတိကျကျ သိမြင်ရန်အတွက် ဤကျမ်းက လေ့ကျင့်ပေးပါသည်။',
-    chapters: [
-      { title: 'Mula Yamaka', titleMy: 'မူလယမိုက်', desc: 'Pairs of Roots', descMy: 'ဟိတ်မူလများကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Khandha Yamaka', titleMy: 'ခန္ဓာယမိုက်', desc: 'Pairs of Aggregates', descMy: 'ခန္ဓာများကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Ayatana Yamaka', titleMy: 'အာယတနယမိုက်', desc: 'Pairs of Sense Bases', descMy: 'အာယတနများကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Dhatu Yamaka', titleMy: 'ဓာတုယမိုက်', desc: 'Pairs of Elements', descMy: 'ဓာတ်များကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Sacca Yamaka', titleMy: 'သစ္စာယမိုက်', desc: 'Pairs of Truths', descMy: 'သစ္စာများကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Sankhara Yamaka', titleMy: 'သင်္ခါရယမိုက်', desc: 'Pairs of Formations', descMy: 'သင်္ခါရများကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Anusaya Yamaka', titleMy: 'အနုသယယမိုက်', desc: 'Pairs of Tendencies', descMy: 'အနုသယများကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Citta Yamaka', titleMy: 'စိတ္တယမိုက်', desc: 'Pairs of Consciousness', descMy: 'စိတ်များကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Dhamma Yamaka', titleMy: 'ဓမ္မယမိုက်', desc: 'Pairs of Phenomena', descMy: 'တရားများကို အစုံလိုက်ခွဲခြားခြင်း' },
-      { title: 'Indriya Yamaka', titleMy: 'ဣန္ဒြေယမိုက်', desc: 'Pairs of Faculties', descMy: 'ဣန္ဒြေများကို အစုံလိုက်ခွဲခြားခြင်း' }
-    ],
-    keyPrinciples: [
-      'Dualistic Interrogation',
-      'Boundary Verification',
-      'Categorical Percision'
-    ],
-    keyPrinciplesMy: [
-      'အမေးနှစ်ရပ်ဖြင့် စစ်ဆေးခြင်း',
-      'အဓိပ္ပာယ် နယ်ပယ် သတ်မှတ်ခြင်း',
-      'တိကျသော ယုတ္တိဗေဒ ထရိန်နင်'
-    ]
-  },
-  {
-    title: 'Patthana',
-    titleMy: 'ပဋ္ဌာန်း',
-    summary: 'The Book of Causal Relations',
-    summaryMy: 'အကြောင်းအကျိုး ဆက်စပ်မှု ပဋ္ဌာန်း ၂၄ ပစ္စည်း။',
-    brief: 'Detailed exposition of the 24 laws of cause and effect in the universe.',
-    briefMy: 'အကြောင်းတရား ၂၄ ပါးတို့၏ အပြန်အလှန် ကျေးဇူးပြုပုံကို အကျယ်တဝံ့ ဟောကြားသော ကျမ်းဖြစ်သည်။',
-    detailedSummary: 'The Patthana is the supreme climax of Buddhist philosophy. It describes the 24 universal laws of conditionality—from the Root Condition to the Absence Condition—that govern everything from the rotation of stars to the arising of a single thought. It reveals the invisible threads that bind cause to effect, providing the ultimate insight into the nature of reality.',
-    detailedSummaryMy: 'ပဋ္ဌာန်းကျမ်းကြီးသည် ဗုဒ္ဓရှင်တော်၏ သဗ္ဗညုတဉာဏ်တော်ကို အကျယ်ပြန့်ဆုံး ဖော်ပြရာ ကျမ်းဖြစ်သည်။ အကြောင်းတရား ၂၄ ပါး (၂၄ ပစ္စည်း) ဖြင့် စကြာဝဠာအတွင်းရှိ ရုပ်နာမ်တရားတို့၏ အပြန်အလှန် ကျေးဇူးပြုပုံ၊ အကြောင်းအကျိုး ဆက်စပ်ပုံတို့ကို အနက်ရှိုင်းဆုံး ဟောကြားထားသော "မဟာပကရဏ" ကျမ်းကြီး ဖြစ်ပါသည်။',
-    content: 'The Patthana (Book of Causal Relations) is the crowning jewel of the Abhidhamma and is affectionately known as the "Great Book" (Mahapakarana). It defines the entire structural dynamics of the universe through 24 universal laws of conditionality (the Paccayas). From the Root Condition (Hetu) to the Presence Condition (Atthi), the Patthana reveals that no phenomenon exists in isolation; everything is part of a complex, interdependent web of causation. The sheer scale of the Patthana is designed to mirror the Buddha\'s Omniscience (Sabbaññuta Ñana), proving that existence is not a collection of solid things, but a continuous, conditioned process of arising and vanishing.',
-    contentMy: 'ပဋ္ဌာန်းကျမ်းသည် အဘိဓမ္မာ ၇ ကျမ်း၏ သရဖူဖြစ်ပြီး "မဟာပကရဏ" ဟုခေါ်သော ကျမ်းကြီးဖြစ်သည်။ ဤကျမ်းကြီးတွင် စကြာဝဠာအတွင်းရှိ ရုပ်နာမ်အားလုံး၏ အပြန်အလှန် ဆက်စပ်နေသော အကြောင်းတရား ၂၄ ပါး (၂၄ ပစ္စည်း) ကို အကျယ်တဝံ့ ဟောကြားထားသည်။ "ဟိတ်ပစ္စည်း" မှစ၍ "အဝိဂတပစ္စည်း" အထိ အကြောင်းတရားတို့သည် အကျိုးတရားတို့အပေါ် မည်သို့ကျေးဇူးပြုသည်ကို သိပ္ပံနည်းကျကျ ဖော်ပြထားသည်။ အရာရာသည် အကြောင်းမဲ့ ဖြစ်ပေါ်လာသည်မဟုတ်ဘဲ အပြန်အလှန် ဆက်စပ်၍ ဖြစ်ပေါ်နေသော "အကြောင်းအကျိုး အစဉ်အတန်း" သာဖြစ်ကြောင်း သိမြင်စေသော ကျမ်းကြီးဖြစ်ပါသည်။',
-    chapters: [
-      { title: 'Hetu-paccaya', titleMy: 'ဟိတ်ပစ္စည်း', desc: 'Root Condition', descMy: 'အမြစ်သဖွယ် ကျေးဇူးပြုခြင်း' },
-      { title: 'Arammana-paccaya', titleMy: 'အာရမ္မဏပစ္စည်း', desc: 'Object Condition', descMy: 'အာရုံသဖွယ် ကျေးဇူးပြုခြင်း' },
-      { title: 'Adhipati-paccaya', titleMy: 'အဓိပတိပစ္စည်း', desc: 'Dominance Condition', descMy: 'အကြီးအမှူးသဖွယ် ကျေးဇူးပြုခြင်း' },
-      { title: 'Anantara-paccaya', titleMy: 'အနန္တရပစ္စည်း', desc: 'Proximity Condition', descMy: 'အခြားမဲ့ ကျေးဇူးပြုခြင်း' },
-      { title: 'Samanantara-paccaya', titleMy: 'သမနန္တရပစ္စည်း', desc: 'Contiguity Condition', descMy: 'အခြားမဲ့အားလျော်စွာ ကျေးဇူးပြုခြင်း' },
-      { title: 'Sahajata-paccaya', titleMy: 'သဟဇာတပစ္စည်း', desc: 'Co-nascence Condition', descMy: 'အတူတကွဖြစ်၍ ကျေးဇူးပြုခြင်း' },
-      { title: 'Annamanna-paccaya', titleMy: 'အညမညပစ္စည်း', desc: 'Mutuality Condition', descMy: 'အပြန်အလှန် ကျေးဇူးပြုခြင်း' },
-      { title: 'Nissaya-paccaya', titleMy: 'နိဿယပစ္စည်း', desc: 'Support Condition', descMy: 'မှီရာသဖွယ် ကျေးဇူးပြုခြင်း' },
-      { title: 'Upanissaya-paccaya', titleMy: 'ဥပနိဿယပစ္စည်း', desc: 'Decisive Support', descMy: 'အားကြီးသောမှီရာသဖွယ် ကျေးဇူးပြုခြင်း' },
-      { title: 'Purejata-paccaya', titleMy: 'ပုရေဇာတပစ္စည်း', desc: 'Pre-nascence Condition', descMy: 'ရှေးဦးစွာဖြစ်၍ ကျေးဇူးပြုခြင်း' },
-      { title: 'Pacchajata-paccaya', titleMy: 'ပစ္ဆာဇာတပစ္စည်း', desc: 'Post-nascence Condition', descMy: 'နောက်မှဖြစ်၍ ကျေးဇူးပြုခြင်း' },
-      { title: 'Asevana-paccaya', titleMy: 'အာသေဝနပစ္စည်း', desc: 'Repetition Condition', descMy: 'အဖန်တလဲလဲ ကျေးဇူးပြုခြင်း' },
-      { title: 'Kamma-paccaya', titleMy: 'ကမ္မပစ္စည်း', desc: 'Kamma Condition', descMy: 'စေတနာကံဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Vipaka-paccaya', titleMy: 'ဝိပါကပစ္စည်း', desc: 'Result Condition', descMy: 'အကျိုးပေးခြင်းဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Ahara-paccaya', titleMy: 'အာဟာရပစ္စည်း', desc: 'Nutriment Condition', descMy: 'အစာအာဟာရဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Indriya-paccaya', titleMy: 'ဣန္ဒြေပစ္စည်း', desc: 'Faculty Condition', descMy: 'အစိုးရခြင်းဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Jhana-paccaya', titleMy: 'ဈာနပစ္စည်း', desc: 'Jhana Condition', descMy: 'ဈာန်အင်္ဂါဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Magga-paccaya', titleMy: 'မဂ္ဂပစ္စည်း', desc: 'Path Condition', descMy: 'မဂ္ဂင်အင်္ဂါဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Sampayutta-paccaya', titleMy: 'သမ္ပယုတ္တပစ္စည်း', desc: 'Association Condition', descMy: 'ယှဉ်တွဲခြင်းဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Vippayutta-paccaya', titleMy: 'ဝိပ္ပယုတ္တပစ္စည်း', desc: 'Dissociation Condition', descMy: 'မယှဉ်တွဲခြင်းဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Atthi-paccaya', titleMy: 'အတ္ထိပစ္စည်း', desc: 'Presence Condition', descMy: 'တည်ရှိခြင်းဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Natthi-paccaya', titleMy: 'နတ္ထိပစ္စည်း', desc: 'Absence Condition', descMy: 'မရှိခြင်းဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Vigata-paccaya', titleMy: 'ဝိဂတပစ္စည်း', desc: 'Disappearance Condition', descMy: 'ကင်းကွာခြင်းဖြင့် ကျေးဇူးပြုခြင်း' },
-      { title: 'Avigata-paccaya', titleMy: 'အဝိဂတပစ္စည်း', desc: 'Non-disappearance Condition', descMy: 'မကင်းကွာခြင်းဖြင့် ကျေးဇူးပြုခြင်း' }
-    ],
-    keyPrinciples: [
-      'Infinite Conditionality',
-      'Law of Dependent Origination',
-      'The Web of Existence'
-    ],
-    keyPrinciplesMy: [
-      'အကြောင်းတရား ၂၄ ပါး၏ အစွမ်း',
-      'အပြန်အလှန် ကျေးဇူးပြုမှု နိယာမ',
-      'စကြာဝဠာ၏ အကြောင်းအကျိုး ယန္တရား'
-    ]
+    id: 'milinda-deep-6',
+    author: 'Ven. Nagasena',
+    handle: 'nagasena_sage',
+    time: '2h',
+    title: 'Defining Faith',
+    titleMy: 'သဒ္ဓါတရား၏ အနက်အဓိပ္ပာယ်',
+    content: 'I asked the Sage: "What is the mark of faith?" Nagasena said: "Faith has the mark of clarifying and leaping forward. Like a water-cleansing gem that makes muddy water clear, faith clarifies the mind of its impurities and gives the heart the courage to strive for what is good."',
+    contentMy: 'ကျွန်ုပ်က "သဒ္ဓါတရား၏ လက္ခဏာမှာ အဘယ်နည်း" ဟု မေးမြန်းခဲ့ပါသည်။ အရှင်နာဂသိန်က "သဒ္ဓါသည် ကြည်လင်စေခြင်းနှင့် ရှေ့သို့တက်လှမ်းစေခြင်း လက္ခဏာရှိပါသည်" ဟု မိန့်ကြားသည်။ ရေကြည်ကျောက်သည် နောက်ကျုနေသောရေကို ကြည်လင်စေသကဲ့သို့၊ သဒ္ဓါသည် စိတ်အတွင်းမှ အညစ်အကြေးများကို ကြည်လင်စေပြီး ကောင်းမှုပြုရန် ခွန်အားကို ဖြစ်ပေါ်စေပါသည်။',
+    pali: 'Saddha',
+    icon: '🪷'
   }
 ];

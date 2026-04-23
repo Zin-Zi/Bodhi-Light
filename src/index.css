@@ -4,123 +4,88 @@
 :root {
   --app-font-family: "Inter", system-ui, sans-serif;
   --app-font-size: 15px;
-  --x-bg-color: #1A2618;
-  --x-bg-image: linear-gradient(135deg, #1A2618 0%, #2C3A2A 100%);
-  --x-accent: #C4714A;
-  --x-ink: #ffffff;
-  --x-muted: rgba(255, 255, 255, 0.45);
-  --x-border: rgba(255, 255, 255, 0.08);
-  --x-glass: rgba(0, 0, 0, 0.5);
   --x-glass-blur: 16px;
+  --text-scale: 1;
+}
+
+html[data-text-size="sm"] {
+  --text-scale: 0.9;
+}
+
+html[data-text-size="md"] {
+  --text-scale: 1;
+}
+
+html[data-text-size="lg"] {
+  --text-scale: 1.15;
+}
+
+:root[data-theme="dark"] {
+  --bg:      #141714;
+  --surface: #1E211E;
+  --text1:   #F0EDE6;
+  --text2:   #A8A49E;
+  --text3:   #666660;
+  --accent:  #C4714A;
+  --border:  rgba(255,255,255,0.07);
+  --nav-bg:  #1A1C1A;
+  
+  /* Map for logic/glow effects */
+  --x-glow: rgba(196, 113, 74, 0.4);
+  --x-btn-text: #ffffff;
   --x-hover: rgba(255, 255, 255, 0.05);
-  --x-hover-heavy: rgba(255, 255, 255, 0.15);
-  --x-glow: rgba(255, 255, 255, 0.4);
+  --x-hover-heavy: rgba(255, 255, 255, 0.1);
+  --x-glass: rgba(30, 33, 30, 0.8);
+}
+
+:root[data-theme="light"] {
+  --bg:      #F0EDE6;
+  --surface: #FFFFFF;
+  --text1:   #111111;
+  --text2:   #555555;
+  --text3:   #999999;
+  --accent:  #C4714A;
+  --border:  rgba(0,0,0,0.08);
+  --nav-bg:  #FFFFFF;
+  
+  /* Map for logic/glow effects */
+  --x-glow: rgba(196, 113, 74, 0.2);
   --x-btn-text: #ffffff;
+  --x-hover: rgba(0, 0, 0, 0.05);
+  --x-hover-heavy: rgba(0, 0, 0, 0.1);
+  --x-glass: rgba(255, 255, 255, 0.8);
 }
 
-[data-theme='forest'] {
-  --x-bg-color: #1A2618;
-  --x-bg-image: linear-gradient(135deg, #1A2618 0%, #2C3A2A 100%);
-  --x-accent: #C4714A;
-}
-
-[data-theme='dusk'] {
-  --x-bg-color: #1A1520;
-  --x-bg-image: linear-gradient(135deg, #1A1520 0%, #2D1F3D 100%);
-  --x-accent: #A78BFA;
-}
-
-[data-theme='ember'] {
-  --x-bg-color: #1C1208;
-  --x-bg-image: linear-gradient(135deg, #1C1208 0%, #2E1C0A 100%);
-  --x-accent: #E8894A;
-}
-
-[data-theme='slate'] {
-  --x-bg-color: #0F1318;
-  --x-bg-image: linear-gradient(135deg, #0F1318 0%, #1A2232 100%);
-  --x-accent: #60A5FA;
-}
-
-[data-theme='lotus'] {
-  --x-bg-color: #F5F0E8;
-  --x-bg-image: linear-gradient(180deg, #F5F0E8 0%, #FFFFFF 100%);
-  --x-accent: #C4714A;
-  --x-ink: #1C1C1C;
-  --x-muted: #666666;
-  --x-border: #E5E0D8;
-  --x-glass: #FFFFFF;
-  --x-hover: rgba(0, 0, 0, 0.03);
-  --x-hover-heavy: rgba(0, 0, 0, 0.06);
-  --x-glow: rgba(196, 113, 74, 0.1);
-  --x-indicator: #C4714A;
-  --x-btn-text: #1C1C1C;
-}
-
-/* Lotus Theme Visibility Overrides */
-[data-theme='lotus'] .lesson-title, 
-[data-theme='lotus'] .card-title,
-[data-theme='lotus'] .lesson-body,
-[data-theme='lotus'] h1, 
-[data-theme='lotus'] h2,
-[data-theme='lotus'] h3,
-[data-theme='lotus'] .page-heading,
-[data-theme='lotus'] .text-x-ink {
-  color: #1C1C1C !important;
-  opacity: 1 !important;
-}
-
-[data-theme='lotus'] .lesson-title, 
-[data-theme='lotus'] .card-title,
-[data-theme='lotus'] .page-heading {
-  font-weight: 600;
-}
-
-[data-theme='lotus'] .category-label, 
-[data-theme='lotus'] .card-subtitle,
-[data-theme='lotus'] .text-x-muted {
-  color: #555555 !important;
-  opacity: 1 !important;
-}
-
-[data-theme='lotus'] .meta-text, 
-[data-theme='lotus'] .duration {
-  color: #666666 !important;
-  opacity: 1 !important;
-}
-
-[data-theme='lotus'] .tab-label {
-  color: #555555 !important;
-}
-
-[data-theme='lotus'] .tab-label.active {
-  color: #1C1C1C !important;
-  font-weight: 700;
-}
-
-[data-theme='lotus'] .glass-panel {
-  color: #1C1C1C !important;
-}
-
-[data-theme='void'] {
-  --x-bg-color: #000000;
-  --x-bg-image: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
-  --x-accent: #ffffff;
-  --x-ink: #ffffff;
-  --x-muted: rgba(255, 255, 255, 0.3);
-  --x-border: rgba(255, 255, 255, 0.1);
-  --x-glass: rgba(255, 255, 255, 0.05);
+:root[data-theme="sepia"] {
+  --bg:      #FAECD8;
+  --surface: #F3E2C7;
+  --text1:   #4A3A2A;
+  --text2:   #6B5541;
+  --text3:   #8C735B;
+  --accent:  #B85B33;
+  --border:  rgba(107, 85, 65, 0.15);
+  --nav-bg:  #F3E2C7;
+  
+  /* Map for logic/glow effects */
+  --x-glow: rgba(184, 91, 51, 0.2);
   --x-btn-text: #ffffff;
+  --x-hover: rgba(107, 85, 65, 0.08);
+  --x-hover-heavy: rgba(107, 85, 65, 0.15);
+  --x-glass: rgba(250, 236, 216, 0.85);
 }
 
 @theme {
   --font-sans: var(--app-font-family);
   
-  --color-x-background: var(--x-bg-color);
-  --color-x-ink: var(--x-ink);
-  --color-x-accent: var(--x-accent);
-  --color-x-muted: var(--x-muted);
-  --color-x-border: var(--x-border);
+  --color-x-background: var(--bg);
+  --color-x-bg: var(--bg);
+  --color-x-surface: var(--surface);
+  --color-x-surface-alt: var(--surface);
+  --color-x-ink: var(--text1);
+  --color-x-secondary: var(--text2);
+  --color-x-accent: var(--accent);
+  --color-x-muted: var(--text3);
+  --color-x-border: var(--border);
   --color-x-hover: var(--x-hover);
   --color-x-hover-heavy: var(--x-hover-heavy);
   --color-x-btn-text: var(--x-btn-text);
@@ -130,15 +95,38 @@
   html {
     font-size: var(--app-font-size);
   }
-  body {
+  body, #root {
+    background: var(--bg);
+    color: var(--text1);
     @apply text-x-ink font-sans antialiased min-h-screen selection:bg-x-accent selection:text-white overscroll-y-none;
-    background-color: var(--x-bg-color);
-    background-image: var(--x-bg-image);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     transition: background 0.8s ease, color 0.5s ease;
   }
+}
+
+.zoom-content {
+  zoom: var(--text-scale);
+}
+
+.card, .lesson-item, .book-item, .glossary-item {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.card-title, h1, h2, h3, strong {
+  color: var(--text1) !important;
+}
+
+.card-subtitle, .category, .username, .category-label {
+  color: var(--text2) !important;
+}
+
+.meta, .duration, .hint, .meta-text {
+  color: var(--text3) !important;
+}
+
+.bottom-nav {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
 }
 
 .glass-panel {
